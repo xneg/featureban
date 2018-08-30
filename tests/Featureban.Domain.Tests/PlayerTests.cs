@@ -25,5 +25,15 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(1, player.Tokens.Count);
         }
+
+        [Fact]
+        public void PlayerWithTokenLoseToken_WhenSpendToken()
+        {
+            var player = Create.Player().WithTokens(1.Token()).Please();
+
+            player.SpendToken();
+
+            Assert.Equal(0, player.Tokens.Count);
+        }
     }
 }

@@ -2,22 +2,30 @@
 {
     internal class PlayerBuilder
     {
-        private WorkItem _workItem;
+        private Player _player;
+
+        public PlayerBuilder()
+        {
+            _player = new Player();
+        }
         
         public PlayerBuilder With(WorkItem workItem)
         {
-            _workItem = workItem;
+            _player.AddWorkItem(workItem);
+            return this;
+        }
+        public PlayerBuilder WithTokens(int tokenCount)
+        {
+            for (var i = 0; i < tokenCount; i++)
+            {
+                _player.AddToken();
+            }
             return this;
         }
 
         public Player Please()
-        {
-            var player = new Player();
-            if (_workItem != null)
-            {
-                player.AddWorkItem(_workItem);
-            }
-            return player;
+        {            
+            return _player;
         }
     }
 }

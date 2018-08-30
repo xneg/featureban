@@ -25,5 +25,15 @@ namespace Featureban.Domain
         {
             _tokens.Add(new Token());
         }
+
+        public void AddToken()
+        {
+            _tokens.Add(new Token());
+        }
+
+        public void SpendToken()
+        {
+            _tokens.RemoveAt(0);
+        }
     }
 }
