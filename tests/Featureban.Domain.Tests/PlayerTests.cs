@@ -15,5 +15,15 @@ namespace Featureban.Domain.Tests
 
             Assert.Single(player.WorkItems, workItem);
         }
+
+        [Fact]
+        public void PlayerCanGetToken_WhenMakeToss()
+        {
+            var player = Create.Player().Please();
+
+            player.MakeToss();
+
+            Assert.Equal(1, player.Tokens.Count);
+        }
     }
 }
