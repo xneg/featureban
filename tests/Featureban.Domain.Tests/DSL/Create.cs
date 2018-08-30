@@ -10,5 +10,10 @@ namespace Featureban.Domain.Tests.DSL
         {
             return new WorkItemBuilder();
         }
+
+        public static PlayerBuilder Player()
+        {
+            return new PlayerBuilder();
+        }
     }
 }

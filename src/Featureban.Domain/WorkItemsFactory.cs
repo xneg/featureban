@@ -9,11 +9,9 @@
             _scale = scale;
         }
 
-        public WorkItem CreateWorkItemFor(Player player)
+        public WorkItem CreateWorkItem()
         {
             var workItem = new WorkItem(_scale);
-            player.AddWorkItem(workItem);
-
             return workItem;
         }
     }

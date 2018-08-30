@@ -8,8 +8,10 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerHasInWorkItemsCreatedNewWorkItem()
         {
-            var player = new Player();
-            var workItem = Create.WorkItem().With(player).Please();
+            var workItem = Create.WorkItem().Please();
+            var player = Create.Player().Please();
+
+            player.AddWorkItem(workItem);
 
             Assert.Single(player.WorkItems, workItem);
         }
