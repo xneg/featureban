@@ -1,3 +1,4 @@
+using Featureban.Domain.Tests.DSL;
 using System;
 using Xunit;
 
@@ -18,9 +19,7 @@ namespace Featureban.Domain.Tests
         public void FactoryCreateWorkItemForPlayer()
         {
             var player = new Player();
-            var workItemsFactory = new WorkItemsFactory();
-
-            var workItem = workItemsFactory.CreateWorkItemFor(player);
+            var workItem = Create.WorkItem().With(player).Please();
 
             Assert.Equal(player, workItem.Owner);
         }
@@ -28,12 +27,17 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void NewWorkItemNotBlocked()
         {
-            var player = new Player();
-            var workItemsFactory = new WorkItemsFactory();
-
-            var workItem = workItemsFactory.CreateWorkItemFor(player);
+            var workItem = Create.WorkItem().Please();
 
             Assert.False(workItem.Blocked);
+        }
+
+        [Fact]
+        public void NewWorkItemHasPositionToDo()
+        {
+            var workItem = Create.WorkItem().Please();
+
+            Assert.Equal(PositionStatus.ToDo, workItem.Position.Status);
         }
     }
 }
