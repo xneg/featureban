@@ -1,9 +1,12 @@
-﻿namespace Featureban.Domain.Tests.DSL
+﻿using System;
+
+namespace Featureban.Domain.Tests.DSL
 {
     public class WorkItemBuilder
     {
         private Player _player;
         private Scale _scale;
+        private bool _blocked;
 
         public WorkItemBuilder()
         {
@@ -21,7 +24,18 @@
        public WorkItem Please()
         {
             var workItemsFactory = new WorkItemsFactory(_scale);
-            return workItemsFactory.CreateWorkItemFor(_player);
+            var workItem = workItemsFactory.CreateWorkItemFor(_player);
+            if(_blocked)
+            {
+                workItem.Block();
+            }
+            return workItem;
+        }
+
+        public WorkItemBuilder Blocked()
+        {
+            _blocked = true;
+            return this;
         }
     }
 }

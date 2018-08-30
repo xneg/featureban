@@ -49,8 +49,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void IfUnblockWorkItemItWillBeNotBlocked()
         {
-            var workItem = Create.WorkItem().Please();
-            workItem.Block();
+            var workItem = Create.WorkItem().Blocked().Please();
 
             workItem.Unblock();
 
@@ -65,6 +64,16 @@ namespace Featureban.Domain.Tests
             workItem.StepUp();
 
             Assert.Equal(PositionStatus.InProgress, workItem.Status);
+        }
+
+        [Fact]
+        public void WorkItemStatusToDo_WhenStepUpAndBlocked()
+        {
+            var workItem = Create.WorkItem().Blocked().Please();
+
+            workItem.StepUp();
+
+            Assert.Equal(PositionStatus.ToDo, workItem.Status);
         }
     }
 }

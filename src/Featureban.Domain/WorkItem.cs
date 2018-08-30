@@ -27,7 +27,10 @@ namespace Featureban.Domain
 
         public void StepUp()
         {
-            _position.StepUp();
+            if (!Blocked)
+            {
+                _position.StepUp();
+            }
         }
     }
 }
