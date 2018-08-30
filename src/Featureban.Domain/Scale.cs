@@ -1,16 +1,17 @@
-﻿using System;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class Scale
     {
-        public Scale()
+        private int _inProgressStepsCount;
+
+        public Scale(int inProgressStepsCount)
         {
+            _inProgressStepsCount = inProgressStepsCount;
         }
 
         public Position CreatePosition()
         {
-            return new Position();
+            return new Position(_inProgressStepsCount);
         }
     }
 }

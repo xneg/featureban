@@ -4,6 +4,7 @@
     {
         ToDo = 0,
 
-        InProgress = 1
+        InProgress = 1,
+        Done = 2
     }
 }
