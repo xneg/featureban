@@ -24,5 +24,16 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(player, workItem.Owner);
         }
+
+        [Fact]
+        public void NewWorkItemNotBlocked()
+        {
+            var player = new Player();
+            var workItemsFactory = new WorkItemsFactory();
+
+            var workItem = workItemsFactory.CreateWorkItemFor(player);
+
+            Assert.False(workItem.Blocked);
+        }
     }
 }
