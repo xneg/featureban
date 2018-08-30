@@ -1,4 +1,6 @@
-﻿namespace Featureban.Domain
+﻿using System;
+
+namespace Featureban.Domain
 {
     public class WorkItem
     {
@@ -21,6 +23,11 @@
         public void Unblock()
         {
             Blocked = false;
+        }
+
+        public void StepUp()
+        {
+            _position.StepUp();
         }
     }
 }

@@ -56,5 +56,15 @@ namespace Featureban.Domain.Tests
 
             Assert.False(workItem.Blocked);
         }
+
+        [Fact]
+        public void WorkItemStatusIsInProgress_WhenStepUp()
+        {
+            var workItem = Create.WorkItem().Please();
+
+            workItem.StepUp();
+
+            Assert.Equal(PositionStatus.InProgress, workItem.Status);
+        }
     }
 }
