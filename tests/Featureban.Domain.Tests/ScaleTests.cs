@@ -1,20 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
+﻿using Xunit;
 
 namespace Featureban.Domain.Tests
 {
-   public class ScaleTests
+    public class ScaleTests
     {
         [Fact]
-        public void CreateNewPosition()
+        public void CreateNewPositionAtStepToDo()
         {
             var scale = new Scale();
 
             var position = scale.CreatePosition();
 
-            Assert.Equal(Step.ToDo, position.Step);
+            Assert.Equal(PositionStatus.ToDo, position.Status);
+        }
+
+        [Fact]
+        public void WhenNewPositionStepIsInProgress()
+        {
+            var scale = new Scale();
+            var position = scale.CreatePosition();
+
+            position.StepUp();
+
+            Assert.Equal(PositionStatus.InProgress, position.Status);
         }
     }
 }

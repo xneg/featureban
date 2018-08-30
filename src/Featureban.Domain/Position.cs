@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Featureban.Domain
 {
     public class Position
     {
-        public Step Step { get; set; }
+        public PositionStatus Status { get; private set; }
+
+        public void StepUp()
+        {
+            Status = PositionStatus.InProgress;
+        }
     }
 }
