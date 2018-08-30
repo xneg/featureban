@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class WorkItemsFactory
     {
@@ -12,7 +10,9 @@ namespace Featureban.Domain
 
         public WorkItem CreateWorkItemFor(Player player)
         {
-            return new WorkItem(player, _scale);
+            var workItem = new WorkItem(player, _scale);
+            player.AddWorkItem(workItem);
+            return workItem;
         }
     }
 }
