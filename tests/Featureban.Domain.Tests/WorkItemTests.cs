@@ -1,5 +1,4 @@
 using Featureban.Domain.Tests.DSL;
-using System;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -9,8 +8,6 @@ namespace Featureban.Domain.Tests
         // Листок
         // ID
         // Статус (заблокирован/незаблокирован)
-        // Владелец (игрок)
-        // Позиция на доске
 
         // Доска
         // 
@@ -38,6 +35,16 @@ namespace Featureban.Domain.Tests
             var workItem = Create.WorkItem().Please();
 
             Assert.Equal(PositionStatus.ToDo, workItem.Position.Status);
+        }
+
+        [Fact]
+        public void IfBlockWorkItemItWillBeBlocked()
+        {
+            var workItem = Create.WorkItem().Please();
+
+            workItem.Block();
+
+            Assert.True(workItem.Blocked);
         }
     }
 }
