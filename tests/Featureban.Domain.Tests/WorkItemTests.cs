@@ -46,5 +46,16 @@ namespace Featureban.Domain.Tests
 
             Assert.True(workItem.Blocked);
         }
+
+        [Fact]
+        public void IfUnblockWorkItemItWillBeNotBlocked()
+        {
+            var workItem = Create.WorkItem().Please();
+            workItem.Block();
+
+            workItem.Unblock();
+
+            Assert.False(workItem.Blocked);
+        }
     }
 }

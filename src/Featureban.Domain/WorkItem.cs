@@ -18,5 +18,10 @@ namespace Featureban.Domain
         {
             Blocked = true;
         }
+
+        public void Unblock()
+        {
+            Blocked = false;
+        }
     }
 }
