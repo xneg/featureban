@@ -3,17 +3,14 @@
     public class WorkItem
     {
         public Player Owner { get; }
-
         public bool Blocked { get; private set; }
-
-        public Position Position { get;}
-
-        public PositionStatus Status => Position.Status;
+        private Position _position;
+        public PositionStatus Status => _position.Status;
 
         public WorkItem(Player owner, Scale scale)
         {
             Owner = owner;
-            Position = scale.CreatePosition();
+            _position = scale.CreatePosition();
         }
 
         public void Block()
