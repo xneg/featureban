@@ -4,17 +4,14 @@ namespace Featureban.Domain
 {
     public class WorkItem
     {
-        public Player Owner { get; }
-
         public bool Blocked { get; private set; }
 
         private Position _position;
 
         public PositionStatus Status => _position.Status;
 
-        public WorkItem(Player owner, Scale scale)
+        public WorkItem(Scale scale)
         {
-            Owner = owner;
             _position = scale.CreatePosition();
         }
 

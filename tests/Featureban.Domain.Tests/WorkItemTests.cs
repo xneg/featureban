@@ -12,15 +12,6 @@ namespace Featureban.Domain.Tests
         // 
 
         [Fact]
-        public void FactoryCreateWorkItemForPlayer()
-        {
-            var player = new Player();
-            var workItem = Create.WorkItem().With(player).Please();
-
-            Assert.Equal(player, workItem.Owner);
-        }
-
-        [Fact]
         public void NewWorkItemNotBlocked()
         {
             var workItem = Create.WorkItem().Please();
