@@ -1,12 +1,14 @@
-﻿using System;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class WorkItem
     {
         public Player Owner { get; }
+
         public bool Blocked { get; private set; }
-        public Position Position { get;}        
+
+        public Position Position { get;}
+
+        public PositionStatus Status => Position.Status;
 
         public WorkItem(Player owner, Scale scale)
         {

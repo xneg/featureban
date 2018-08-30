@@ -7,7 +7,6 @@ namespace Featureban.Domain.Tests
     {
         // Листок
         // ID
-        // Статус (заблокирован/незаблокирован)
 
         // Доска
         // 
@@ -34,7 +33,7 @@ namespace Featureban.Domain.Tests
         {
             var workItem = Create.WorkItem().Please();
 
-            Assert.Equal(PositionStatus.ToDo, workItem.Position.Status);
+            Assert.Equal(PositionStatus.ToDo, workItem.Status);
         }
 
         [Fact]
