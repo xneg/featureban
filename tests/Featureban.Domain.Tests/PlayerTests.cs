@@ -41,8 +41,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerCanNotGiveToken_WhenHasEagleToken()
         {
-            var eagleToken = Create.Token().Eagle().Please();
-            var player = Create.Player().WithToken(eagleToken).Please();
+            var player = Create.Player().WithEagleToken().Please();
             var player2 = Create.Player().Please();
 
             Assert.Throws<InvalidOperationException>(() => player.GiveTokenTo(player2));
@@ -51,8 +50,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerLoseToken_WhenGivesTailsToken()
         {
-            var tailsToken = Create.Token().Tails().Please();
-            var player = Create.Player().WithToken(tailsToken).Please();
+            var player = Create.Player().WithTailsToken().Please();
             var player2 = Create.Player().Please();
 
             player.GiveTokenTo(player2);
@@ -63,8 +61,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerGainsToken_WhenOtherPlayGivesHimTailsToken()
         {
-            var tailsToken = Create.Token().Tails().Please();
-            var player = Create.Player().WithToken(tailsToken).Please();
+            var player = Create.Player().WithTailsToken().Please();
             var player2 = Create.Player().Please();
 
             player.GiveTokenTo(player2);
@@ -76,8 +73,7 @@ namespace Featureban.Domain.Tests
         public void PlayerBlockSticker_WhenSpendEagleToken()
         {
             var sticker = Create.Sticker().Please();
-            var eagleToken = Create.Token().Eagle().Please();
-            var player = Create.Player().WithToken(eagleToken).With(sticker).Please();
+            var player = Create.Player().WithEagleToken().With(sticker).Please();
 
             player.SpendToken();
 
@@ -88,8 +84,7 @@ namespace Featureban.Domain.Tests
         public void PlayerTakesNewSticker_WhenSpendEagleToken()
         {
             var sticker = Create.Sticker().Please();
-            var eagleToken = Create.Token().Eagle().Please();
-            var player = Create.Player().WithToken(eagleToken).With(sticker).Please();
+            var player = Create.Player().WithEagleToken().With(sticker).Please();
 
             player.SpendToken();
 
@@ -100,8 +95,7 @@ namespace Featureban.Domain.Tests
         public void PlayerStepUpUnblockedSticker_WhenSpendTailsToken()
         {
             var sticker = Create.Sticker().Please();
-            var tailsToken = Create.Token().Tails().Please();
-            var player = Create.Player().WithToken(tailsToken).With(sticker).Please();
+            var player = Create.Player().WithTailsToken().With(sticker).Please();
 
             player.SpendToken();
 

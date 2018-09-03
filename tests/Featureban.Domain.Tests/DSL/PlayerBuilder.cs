@@ -1,4 +1,6 @@
-﻿namespace Featureban.Domain.Tests.DSL
+﻿using System;
+
+namespace Featureban.Domain.Tests.DSL
 {
     internal class PlayerBuilder
     {
@@ -25,18 +27,23 @@
             }
 
             return this;
-        }
-
-        public PlayerBuilder WithToken(Token token)
-        {           
-            _player.AddToken(token);
-            
-            return this;
-        }
+        }       
 
         public Player Please()
         {            
             return _player;
+        }
+
+        public PlayerBuilder WithTailsToken()
+        {
+            _player.AddToken(new Token(TokenType.Tails));
+            return this;
+        }
+
+        public PlayerBuilder WithEagleToken()
+        {
+            _player.AddToken(new Token(TokenType.Eagle));
+            return this;
         }
     }
 }
