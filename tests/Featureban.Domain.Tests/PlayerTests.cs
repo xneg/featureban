@@ -1,4 +1,5 @@
 ﻿using Featureban.Domain.Tests.DSL;
+using System;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -34,6 +35,16 @@ namespace Featureban.Domain.Tests
             player.SpendToken();
 
             Assert.Equal(0, player.Tokens.Count);
+        }
+
+        [Fact]
+        public void PlayerCanNotSpent_WhenHasEagleToken()
+        {
+            var eagle = Create.Token().Eagle().Please();
+            var player = Create.Player().WithToken(eagle).Please();
+            var player2 = Create.Player().Please();
+
+            Assert.Throws<InvalidOperationException>(() => player.GiveTokenTo(player2));
         }
     }
 }

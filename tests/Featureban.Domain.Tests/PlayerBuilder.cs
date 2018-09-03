@@ -18,8 +18,15 @@
         {
             for (var i = 0; i < tokenCount; i++)
             {
-                _player.AddToken();
+                _player.AddToken(new Token(TokenType.Eagle));
             }
+            return this;
+        }
+
+        public PlayerBuilder WithToken(Token token)
+        {           
+                _player.AddToken(token);
+            
             return this;
         }
 

@@ -15,5 +15,10 @@ namespace Featureban.Domain.Tests.DSL
         {
             return new PlayerBuilder();
         }
+
+        public  static TokenBuilder Token()
+        {
+            return new TokenBuilder();
+        }
     }
 }

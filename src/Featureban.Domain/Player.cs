@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Featureban.Domain
 {
@@ -23,17 +24,21 @@ namespace Featureban.Domain
 
         public void MakeToss()
         {
-            _tokens.Add(new Token());
-        }
-
-        public void AddToken()
+            _tokens.Add(new Token(TokenType.Tails));
+        }        
+        public void AddToken(Token token)
         {
-            _tokens.Add(new Token());
+            _tokens.Add(token);
         }
 
         public void SpendToken()
         {
             _tokens.RemoveAt(0);
+        }
+
+        public void GiveTokenTo(Player player)
+        {
+            throw new InvalidOperationException();
         }
     }
 }
