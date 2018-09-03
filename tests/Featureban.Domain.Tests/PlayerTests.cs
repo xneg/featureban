@@ -83,12 +83,11 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerTakesNewSticker_WhenSpendEagleToken()
         {
-            var sticker = Create.Sticker().Please();
-            var player = Create.Player().WithEagleToken().With(sticker).Please();
+            var player = Create.Player().WithEagleToken().Please();
 
             player.SpendToken();
 
-            Assert.Equal(2, player.Stickers.Count());
+            Assert.Single(player.Stickers);
         }
 
         [Fact]
@@ -113,5 +112,16 @@ namespace Featureban.Domain.Tests
 
             Assert.False(sticker.Blocked);
         }
+
+        [Fact]
+        public void PlayerTakesNewSticker_WhenSpendTailsToken()
+        {
+            var player = Create.Player().WithTailsToken().Please();
+
+            player.SpendToken();
+
+            Assert.Single(player.Stickers);
+        }
+
     }
 }

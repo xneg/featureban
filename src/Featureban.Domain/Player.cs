@@ -45,6 +45,7 @@ namespace Featureban.Domain
                 sticker?.Block();
 
                 TakeStickerToWork(_stickersFactory.CreateSticker());
+                _tokens.RemoveAt(0);
             }
 
             if (_tokens.FirstOrDefault()?.TokenType == TokenType.Tails)
@@ -73,11 +74,9 @@ namespace Featureban.Domain
                     return;
                 }
 
-
-
-
-            }
-            _tokens.RemoveAt(0);            
+                TakeStickerToWork(_stickersFactory.CreateSticker());
+                _tokens.RemoveAt(0);
+            }                       
         }
 
         public void GiveTokenTo(Player player)
