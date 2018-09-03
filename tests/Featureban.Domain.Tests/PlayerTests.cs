@@ -1,5 +1,6 @@
 ﻿using Featureban.Domain.Tests.DSL;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -12,7 +13,7 @@ namespace Featureban.Domain.Tests
             var sticker = Create.Sticker().Please();
             var player = Create.Player().Please();
 
-            player.AddSticker(sticker);
+            player.TakeStickerToWork(sticker);
 
             Assert.Single(player.Stickers, sticker);
         }
@@ -69,6 +70,18 @@ namespace Featureban.Domain.Tests
             player.GiveTokenTo(player2);
 
             Assert.Equal(1, player2.Tokens.Count);
+        }
+
+        [Fact]
+        public void PlayerBlockSticker_WhenSpendEagleToken()
+        {
+            var sticker = Create.Sticker().Please();
+            var eagleToken = Create.Token().Eagle().Please();
+            var player = Create.Player().WithToken(eagleToken).With(sticker).Please();
+
+            player.SpendToken();
+
+            Assert.True(player.Stickers.Single().Blocked);
         }
     }
 }

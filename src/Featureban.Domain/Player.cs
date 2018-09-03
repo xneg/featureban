@@ -17,9 +17,10 @@ namespace Featureban.Domain
         {
         }
 
-        public void AddSticker(Sticker workItem)
+        public void TakeStickerToWork(Sticker sticker)
         {
-            _stickers.Add(workItem);
+            sticker.StepUp();
+            _stickers.Add(sticker);
         }
 
         public void MakeToss()
@@ -33,7 +34,16 @@ namespace Featureban.Domain
 
         public void SpendToken()
         {
-            _tokens.RemoveAt(0);
+            
+            if(_tokens.FirstOrDefault()?.TokenType == TokenType.Eagle)
+            {
+                var sticker = _stickers.FirstOrDefault(s => s.Status == PositionStatus.InProgress
+                && !s.Blocked);
+
+                sticker?.Block();
+            }
+
+            _tokens.RemoveAt(0);            
         }
 
         public void GiveTokenTo(Player player)
