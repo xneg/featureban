@@ -10,6 +10,8 @@ namespace Featureban.Domain
 
         public PositionStatus Status => _position.Status;
 
+        public int StepInProgress => _position.StepInProgress;
+
         public Sticker(Scale scale)
         {
             _position = scale.CreatePosition();

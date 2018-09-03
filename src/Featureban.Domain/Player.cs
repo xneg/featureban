@@ -47,6 +47,19 @@ namespace Featureban.Domain
                 TakeStickerToWork(_stickersFactory.CreateSticker());
             }
 
+            if (_tokens.FirstOrDefault()?.TokenType == TokenType.Tails)
+            {
+                var sticker = _stickers
+                    .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
+                    .OrderByDescending(s => s.StepInProgress)
+                    .FirstOrDefault();
+
+                if (sticker != null)
+                {
+                    sticker.StepUp();
+                }
+            }
+
             _tokens.RemoveAt(0);            
         }
 

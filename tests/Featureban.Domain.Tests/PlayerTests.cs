@@ -95,5 +95,17 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(2, player.Stickers.Count());
         }
+
+        [Fact]
+        public void PlayerStepUpUnblockedSticker_WhenSpendTailsToken()
+        {
+            var sticker = Create.Sticker().Please();
+            var tailsToken = Create.Token().Tails().Please();
+            var player = Create.Player().WithToken(tailsToken).With(sticker).Please();
+
+            player.SpendToken();
+
+            Assert.Equal(2, sticker.StepInProgress);
+        }
     }
 }
