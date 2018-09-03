@@ -49,17 +49,34 @@ namespace Featureban.Domain
 
             if (_tokens.FirstOrDefault()?.TokenType == TokenType.Tails)
             {
-                var sticker = _stickers
+                var unblockedSticker = _stickers
                     .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
                     .OrderByDescending(s => s.StepInProgress)
                     .FirstOrDefault();
 
-                if (sticker != null)
+                if (unblockedSticker != null)
                 {
-                    sticker.StepUp();
+                    unblockedSticker.StepUp();
+                    _tokens.RemoveAt(0);
+                    return;
                 }
-            }
 
+                var blockedSticker = _stickers
+                    .Where(s => s.Status == PositionStatus.InProgress && s.Blocked)
+                    .OrderByDescending(s => s.StepInProgress)
+                    .FirstOrDefault();
+
+                if (blockedSticker != null)
+                {
+                    blockedSticker.Unblock();
+                    _tokens.RemoveAt(0);
+                    return;
+                }
+
+
+
+
+            }
             _tokens.RemoveAt(0);            
         }
 
