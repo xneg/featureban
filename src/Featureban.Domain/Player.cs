@@ -6,15 +6,17 @@ namespace Featureban.Domain
 {
     public class Player
     {
-        private List<Sticker> _stickers = new List<Sticker>();
+        private readonly List<Sticker> _stickers = new List<Sticker>();
+        private readonly List<Token> _tokens = new List<Token>();
+        private readonly StickersFactory _stickersFactory;
 
         public IEnumerable<Sticker> Stickers => _stickers;
 
-        private List<Token> _tokens = new List<Token>();
         public IReadOnlyList<Token> Tokens => _tokens.AsReadOnly();
 
-        public Player()
+        public Player(StickersFactory stickersFactory)
         {
+            _stickersFactory = stickersFactory;
         }
 
         public void TakeStickerToWork(Sticker sticker)
@@ -34,13 +36,15 @@ namespace Featureban.Domain
 
         public void SpendToken()
         {
-            
             if(_tokens.FirstOrDefault()?.TokenType == TokenType.Eagle)
             {
-                var sticker = _stickers.FirstOrDefault(s => s.Status == PositionStatus.InProgress
-                && !s.Blocked);
+                var sticker = _stickers.FirstOrDefault(s => 
+                    s.Status == PositionStatus.InProgress && 
+                    !s.Blocked);
 
                 sticker?.Block();
+
+                TakeStickerToWork(_stickersFactory.CreateSticker());
             }
 
             _tokens.RemoveAt(0);            

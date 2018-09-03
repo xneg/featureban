@@ -81,7 +81,19 @@ namespace Featureban.Domain.Tests
 
             player.SpendToken();
 
-            Assert.True(player.Stickers.Single().Blocked);
+            Assert.True(sticker.Blocked);
+        }
+
+        [Fact]
+        public void PlayerTakesNewSticker_WhenSpendEagleToken()
+        {
+            var sticker = Create.Sticker().Please();
+            var eagleToken = Create.Token().Eagle().Please();
+            var player = Create.Player().WithToken(eagleToken).With(sticker).Please();
+
+            player.SpendToken();
+
+            Assert.Equal(2, player.Stickers.Count());
         }
     }
 }
