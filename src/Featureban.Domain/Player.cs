@@ -5,9 +5,9 @@ namespace Featureban.Domain
 {
     public class Player
     {
-        private List<WorkItem> _workItems = new List<WorkItem>();
+        private List<Sticker> _stickers = new List<Sticker>();
 
-        public IEnumerable<WorkItem> WorkItems => _workItems;
+        public IEnumerable<Sticker> Stickers => _stickers;
 
         private List<Token> _tokens = new List<Token>();
         public IReadOnlyList<Token> Tokens => _tokens.AsReadOnly();
@@ -16,9 +16,9 @@ namespace Featureban.Domain
         {
         }
 
-        public void AddWorkItem(WorkItem workItem)
+        public void AddSticker(Sticker workItem)
         {
-            _workItems.Add(workItem);
+            _stickers.Add(workItem);
         }
 
         public void MakeToss()

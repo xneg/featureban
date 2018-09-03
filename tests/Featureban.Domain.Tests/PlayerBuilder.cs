@@ -9,9 +9,9 @@
             _player = new Player();
         }
         
-        public PlayerBuilder With(WorkItem workItem)
+        public PlayerBuilder With(Sticker workItem)
         {
-            _player.AddWorkItem(workItem);
+            _player.AddSticker(workItem);
             return this;
         }
         public PlayerBuilder WithTokens(int tokenCount)

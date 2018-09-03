@@ -6,14 +6,14 @@ namespace Featureban.Domain.Tests
     public class PlayerTests
     {
         [Fact]
-        public void PlayerHasInWorkItemsCreatedNewWorkItem()
+        public void PlayerHasSticker_WhenAddSticker()
         {
-            var workItem = Create.WorkItem().Please();
+            var sticker = Create.Sticker().Please();
             var player = Create.Player().Please();
 
-            player.AddWorkItem(workItem);
+            player.AddSticker(sticker);
 
-            Assert.Single(player.WorkItems, workItem);
+            Assert.Single(player.Stickers, sticker);
         }
 
         [Fact]

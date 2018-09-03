@@ -6,9 +6,9 @@ namespace Featureban.Domain.Tests.DSL
 {
    static class Create
     {
-        public static WorkItemBuilder WorkItem()
+        public static StickerBuilder Sticker()
         {
-            return new WorkItemBuilder();
+            return new StickerBuilder();
         }
 
         public static PlayerBuilder Player()

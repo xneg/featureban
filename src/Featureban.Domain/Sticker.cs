@@ -2,7 +2,7 @@
 
 namespace Featureban.Domain
 {
-    public class WorkItem
+    public class Sticker
     {
         public bool Blocked { get; private set; }
 
@@ -10,7 +10,7 @@ namespace Featureban.Domain
 
         public PositionStatus Status => _position.Status;
 
-        public WorkItem(Scale scale)
+        public Sticker(Scale scale)
         {
             _position = scale.CreatePosition();
         }

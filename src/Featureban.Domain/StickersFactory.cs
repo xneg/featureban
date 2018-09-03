@@ -1,17 +1,17 @@
 ﻿namespace Featureban.Domain
 {
-    public class WorkItemsFactory
+    public class StickersFactory
     {
         private Scale _scale;
 
-        public WorkItemsFactory(Scale scale)
+        public StickersFactory(Scale scale)
         {
             _scale = scale;
         }
 
-        public WorkItem CreateWorkItem()
+        public Sticker CreateSticker()
         {
-            var workItem = new WorkItem(_scale);
+            var workItem = new Sticker(_scale);
             return workItem;
         }
     }

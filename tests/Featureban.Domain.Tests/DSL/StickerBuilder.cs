@@ -2,20 +2,20 @@
 
 namespace Featureban.Domain.Tests.DSL
 {
-    public class WorkItemBuilder
+    public class StickerBuilder
     {        
         private Scale _scale;
         private bool _blocked;
 
-        public WorkItemBuilder()
+        public StickerBuilder()
         {
             _scale = new Scale(2);
         }
         
 
-       public WorkItem Please()
+       public Sticker Please()
         {
-            var workItemsFactory = new WorkItemsFactory(_scale);
+            var workItemsFactory = new StickersFactory(_scale);
             var workItem = workItemsFactory.CreateWorkItem();
             if(_blocked)
             {
@@ -24,7 +24,7 @@ namespace Featureban.Domain.Tests.DSL
             return workItem;
         }
 
-        public WorkItemBuilder Blocked()
+        public StickerBuilder Blocked()
         {
             _blocked = true;
             return this;
