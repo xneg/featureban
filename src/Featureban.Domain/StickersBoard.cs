@@ -1,10 +1,10 @@
 ﻿namespace Featureban.Domain
 {
-    public class StickersFactory
+    public class StickersBoard
     {
         private Scale _scale;
 
-        public StickersFactory(Scale scale)
+        public StickersBoard(Scale scale)
         {
             _scale = scale;
         }

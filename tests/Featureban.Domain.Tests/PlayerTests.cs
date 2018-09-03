@@ -1,6 +1,5 @@
 ﻿using Featureban.Domain.Tests.DSL;
 using System;
-using System.Linq;
 using Xunit;
 
 namespace Featureban.Domain.Tests

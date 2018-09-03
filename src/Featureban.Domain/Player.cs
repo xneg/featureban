@@ -8,15 +8,15 @@ namespace Featureban.Domain
     {
         private readonly List<Sticker> _stickers = new List<Sticker>();
         private readonly List<Token> _tokens = new List<Token>();
-        private readonly StickersFactory _stickersFactory;
+        private readonly StickersBoard _stickersBoard;
 
         public IEnumerable<Sticker> Stickers => _stickers;
 
         public IReadOnlyList<Token> Tokens => _tokens.AsReadOnly();
 
-        public Player(StickersFactory stickersFactory)
+        public Player(StickersBoard stickersBoard)
         {
-            _stickersFactory = stickersFactory;
+            _stickersBoard = stickersBoard;
         }
 
         public void TakeStickerToWork(Sticker sticker)
@@ -44,7 +44,7 @@ namespace Featureban.Domain
 
                 sticker?.Block();
 
-                TakeStickerToWork(_stickersFactory.CreateSticker());
+                TakeStickerToWork(_stickersBoard.CreateSticker());
                 _tokens.RemoveAt(0);
             }
 
@@ -74,7 +74,7 @@ namespace Featureban.Domain
                     return;
                 }
 
-                TakeStickerToWork(_stickersFactory.CreateSticker());
+                TakeStickerToWork(_stickersBoard.CreateSticker());
                 _tokens.RemoveAt(0);
             }                       
         }

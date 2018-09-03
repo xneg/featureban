@@ -5,12 +5,12 @@ namespace Featureban.Domain.Tests.DSL
     internal class PlayerBuilder
     {
         private Player _player;
-        private StickersFactory _stickersFactory;
+        private StickersBoard _stickersBoard;
 
         public PlayerBuilder()
         {
-            _stickersFactory = new StickersFactory(new Scale(2));
-            _player = new Player(_stickersFactory);
+            _stickersBoard = new StickersBoard(new Scale(2));
+            _player = new Player(_stickersBoard);
         }
         
         public PlayerBuilder With(Sticker sticker)
