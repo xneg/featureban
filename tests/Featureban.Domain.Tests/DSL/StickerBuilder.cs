@@ -11,9 +11,8 @@ namespace Featureban.Domain.Tests.DSL
         {
             _scale = new Scale(2);
         }
-        
 
-       public Sticker Please()
+        public Sticker Please()
         {
             var workItemsFactory = new StickersFactory(_scale);
             var workItem = workItemsFactory.CreateSticker();
