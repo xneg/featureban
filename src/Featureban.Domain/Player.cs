@@ -42,6 +42,7 @@ namespace Featureban.Domain
                 throw new InvalidOperationException();
 
             SpendToken();
+            player.AddToken(new Token(TokenType.Tails));
         }
     }
 }

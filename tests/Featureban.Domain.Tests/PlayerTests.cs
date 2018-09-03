@@ -58,5 +58,17 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(0, player.Tokens.Count);
         }
+
+        [Fact]
+        public void PlayerGainsToken_WhenOtherPlayGivesHimTailsToken()
+        {
+            var tailsToken = Create.Token().Tails().Please();
+            var player = Create.Player().WithToken(tailsToken).Please();
+            var player2 = Create.Player().Please();
+
+            player.GiveTokenTo(player2);
+
+            Assert.Equal(1, player2.Tokens.Count);
+        }
     }
 }
