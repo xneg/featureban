@@ -38,13 +38,25 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void PlayerCanNotSpent_WhenHasEagleToken()
+        public void PlayerCanNotGiveToken_WhenHasEagleToken()
         {
-            var eagle = Create.Token().Eagle().Please();
-            var player = Create.Player().WithToken(eagle).Please();
+            var eagleToken = Create.Token().Eagle().Please();
+            var player = Create.Player().WithToken(eagleToken).Please();
             var player2 = Create.Player().Please();
 
             Assert.Throws<InvalidOperationException>(() => player.GiveTokenTo(player2));
+        }
+
+        [Fact]
+        public void PlayerLoseToken_WhenGivesTailsToken()
+        {
+            var tailsToken = Create.Token().Tails().Please();
+            var player = Create.Player().WithToken(tailsToken).Please();
+            var player2 = Create.Player().Please();
+
+            player.GiveTokenTo(player2);
+
+            Assert.Equal(0, player.Tokens.Count);
         }
     }
 }

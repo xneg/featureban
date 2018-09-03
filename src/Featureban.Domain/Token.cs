@@ -2,7 +2,7 @@
 {
     public class Token
     {
-       TokenType TokenType { get; }
+        public TokenType TokenType { get; }
 
         public Token(TokenType tokenType)
         {
@@ -10,9 +10,10 @@
         }
     }
 
-    public  enum TokenType
+    public enum TokenType
     {
         Eagle = 0,
+
         Tails = 1
     }
 }

@@ -2,14 +2,22 @@
 {
     public class TokenBuilder
     {
-        TokenType tokenType;
+        private TokenType tokenType;
+
         public TokenBuilder()
         {
             tokenType = TokenType.Tails;
         }
+
         public TokenBuilder Eagle()
         {
             tokenType = TokenType.Eagle;
+            return this;
+        }
+
+        public TokenBuilder Tails()
+        {
+            tokenType = TokenType.Tails;
             return this;
         }
 

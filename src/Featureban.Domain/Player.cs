@@ -38,7 +38,10 @@ namespace Featureban.Domain
 
         public void GiveTokenTo(Player player)
         {
-            throw new InvalidOperationException();
+            if (_tokens.Any(t => t.TokenType == TokenType.Eagle))
+                throw new InvalidOperationException();
+
+            SpendToken();
         }
     }
 }
