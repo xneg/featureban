@@ -36,6 +36,11 @@ namespace Featureban.Domain
 
         public void SpendToken()
         {
+            if (_tokens.Count() == 0)
+            {
+                return;
+            }
+
             var tokenType = _tokens.Dequeue().TokenType;
 
             if (tokenType == TokenType.Eagle)
