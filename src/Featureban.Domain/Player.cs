@@ -7,12 +7,12 @@ namespace Featureban.Domain
     public class Player
     {
         private readonly List<Sticker> _stickers = new List<Sticker>();
-        private readonly List<Token> _tokens = new List<Token>();
+        private readonly Queue<Token> _tokens = new Queue<Token>();
         private readonly StickersBoard _stickersBoard;
 
         public IEnumerable<Sticker> Stickers => _stickers;
 
-        public IReadOnlyList<Token> Tokens => _tokens.AsReadOnly();
+        public IReadOnlyList<Token> Tokens => _tokens.ToList().AsReadOnly();
 
         public Player(StickersBoard stickersBoard)
         {
@@ -27,56 +27,78 @@ namespace Featureban.Domain
 
         public void MakeToss()
         {
-            _tokens.Add(new Token(TokenType.Tails));
-        }        
+            _tokens.Enqueue(new Token(TokenType.Tails));
+        }
         public void AddToken(Token token)
         {
-            _tokens.Add(token);
+            _tokens.Enqueue(token);
         }
 
         public void SpendToken()
         {
-            if(_tokens.FirstOrDefault()?.TokenType == TokenType.Eagle)
-            {
-                var sticker = _stickers.FirstOrDefault(s => 
-                    s.Status == PositionStatus.InProgress && 
-                    !s.Blocked);
+            var tokenType = _tokens.Dequeue().TokenType;
 
-                sticker?.Block();
+            if (tokenType == TokenType.Eagle)
+            {
+                BlockStiker();
 
                 TakeStickerToWork(_stickersBoard.CreateSticker());
-                _tokens.RemoveAt(0);
             }
 
-            if (_tokens.FirstOrDefault()?.TokenType == TokenType.Tails)
+            if (tokenType == TokenType.Tails)
             {
-                var unblockedSticker = _stickers
+                if (IsAnyStickerNotBlocked())
+                {
+                    MoveSticker();
+                }
+                else if (IsAnyStickerBlocked())
+                {
+                    UnblockSticker();
+                }
+                else
+                {
+                    TakeStickerToWork(_stickersBoard.CreateSticker());
+                }
+            }
+        }
+
+        private void BlockStiker()
+        {
+            var sticker = _stickers
+                .Where(s => s.Status == PositionStatus.InProgress &&
+                       !s.Blocked)
+                .OrderByDescending(s => s.StepInProgress)
+                .FirstOrDefault();
+
+            sticker?.Block();
+        }
+
+        private void MoveSticker()
+        {
+            var unblockedSticker = _stickers
                     .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
                     .OrderByDescending(s => s.StepInProgress)
                     .FirstOrDefault();
 
-                if (unblockedSticker != null)
-                {
-                    unblockedSticker.StepUp();
-                    _tokens.RemoveAt(0);
-                    return;
-                }
+            if (unblockedSticker != null)
+            {
+                unblockedSticker.StepUp();
+                return;
+            }
+        }
 
-                var blockedSticker = _stickers
+        private void UnblockSticker()
+        {
+            var blockedSticker = _stickers
                     .Where(s => s.Status == PositionStatus.InProgress && s.Blocked)
                     .OrderByDescending(s => s.StepInProgress)
                     .FirstOrDefault();
 
-                if (blockedSticker != null)
-                {
-                    blockedSticker.Unblock();
-                    _tokens.RemoveAt(0);
-                    return;
-                }
-
-                TakeStickerToWork(_stickersBoard.CreateSticker());
-                _tokens.RemoveAt(0);
-            }                       
+            if (blockedSticker != null)
+            {
+                blockedSticker.Unblock();
+                return;
+            }
         }
 
         public void GiveTokenTo(Player player)
@@ -86,6 +108,14 @@ namespace Featureban.Domain
 
             SpendToken();
             player.AddToken(new Token(TokenType.Tails));
+        }
+        private bool IsAnyStickerBlocked()
+        {
+            return _stickers.Any(s => s.Blocked);
+        }
+        private bool IsAnyStickerNotBlocked()
+        {
+            return _stickers.Any(s => !s.Blocked);
         }
     }
 }
