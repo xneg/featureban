@@ -41,16 +41,16 @@ namespace Featureban.Domain
                 return;
             }
 
-            var tokenType = _tokens.Dequeue().TokenType;
+            var currentToken = _tokens.Dequeue();
 
-            if (tokenType == TokenType.Eagle)
+            if (currentToken.IsEagle)
             {
                 BlockStiker();
 
                 TakeStickerToWork(_stickersBoard.CreateSticker());
             }
 
-            if (tokenType == TokenType.Tails)
+            if (currentToken.IsTails)
             {
                 if (IsAnyStickerNotBlocked())
                 {
@@ -108,7 +108,7 @@ namespace Featureban.Domain
 
         public void GiveTokenTo(Player player)
         {
-            if (_tokens.Any(t => t.TokenType == TokenType.Eagle))
+            if (_tokens.Any(t => t.IsEagle))
                 throw new InvalidOperationException();
 
             SpendToken();

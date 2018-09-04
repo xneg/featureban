@@ -1,13 +1,17 @@
-﻿namespace Featureban.Domain
+﻿using System;
+
+namespace Featureban.Domain
 {
     public class Token
     {
-        public TokenType TokenType { get; }
+        private TokenType _tokenType;
+        public bool IsTails => _tokenType == TokenType.Tails;
+        public bool IsEagle => _tokenType == TokenType.Eagle;
 
         public Token(TokenType tokenType)
         {
-            TokenType = tokenType;
-        }
+            _tokenType = tokenType;
+        }        
     }
 
     public enum TokenType
