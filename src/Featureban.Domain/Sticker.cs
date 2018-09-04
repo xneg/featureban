@@ -1,4 +1,5 @@
 ﻿using System;
+using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
@@ -8,9 +9,40 @@ namespace Featureban.Domain
 
         private Position _position;
 
-        public PositionStatus Status => _position.Status;
+        public PositionStatus Status
+        {
+            get
+            {
+                switch (_position)
+                {
+                    case PositionDone _:
+                        return PositionStatus.Done;
+                    case PositionInProgress _:
+                        return PositionStatus.InProgress;
+                    case PositionToDo _:
+                        return PositionStatus.ToDo;
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+        }
 
-        public int StepInProgress => _position.StepInProgress;
+        public int StepInProgress
+        {
+            get
+            {
+                switch (_position)
+                {
+                    case PositionToDo _:
+                    case PositionDone _:
+                        return 0;
+                    case PositionInProgress positionInProgress:
+                        return positionInProgress.CurrentStep;
+                    default:
+                        throw new ArgumentException();
+                }
+            }
+        }
 
         public Sticker(Scale scale)
         {

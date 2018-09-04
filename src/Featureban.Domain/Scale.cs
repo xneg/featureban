@@ -1,4 +1,6 @@
-﻿namespace Featureban.Domain
+﻿using Featureban.Domain.Positions;
+
+namespace Featureban.Domain
 {
     public class Scale
     {
@@ -11,7 +13,7 @@
 
         public Position CreatePositionToDo()
         {
-            return Position.ToDo(_inProgressStepsCount);
+            return new PositionToDo(_inProgressStepsCount);
         }
     }
 }

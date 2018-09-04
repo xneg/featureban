@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Featureban.Domain.Positions;
+using Xunit;
 
 namespace Featureban.Domain.Tests
 {
@@ -11,7 +12,7 @@ namespace Featureban.Domain.Tests
 
             var position = scale.CreatePositionToDo();
 
-            Assert.Equal(PositionStatus.ToDo, position.Status);
+            Assert.Equal(Position.ToDo(), position);
         }
 
         [Fact]
@@ -22,7 +23,7 @@ namespace Featureban.Domain.Tests
 
             var newPosition = position.NextPosition();
 
-            Assert.Equal(PositionStatus.InProgress, newPosition.Status);
+            Assert.Equal(new PositionInProgress(0), newPosition);
         }
 
         [Fact]
@@ -34,7 +35,7 @@ namespace Featureban.Domain.Tests
             for (var i = 0; i < 3; i++)
                 position = position.NextPosition();
 
-            Assert.Equal(PositionStatus.Done, position.Status);
+            Assert.Equal(Position.Done(), position);
         }
     }
 }
