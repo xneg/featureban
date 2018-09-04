@@ -4,31 +4,33 @@ namespace Featureban.Domain
 {
     public class Position
     {
-        private int _totalSteps;
+        private readonly int _totalSteps;
 
-        public PositionStatus Status { get; private set; }
+        public PositionStatus Status { get; }
 
-        public int StepInProgress { get; private set; } = 0;
+        public int StepInProgress { get; }
 
-        public Position(int totalSteps)
+        public Position(int totalSteps, PositionStatus status, int stepInProgress)
         {
             _totalSteps = totalSteps;
+            StepInProgress = stepInProgress;
+            Status = status;
         }
 
-        public void StepUp()
+        public Position NextPosition()
         {
             switch (Status)
             {
                 case PositionStatus.ToDo:
-                    Status = PositionStatus.InProgress;
-                    StepInProgress++;
-                    break;
+                    return new Position(_totalSteps, PositionStatus.InProgress, 1);
                 case PositionStatus.InProgress:
-                    if (StepInProgress++ >= _totalSteps)
-                        Status = PositionStatus.Done;
-                    break;
+                    return (StepInProgress == _totalSteps)
+                        ? Position.Done()
+                        : new Position(_totalSteps, PositionStatus.InProgress, StepInProgress + 1);
                 case PositionStatus.Done:
                     throw new InvalidOperationException("You can not step up after done.");
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -66,6 +68,16 @@ namespace Featureban.Domain
         public static bool operator != (Position p1, Position p2)
         {
             return p1 != p2;
+        }
+
+        public static Position ToDo(int totalSteps)
+        {
+            return new Position(totalSteps, PositionStatus.ToDo, 0);
+        }
+
+        public static Position Done()
+        {
+            return new Position(0, PositionStatus.Done, 0);
         }
     }
 }

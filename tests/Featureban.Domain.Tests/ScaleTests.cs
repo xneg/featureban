@@ -9,7 +9,7 @@ namespace Featureban.Domain.Tests
         {
             var scale = new Scale(2);
 
-            var position = scale.CreatePosition();
+            var position = scale.CreatePositionToDo();
 
             Assert.Equal(PositionStatus.ToDo, position.Status);
         }
@@ -18,21 +18,21 @@ namespace Featureban.Domain.Tests
         public void WhenNewPositionStepIsInProgress()
         {
             var scale = new Scale(2);
-            var position = scale.CreatePosition();
+            var position = scale.CreatePositionToDo();
 
-            position.StepUp();
+            var newPosition = position.NextPosition();
 
-            Assert.Equal(PositionStatus.InProgress, position.Status);
+            Assert.Equal(PositionStatus.InProgress, newPosition.Status);
         }
 
         [Fact]
         public void PositionCanBeDoneAfterStepUps()
         {
             var scale = new Scale(2);
-            var position = scale.CreatePosition();
+            var position = scale.CreatePositionToDo();
 
             for (var i = 0; i < 3; i++)
-                position.StepUp();
+                position = position.NextPosition();
 
             Assert.Equal(PositionStatus.Done, position.Status);
         }

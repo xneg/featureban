@@ -2,16 +2,16 @@
 {
     public class Scale
     {
-        private int _inProgressStepsCount;
+        private readonly int _inProgressStepsCount;
 
         public Scale(int inProgressStepsCount)
         {
             _inProgressStepsCount = inProgressStepsCount;
         }
 
-        public Position CreatePosition()
+        public Position CreatePositionToDo()
         {
-            return new Position(_inProgressStepsCount);
+            return Position.ToDo(_inProgressStepsCount);
         }
     }
 }

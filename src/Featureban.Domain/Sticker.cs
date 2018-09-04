@@ -14,7 +14,7 @@ namespace Featureban.Domain
 
         public Sticker(Scale scale)
         {
-            _position = scale.CreatePosition();
+            _position = scale.CreatePositionToDo();
         }
 
         public void Block()
@@ -31,7 +31,7 @@ namespace Featureban.Domain
         {
             if (!Blocked)
             {
-                _position.StepUp();
+                _position = _position.NextPosition();
             }
         }
     }
