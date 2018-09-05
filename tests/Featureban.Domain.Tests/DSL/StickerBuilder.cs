@@ -5,22 +5,27 @@ namespace Featureban.Domain.Tests.DSL
     public class StickerBuilder
     {        
         private Scale _scale;
+        private Player _player;
+        private StickersBoard _stickersBoard;
+
         private bool _blocked;
 
         public StickerBuilder()
         {
             _scale = new Scale(2);
+            _stickersBoard = new StickersBoard(_scale);
+            _player = new Player(_stickersBoard);
         }
 
         public Sticker Please()
         {
-            var workItemsFactory = new StickersBoard(_scale);
-            var workItem = workItemsFactory.CreateSticker();
+            var sticker = _stickersBoard.CreateStickerFor(_player);
+
             if(_blocked)
             {
-                workItem.Block();
+                sticker.Block();
             }
-            return workItem;
+            return sticker;
         }
 
         public StickerBuilder Blocked()

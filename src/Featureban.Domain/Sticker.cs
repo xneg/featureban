@@ -8,11 +8,6 @@
 
         public Player Owner => _owner;
 
-        public Sticker()
-        {
-
-        }
-
         public Sticker(Player player)
         {
             _owner = player;

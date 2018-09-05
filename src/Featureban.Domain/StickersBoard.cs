@@ -17,12 +17,6 @@ namespace Featureban.Domain
             _scale = scale;
         }
 
-        public Sticker CreateSticker()
-        {
-            var sticker = new Sticker();
-            return sticker;
-        }
-
         public Sticker CreateStickerFor(Player player)
         {
             var sticker = new Sticker(player);
