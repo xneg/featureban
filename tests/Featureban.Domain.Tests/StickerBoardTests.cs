@@ -79,5 +79,18 @@ namespace Featureban.Domain.Tests
 
             Assert.NotNull(board.GetBlockedStickerFor(player));
         }
+
+        [Fact]
+        public void BoardCanNotAddStickerToWork_WhenWipIsReached()
+        {
+            var board = Create.StickersBoard().WithScale(1).WithWip(1).Please();
+            var player = Create.Player().Please();
+            var player2 = Create.Player().Please();
+            board.TakeStickerInWorkFor(player);
+
+            board.TakeStickerInWorkFor(player2);
+
+            Assert.Null(board.GetUnblockedStickerFor(player2));
+        }
     }
 }

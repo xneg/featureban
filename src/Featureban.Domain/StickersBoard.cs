@@ -5,20 +5,18 @@ using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
-    // вернуть стикеры игрока
-    // ограничивать количесво стикеров в колонке
-    // не давать перемещать, если лимит
-
     public class StickersBoard
     {
         private Scale _scale;
+        private int? _wip;
 
         private Dictionary<Position, List<Sticker>> _partitions;
 
-        public StickersBoard(Scale scale)
+        public StickersBoard(Scale scale, int? wip = null)
         {
             _scale = scale;
             _partitions = new Dictionary<Position, List<Sticker>>();
+            _wip = wip;
 
             CreatePartitions(_scale);
         }
@@ -73,6 +71,11 @@ namespace Featureban.Domain
 
             var oldPosition = sticker.Position;
             var newPosition = oldPosition.NextPosition();
+
+            if(_partitions[newPosition].Count ==  _wip)
+            {
+                return;
+            }
 
             _partitions[oldPosition].Remove(sticker);
             _partitions[newPosition].Add(sticker);
