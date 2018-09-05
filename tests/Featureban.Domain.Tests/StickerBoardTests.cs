@@ -57,6 +57,15 @@ namespace Featureban.Domain.Tests
             Assert.Contains(sticker, board.GetStickersIn(Position.Done()));            
         }
 
+        [Fact]
+        public void BoardReturnsUnblockedStickerForPlayer_WhenTakeStickerInWork()
+        {
+            var board = Create.StickersBoard().WithScale(1).Please();
+            var player = Create.Player().Please();
 
+            board.TakeStickerInWorkFor(player);
+
+            Assert.NotNull(board.GetUnblockedStickerFor(player));
+        }
     }
 }

@@ -69,11 +69,7 @@ namespace Featureban.Domain
         private void BlockStiker()
         {
             var sticker = _stickersBoard.GetUnblockedStickerFor(this);
-                //_stickers
-                //.Where(s => s.Status == PositionStatus.InProgress &&
-                //       !s.Blocked)
-                //.OrderByDescending(s => s.StepInProgress)
-                //.FirstOrDefault();
+                
 
             sticker?.Block();
         }

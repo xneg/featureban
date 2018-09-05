@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
     // вернуть стикеры игрока
     // ограничивать количесво стикеров в колонке
-    // не давать перемещать, если стикер заблокирован
     // не давать перемещать, если лимит
 
     public class StickersBoard
@@ -44,12 +44,19 @@ namespace Featureban.Domain
 
         public void TakeStickerInWorkFor(Player player)
         {
-            throw new NotImplementedException();
+            var sticker = CreateStickerFor(player);
+            StepUp(sticker);
         }
 
         public Sticker GetUnblockedStickerFor(Player player)
         {
-            throw new NotImplementedException();
+            return 
+                _partitions
+                .Where(p => p.Key is PositionInProgress)
+                .SelectMany(p => p.Value)
+                .Where(s => s.Owner == player && !s.Blocked)
+                // todo: сделать сортировку по позиции
+                .FirstOrDefault();
         }
 
         public void StepUp (Sticker sticker)
