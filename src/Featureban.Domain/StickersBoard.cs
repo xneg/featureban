@@ -54,6 +54,11 @@ namespace Featureban.Domain
 
         public void StepUp (Sticker sticker)
         {
+            if(sticker.Blocked)
+            {
+                return;
+            }
+
             var oldPosition = sticker.Position;
             var newPosition = oldPosition.NextPosition();
 

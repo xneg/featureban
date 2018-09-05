@@ -6,17 +6,7 @@ namespace Featureban.Domain.Tests
 {
     public class PlayerTests
     {
-        //[Fact]
-        //public void PlayerHasSticker_WhenAddSticker()
-        //{
-        //    var sticker = Create.Sticker().Please();
-        //    var player = Create.Player().Please();
-
-        //    player.TakeStickerToWork();
-
-        //    Assert.Single(player.Stickers, sticker);
-        //}
-
+       
         [Fact]
         public void PlayerCanGetToken_WhenMakeToss()
         {
