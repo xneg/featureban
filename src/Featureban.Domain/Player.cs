@@ -19,10 +19,9 @@ namespace Featureban.Domain
             _stickersBoard = stickersBoard;
         }
 
-        public void TakeStickerToWork(Sticker sticker)
+        public void TakeStickerToWork()
         {
-            sticker.StepUp();
-            _stickers.Add(sticker);
+            _stickersBoard.TakeStickerInWorkFor(this);
         }
 
         public void MakeToss()
@@ -47,7 +46,7 @@ namespace Featureban.Domain
             {
                 BlockStiker();
 
-                TakeStickerToWork(_stickersBoard.CreateSticker());
+                TakeStickerToWork();
             }
 
             if (currentToken.IsTails)
@@ -62,42 +61,45 @@ namespace Featureban.Domain
                 }
                 else
                 {
-                    TakeStickerToWork(_stickersBoard.CreateSticker());
+                    TakeStickerToWork();
                 }
             }
         }
 
         private void BlockStiker()
         {
-            var sticker = _stickers
-                .Where(s => s.Status == PositionStatus.InProgress &&
-                       !s.Blocked)
-                .OrderByDescending(s => s.StepInProgress)
-                .FirstOrDefault();
+            var sticker = _stickersBoard.GetUnblockedStickerFor(this);
+                //_stickers
+                //.Where(s => s.Status == PositionStatus.InProgress &&
+                //       !s.Blocked)
+                //.OrderByDescending(s => s.StepInProgress)
+                //.FirstOrDefault();
 
             sticker?.Block();
         }
 
         private void MoveSticker()
         {
-            var unblockedSticker = _stickers
-                    .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
-                    .OrderByDescending(s => s.StepInProgress)
-                    .FirstOrDefault();
+            var unblockedSticker = _stickersBoard.GetUnblockedStickerFor(this);
+                //_stickers
+                //    .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
+                //    .OrderByDescending(s => s.StepInProgress)
+                //    .FirstOrDefault();
 
             if (unblockedSticker != null)
             {
-                unblockedSticker.StepUp();
+                _stickersBoard.StepUp(unblockedSticker);
                 return;
             }
         }
 
         private void UnblockSticker()
         {
-            var blockedSticker = _stickers
-                    .Where(s => s.Status == PositionStatus.InProgress && s.Blocked)
-                    .OrderByDescending(s => s.StepInProgress)
-                    .FirstOrDefault();
+            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
+                    //_stickers
+                    //.Where(s => s.Status == PositionStatus.InProgress && s.Blocked)
+                    //.OrderByDescending(s => s.StepInProgress)
+                    //.FirstOrDefault();
 
             if (blockedSticker != null)
             {
@@ -114,10 +116,12 @@ namespace Featureban.Domain
             SpendToken();
             player.AddToken(new Token(TokenType.Tails));
         }
+
         private bool IsAnyStickerBlocked()
         {
             return _stickers.Any(s => s.Blocked);
         }
+
         private bool IsAnyStickerNotBlocked()
         {
             return _stickers.Any(s => !s.Blocked);

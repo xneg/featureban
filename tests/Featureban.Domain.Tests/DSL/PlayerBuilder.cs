@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Featureban.Domain.Tests.DSL
+﻿namespace Featureban.Domain.Tests.DSL
 {
     internal class PlayerBuilder
     {
@@ -13,12 +11,6 @@ namespace Featureban.Domain.Tests.DSL
             _player = new Player(_stickersBoard);
         }
         
-        public PlayerBuilder With(Sticker sticker)
-        {
-            _player.TakeStickerToWork(sticker);
-            return this;
-        }
-
         public PlayerBuilder WithTokens(int tokenCount)
         {
             for (var i = 0; i < tokenCount; i++)

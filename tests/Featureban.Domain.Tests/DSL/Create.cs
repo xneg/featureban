@@ -16,7 +16,7 @@ namespace Featureban.Domain.Tests.DSL
             return new PlayerBuilder();
         }
 
-        public static StickersBoardBuilder StickerBoard()
+        public static StickersBoardBuilder StickersBoard()
         {
             return  new StickersBoardBuilder();
         }
