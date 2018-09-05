@@ -16,5 +16,18 @@ namespace Featureban.Domain.Tests
 
             Assert.Contains(sticker, board.GetStickersIn(Position.ToDo()));
         }
+
+        [Fact]
+        public void StickerIsInProgress_WhenStepUpFromToDo()
+        {
+            var board = Create.StickersBoard().Please();
+            var player = Create.Player().Please();
+            var sticker = board.CreateStickerFor(player);
+
+            board.StepUp(sticker);
+
+            Assert.DoesNotContain(sticker, board.GetStickersIn(Position.ToDo()));
+            Assert.Contains(sticker, board.GetStickersIn(new PositionInProgress(1)));
+        }
     }
 }

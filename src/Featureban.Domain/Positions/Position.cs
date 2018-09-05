@@ -45,7 +45,7 @@
 
         public static bool operator != (Position p1, Position p2)
         {
-            return p1 != p2;
+            return !(p1 == p2);
         }
 
         public static Position ToDo()

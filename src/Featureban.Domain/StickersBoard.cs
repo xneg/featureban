@@ -4,40 +4,37 @@ using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
-
-    //Создать стикер
-    //переместить стикер
     // вернуть стикеры игрока
-    // ограничивать количесво стикеров в колонке 
+    // ограничивать количесво стикеров в колонке
+    // не давать перемещать, если стикер заблокирован
+    // не давать перемещать, если лимит
 
     public class StickersBoard
     {
         private Scale _scale;
-        private List<Sticker> _toDoList;
+
+        private Dictionary<Position, List<Sticker>> _partitions;
 
         public StickersBoard(Scale scale)
         {
             _scale = scale;
-            _toDoList = new List<Sticker>();
+            _partitions = new Dictionary<Position, List<Sticker>>();
+
+            CreatePartitions(_scale);
         }
 
         public Sticker CreateStickerFor(Player player)
         {
-            var sticker = new Sticker(player);
-            _toDoList.Add(sticker);
+            var sticker = new Sticker(player, _scale.CreatePositionToDo());
+
+            _partitions[Position.ToDo()].Add(sticker);
+
             return sticker;
         }
 
         public IEnumerable<Sticker> GetStickersIn(Position position)
         {
-            switch (position)
-            {
-                case PositionToDo _:
-                    return _toDoList.AsReadOnly();
-                default:
-                    return null;
-
-            }
+            return _partitions[position].AsReadOnly();
         }
 
         public Sticker GetBlockedStickerFor(Player player)
@@ -50,14 +47,34 @@ namespace Featureban.Domain
             throw new NotImplementedException();
         }
 
-        internal Sticker GetUnblockedStickerFor(Player player)
+        public Sticker GetUnblockedStickerFor(Player player)
         {
             throw new NotImplementedException();
         }
 
-        internal void StepUp (Sticker unblockedSticker)
+        public void StepUp (Sticker sticker)
         {
-            throw new NotImplementedException();
+            var oldPosition = sticker.Position;
+            var newPosition = oldPosition.NextPosition();
+
+            _partitions[oldPosition].Remove(sticker);
+            _partitions[newPosition].Add(sticker);
+
+            sticker.ChangePosition(newPosition);
+        }
+
+        private void CreatePartitions(Scale scale)
+        {
+            var position = scale.CreatePositionToDo();
+
+            do
+            {
+                _partitions[position] = new List<Sticker>();
+                position = position.NextPosition();
+
+            } while (position != Position.Done());
+
+            _partitions[position] = new List<Sticker>();
         }
     }
 }
