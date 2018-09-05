@@ -76,11 +76,7 @@ namespace Featureban.Domain
 
         private void MoveSticker()
         {
-            var unblockedSticker = _stickersBoard.GetUnblockedStickerFor(this);
-                //_stickers
-                //    .Where(s => s.Status == PositionStatus.InProgress && !s.Blocked)
-                //    .OrderByDescending(s => s.StepInProgress)
-                //    .FirstOrDefault();
+            var unblockedSticker = _stickersBoard.GetUnblockedStickerFor(this);                
 
             if (unblockedSticker != null)
             {
@@ -91,11 +87,7 @@ namespace Featureban.Domain
 
         private void UnblockSticker()
         {
-            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
-                    //_stickers
-                    //.Where(s => s.Status == PositionStatus.InProgress && s.Blocked)
-                    //.OrderByDescending(s => s.StepInProgress)
-                    //.FirstOrDefault();
+            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);                    
 
             if (blockedSticker != null)
             {

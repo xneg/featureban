@@ -39,7 +39,12 @@ namespace Featureban.Domain
 
         public Sticker GetBlockedStickerFor(Player player)
         {
-            throw new NotImplementedException();
+           return _partitions
+                .Where(p => p.Key is PositionInProgress)
+                .SelectMany(p => p.Value)
+                .Where(s => s.Owner == player && s.Blocked)
+                // todo: сделать сортировку по позиции
+                .FirstOrDefault();
         }
 
         public void TakeStickerInWorkFor(Player player)

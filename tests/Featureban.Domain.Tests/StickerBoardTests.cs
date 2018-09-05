@@ -67,5 +67,17 @@ namespace Featureban.Domain.Tests
 
             Assert.NotNull(board.GetUnblockedStickerFor(player));
         }
+
+        [Fact]
+        public void BoardReturnsBlockedStickerForPlayer_WhenBlocked()
+        {
+            var board = Create.StickersBoard().WithScale(1).Please();
+            var player = Create.Player().Please();
+            board.TakeStickerInWorkFor(player);
+            var sticker = board.GetUnblockedStickerFor(player);
+            sticker.Block();             
+
+            Assert.NotNull(board.GetBlockedStickerFor(player));
+        }
     }
 }
