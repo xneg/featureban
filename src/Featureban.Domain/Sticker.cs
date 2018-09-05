@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
@@ -8,6 +9,10 @@ namespace Featureban.Domain
         public bool Blocked { get; private set; }
 
         private Position _position;
+
+        private Player _owner;
+
+        public Player Owner => _owner;
 
         public PositionStatus Status
         {
@@ -47,6 +52,12 @@ namespace Featureban.Domain
         public Sticker(Scale scale)
         {
             _position = scale.CreatePositionToDo();
+        }
+
+        public Sticker(Scale scale, Player player)
+        {
+            _position = scale.CreatePositionToDo();
+            _owner = player;
         }
 
         public void Block()

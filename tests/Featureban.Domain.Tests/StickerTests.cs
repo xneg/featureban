@@ -66,5 +66,17 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(PositionStatus.ToDo, sticker.Status);
         }
+
+        [Fact]
+        public void StickerBoardCreateStickerForPlayer()
+        {
+            var board = Create.StickerBoard().Please();
+            var player = Create.Player().Please();
+
+            var sticker = board.CreateStickerFor(player);
+
+            Assert.Equal(player, sticker.Owner);
+
+        }
     }
 }
