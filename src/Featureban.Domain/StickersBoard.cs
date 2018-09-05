@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
@@ -11,16 +13,31 @@ namespace Featureban.Domain
     public class StickersBoard
     {
         private Scale _scale;
+        private List<Sticker> _toDoList;
 
         public StickersBoard(Scale scale)
         {
             _scale = scale;
+            _toDoList = new List<Sticker>();
         }
 
         public Sticker CreateStickerFor(Player player)
         {
             var sticker = new Sticker(player);
+            _toDoList.Add(sticker);
             return sticker;
+        }
+
+        public IEnumerable<Sticker> GetStickersIn(Position position)
+        {
+            switch (position)
+            {
+                case PositionToDo _:
+                    return _toDoList.AsReadOnly();
+                default:
+                    return null;
+
+            }
         }
 
         public Sticker GetBlockedStickerFor(Player player)
