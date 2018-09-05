@@ -7,6 +7,7 @@ namespace Featureban.Domain.Tests.DSL
         private Scale _scale;
         private Player _player;
         private StickersBoard _stickersBoard;
+        private TokensPull _tokensPull;
 
         private bool _blocked;
 
@@ -14,7 +15,8 @@ namespace Featureban.Domain.Tests.DSL
         {
             _scale = new Scale(2);
             _stickersBoard = new StickersBoard(_scale);
-            _player = new Player(_stickersBoard, new StubCoin(TokenType.Tails));
+            _tokensPull = new TokensPull();
+            _player = new Player(_stickersBoard, new StubCoin(TokenType.Tails), _tokensPull);
         }
 
         public Sticker Please()

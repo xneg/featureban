@@ -20,7 +20,6 @@ namespace Featureban.Domain.Tests
             Assert.Equal(1, player.Tokens.Count);
         }
 
-
         [Fact]
         public void PlayerGainsEagleToken_WhenCoinIsEagle()
         {
@@ -49,32 +48,32 @@ namespace Featureban.Domain.Tests
         public void PlayerCanNotGiveToken_WhenHasEagleToken()
         {
             var player = Create.Player().WithEagleToken().Please();
-            var player2 = Create.Player().Please();
 
-            Assert.Throws<InvalidOperationException>(() => player.GiveTokenTo(player2));
+            Assert.Throws<InvalidOperationException>(() => player.GiveTokenToPull());
         }
 
         [Fact]
         public void PlayerLoseToken_WhenGivesTailsToken()
         {
             var player = Create.Player().WithTailsToken().Please();
-            var player2 = Create.Player().Please();
 
-            player.GiveTokenTo(player2);
+            player.GiveTokenToPull();
 
             Assert.Equal(0, player.Tokens.Count);
         }
 
-        [Fact]
-        public void PlayerGainsToken_WhenOtherPlayGivesHimTailsToken()
-        {
-            var player = Create.Player().WithTailsToken().Please();
-            var player2 = Create.Player().Please();
+        // todo: Этот тест нужен. Переписать с DSL.
 
-            player.GiveTokenTo(player2);
+        //[Fact]
+        //public void PlayerGainsToken_WhenTakeItFromPull()
+        //{
+        //    var player = Create.Player().WithTailsToken().Please();
+        //    var player2 = Create.Player().Please();
 
-            Assert.Equal(1, player2.Tokens.Count);
-        }
+        //    player.TakeTokenFromPull();
+
+        //    Assert.Equal(1, player2.Tokens.Count);
+        //}
 
         //[Fact]
         //public void PlayerBlockSticker_WhenSpendEagleToken()

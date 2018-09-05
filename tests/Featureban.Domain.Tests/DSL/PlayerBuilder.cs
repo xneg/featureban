@@ -8,13 +8,15 @@ namespace Featureban.Domain.Tests.DSL
         private Player _player;
         private StickersBoard _stickersBoard;
         private ICoin _coin;
+        private TokensPull _tokensPull;
 
         public PlayerBuilder()
         {
             _stickersBoard = new StickersBoard(new Scale(2));
             _coin = new StubCoin(TokenType.Tails);
+            _tokensPull = new TokensPull();
 
-            _player = new Player(_stickersBoard, _coin);
+            _player = new Player(_stickersBoard, _coin, _tokensPull);
         }
         
         public PlayerBuilder WithTokens(int tokenCount)
@@ -30,7 +32,7 @@ namespace Featureban.Domain.Tests.DSL
         public PlayerBuilder WithCoin(ICoin coin)
         {
             _coin = coin;
-            _player = new Player(_stickersBoard, _coin);
+            _player = new Player(_stickersBoard, _coin, _tokensPull);
 
             return this;
         }
