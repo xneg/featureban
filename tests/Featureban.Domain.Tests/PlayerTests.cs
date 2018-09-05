@@ -1,5 +1,8 @@
-﻿using Featureban.Domain.Tests.DSL;
+﻿using Featureban.Domain.Interfaces;
+using Featureban.Domain.Tests.DSL;
+using Moq;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -17,15 +20,30 @@ namespace Featureban.Domain.Tests
             Assert.Equal(1, player.Tokens.Count);
         }
 
-        //[Fact]
-        //public void PlayerWithTokenLoseToken_WhenSpendToken()
-        //{
-        //    var player = Create.Player().WithTokens(1.Token()).Please();
 
-        //    player.SpendToken();
+        [Fact]
+        public void PlayerGainsEagleToken_WhenCoinIsEagle()
+        {
+            var coinStub = new Mock<ICoin>();
+            var player = Create.Player().WithCoin(coinStub.Object).Please();
 
-        //    Assert.Equal(0, player.Tokens.Count);
-        //}
+            coinStub.Setup(c => c.MakeToss()).Returns(new Token(TokenType.Eagle));
+
+            player.MakeToss();
+
+            var token = player.Tokens.Single();
+            Assert.True(token.IsEagle);
+        }
+
+        [Fact]
+        public void PlayerWithTokenLoseToken_WhenSpendToken()
+        {
+            var player = Create.Player().WithTokens(1.Token()).Please();
+
+            player.SpendToken();
+
+            Assert.Equal(0, player.Tokens.Count);
+        }
 
         [Fact]
         public void PlayerCanNotGiveToken_WhenHasEagleToken()
@@ -36,27 +54,27 @@ namespace Featureban.Domain.Tests
             Assert.Throws<InvalidOperationException>(() => player.GiveTokenTo(player2));
         }
 
-        //[Fact]
-        //public void PlayerLoseToken_WhenGivesTailsToken()
-        //{
-        //    var player = Create.Player().WithTailsToken().Please();
-        //    var player2 = Create.Player().Please();
+        [Fact]
+        public void PlayerLoseToken_WhenGivesTailsToken()
+        {
+            var player = Create.Player().WithTailsToken().Please();
+            var player2 = Create.Player().Please();
 
-        //    player.GiveTokenTo(player2);
+            player.GiveTokenTo(player2);
 
-        //    Assert.Equal(0, player.Tokens.Count);
-        //}
+            Assert.Equal(0, player.Tokens.Count);
+        }
 
-        //[Fact]
-        //public void PlayerGainsToken_WhenOtherPlayGivesHimTailsToken()
-        //{
-        //    var player = Create.Player().WithTailsToken().Please();
-        //    var player2 = Create.Player().Please();
+        [Fact]
+        public void PlayerGainsToken_WhenOtherPlayGivesHimTailsToken()
+        {
+            var player = Create.Player().WithTailsToken().Please();
+            var player2 = Create.Player().Please();
 
-        //    player.GiveTokenTo(player2);
+            player.GiveTokenTo(player2);
 
-        //    Assert.Equal(1, player2.Tokens.Count);
-        //}
+            Assert.Equal(1, player2.Tokens.Count);
+        }
 
         //[Fact]
         //public void PlayerBlockSticker_WhenSpendEagleToken()

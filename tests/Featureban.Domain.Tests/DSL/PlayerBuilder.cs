@@ -1,14 +1,20 @@
-﻿namespace Featureban.Domain.Tests.DSL
+﻿using Featureban.Domain.Interfaces;
+using System;
+
+namespace Featureban.Domain.Tests.DSL
 {
     internal class PlayerBuilder
     {
         private Player _player;
         private StickersBoard _stickersBoard;
+        private ICoin _coin;
 
         public PlayerBuilder()
         {
             _stickersBoard = new StickersBoard(new Scale(2));
-            _player = new Player(_stickersBoard);
+            _coin = new StubCoin(TokenType.Tails);
+
+            _player = new Player(_stickersBoard, _coin);
         }
         
         public PlayerBuilder WithTokens(int tokenCount)
@@ -19,7 +25,15 @@
             }
 
             return this;
-        }       
+        }
+
+        public PlayerBuilder WithCoin(ICoin coin)
+        {
+            _coin = coin;
+            _player = new Player(_stickersBoard, _coin);
+
+            return this;
+        }
 
         public Player Please()
         {            

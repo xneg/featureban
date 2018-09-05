@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Featureban.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,14 +10,16 @@ namespace Featureban.Domain
         private readonly List<Sticker> _stickers = new List<Sticker>();
         private readonly Queue<Token> _tokens = new Queue<Token>();
         private readonly StickersBoard _stickersBoard;
+        private readonly ICoin _coin;
 
         public IEnumerable<Sticker> Stickers => _stickers;
 
         public IReadOnlyList<Token> Tokens => _tokens.ToList().AsReadOnly();
 
-        public Player(StickersBoard stickersBoard)
+        public Player(StickersBoard stickersBoard, ICoin coin)
         {
             _stickersBoard = stickersBoard;
+            _coin = coin;
         }
 
         public void TakeStickerToWork()
@@ -26,7 +29,8 @@ namespace Featureban.Domain
 
         public void MakeToss()
         {
-            _tokens.Enqueue(new Token(TokenType.Tails));
+            var token = _coin.MakeToss();
+            _tokens.Enqueue(token);
         }
         public void AddToken(Token token)
         {

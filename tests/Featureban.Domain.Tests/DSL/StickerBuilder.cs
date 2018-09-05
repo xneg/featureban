@@ -14,7 +14,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             _scale = new Scale(2);
             _stickersBoard = new StickersBoard(_scale);
-            _player = new Player(_stickersBoard);
+            _player = new Player(_stickersBoard, new StubCoin(TokenType.Tails));
         }
 
         public Sticker Please()
