@@ -9,7 +9,7 @@ namespace Featureban.Domain.Tests.DSL
     {
         private IStickersBoard _stickersBoard;
         private ICoin _coin;
-        private readonly TokensPull _tokensPull;
+        private TokensPull _tokensPull;
         private List<Token> _tokens;
 
         public PlayerBuilder()
@@ -69,6 +69,12 @@ namespace Featureban.Domain.Tests.DSL
         public PlayerBuilder WithTailsToken()
         {
             _tokens.Add(Token.CreateTailsToken());
+            return this;
+        }
+
+        public PlayerBuilder With(TokensPull tokenPull)
+        {
+            _tokensPull = tokenPull;
             return this;
         }
 

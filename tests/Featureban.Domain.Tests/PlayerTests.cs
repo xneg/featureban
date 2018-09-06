@@ -21,8 +21,7 @@ namespace Featureban.Domain.Tests
 
         [Fact]
         public void PlayerGainsEagleToken_WhenCoinIsEagle()
-        {
-            
+        {            
             var player = Create.Player().WithAlwaysEagleCoin().Please();
 
             player.MakeToss();
@@ -61,16 +60,16 @@ namespace Featureban.Domain.Tests
 
         // todo: Этот тест нужен. Переписать с DSL.
 
-        //[Fact]
-        //public void PlayerGainsToken_WhenTakeItFromPull()
-        //{
-        //    var player = Create.Player().WithTailsToken().Please();
-        //    var player2 = Create.Player().Please();
+        [Fact]
+        public void PlayerGainsToken_WhenTakeItFromPull()
+        {
+            var tokenPull = Create.TokenPull().With(1.Token()).Please();
+            var player = Create.Player().With(tokenPull).Please();
 
-        //    player.TakeTokenFromPull();
+            player.TakeTokenFromPull();
 
-        //    Assert.Equal(1, player2.Tokens.Count);
-        //}
+            Assert.Equal(1, player.Tokens.Count);
+        }
 
         [Fact]
         public void PlayerBlocksUnblockedSticker_WhenSpendingEagleToken()

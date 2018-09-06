@@ -6,12 +6,12 @@
 
         public bool ContainsTokens => _tokensCount > 0;
 
-        internal void IncrementToken()
+        public void IncrementToken()
         {
             _tokensCount++;
         }
 
-        internal void DecrementToken()
+        public void DecrementToken()
         {
             _tokensCount--;
             _tokensCount = _tokensCount > 0 ? _tokensCount : 0;
