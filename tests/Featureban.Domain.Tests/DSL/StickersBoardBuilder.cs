@@ -44,7 +44,6 @@ namespace Featureban.Domain.Tests.DSL
 
         public Mock<IStickersBoard> Fast()
         { 
-
             return _stickersBoardMock;
         }
 

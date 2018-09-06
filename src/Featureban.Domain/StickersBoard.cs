@@ -104,7 +104,11 @@ namespace Featureban.Domain
 
         public Sticker GetMoveableStickerFor(Player player)
         {
-            throw new System.NotImplementedException();
+            return _progressSteps
+                .SelectMany(p => p.Value)
+                .FirstOrDefault(s => s.Owner == player && !s.Blocked &&
+                    (!_scale.IsValid(s.ProgressPosition.Next()) || 
+                    _progressSteps[s.ProgressPosition.Next()].Count < _wip));
         }
     }
 }

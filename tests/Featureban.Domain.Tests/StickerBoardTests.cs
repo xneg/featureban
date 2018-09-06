@@ -80,5 +80,16 @@ namespace Featureban.Domain.Tests
 
             Assert.False(board.CanCreateStickerInProgress());
         }
+
+        [Fact]
+        public void BoardReturnsMoveableStickerForPlayer()
+        {
+            var board = Create.StickersBoard().WithScale(1).Please();
+            var player = Create.Player().Please();
+
+            board.CreateStickerInProgress(player);
+
+            Assert.NotNull(board.GetMoveableStickerFor(player));
+        }
     }
 }
