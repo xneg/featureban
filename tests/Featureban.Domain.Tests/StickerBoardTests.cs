@@ -33,19 +33,7 @@ namespace Featureban.Domain.Tests
             var secondPosition = firstPosition.Next();
             Assert.Contains(sticker, board.GetStickersIn(firstPosition));
             Assert.DoesNotContain(sticker, board.GetStickersIn(secondPosition));
-        }
-
-        [Fact]
-        public void StickerInDone_WhenStepUps()
-        {
-            var board = Create.StickersBoard().WithStickerInProgress().Please();
-            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
-
-            board.StepUp(sticker);
-            board.StepUp(sticker);
-
-            Assert.Equal(StickerStatus.Done, sticker.Status);            
-        }
+        }        
 
         [Fact]
         public void BoardReturnsUnblockedStickerForPlayer_WhenTakeStickerInWork()
