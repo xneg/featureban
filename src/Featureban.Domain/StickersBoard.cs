@@ -9,17 +9,18 @@ namespace Featureban.Domain
         private readonly Scale _scale;
         private readonly int? _wip;
 
-        private readonly Dictionary<PositionNew, List<Sticker>> _steps;
+        private readonly Dictionary<ProgressPosition, List<Sticker>> _progressSteps;
 
         public StickersBoard(Scale scale, int? wip = null)
         {
             _scale = scale;
-            _steps = new Dictionary<PositionNew, List<Sticker>>();
+            _progressSteps = new Dictionary<ProgressPosition, List<Sticker>>();
             _wip = wip;
 
             CreateNewPartitions(_scale);
         }
 
+        //todo: удалить этот метод. Переписать DSL.
         public Sticker CreateStickerFor(Player player)
         {
             var sticker = new Sticker(player);
@@ -27,15 +28,15 @@ namespace Featureban.Domain
             return sticker;
         }
 
-        public IEnumerable<Sticker> GetStickersIn(PositionNew position)
+        public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)
         {
-            return _steps[position].AsReadOnly();
+            return _progressSteps[progressPosition].AsReadOnly();
         }
 
         public Sticker GetBlockedStickerFor(Player player)
         {
            return 
-                _steps
+                _progressSteps
                 .SelectMany(p => p.Value)
                 // todo: сделать сортировку по позиции
                 .FirstOrDefault(s => s.Owner == player && s.Blocked);
@@ -45,9 +46,9 @@ namespace Featureban.Domain
         {
             var sticker = CreateStickerFor(player);
 
-            if (_steps[PositionNew.First()].Count != _wip)
+            if (_progressSteps[ProgressPosition.First()].Count != _wip)
             {
-                _steps[PositionNew.First()].Add(sticker);
+                _progressSteps[ProgressPosition.First()].Add(sticker);
                 sticker.ChangeStatus(StickerStatus.InProgress);
             }
         }
@@ -55,7 +56,7 @@ namespace Featureban.Domain
         public Sticker GetUnblockedStickerFor(Player player)
         {
             return
-                _steps
+                _progressSteps
                 .SelectMany(p => p.Value)
                 // todo: сделать сортировку по позиции
                 .FirstOrDefault(s => s.Owner == player && !s.Blocked);
@@ -63,47 +64,42 @@ namespace Featureban.Domain
 
         public void StepUp (Sticker sticker)
         {
-            StepUpNew(sticker);
-        }
-
-        private void CreateNewPartitions(Scale scale)
-        {
-            var position = PositionNew.First();
-
-            while (scale.IsValid(position))
-            {
-                _steps[position] = new List<Sticker>();
-                position = position.Next();
-            }
-        }
-
-        private void StepUpNew(Sticker sticker)
-        {
             if (sticker.Blocked)
             {
                 return;
             }
 
-            var oldPosition = sticker.PositionNew;
+            var oldPosition = sticker.ProgressPosition;
             var newPosition = oldPosition.Next();
 
             if (_scale.IsValid(newPosition))
             {
-                if (_steps[newPosition].Count == _wip)
+                if (_progressSteps[newPosition].Count == _wip)
                 {
                     return;
                 }
 
-                _steps[oldPosition].Remove(sticker);
-                _steps[newPosition].Add(sticker);
+                _progressSteps[oldPosition].Remove(sticker);
+                _progressSteps[newPosition].Add(sticker);
 
                 sticker.ChangePositionNew(newPosition);
             }
             else
             {
-                _steps[oldPosition].Remove(sticker);
+                _progressSteps[oldPosition].Remove(sticker);
                 sticker.ChangeStatus(StickerStatus.Done);
                 // todo: sticker переходит в разряд завершенных
+            }
+        }
+
+        private void CreateNewPartitions(Scale scale)
+        {
+            var position = ProgressPosition.First();
+
+            while (scale.IsValid(position))
+            {
+                _progressSteps[position] = new List<Sticker>();
+                position = position.Next();
             }
         }
     }

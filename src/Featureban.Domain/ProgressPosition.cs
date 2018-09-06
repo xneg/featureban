@@ -1,22 +1,22 @@
 ﻿namespace Featureban.Domain
 {
-    public sealed class PositionNew
+    public sealed class ProgressPosition
     {
         public int Step { get; }
 
-        public PositionNew(int step)
+        public ProgressPosition(int step)
         {
             Step = step;
         }
 
-        public PositionNew Next()
+        public ProgressPosition Next()
         {
-            return new PositionNew(Step + 1);
+            return new ProgressPosition(Step + 1);
         }
 
         public override bool Equals(object obj)
         {
-            var p = obj as PositionNew;
+            var p = obj as ProgressPosition;
 
             if ((object) p == null)
                 return false;
@@ -24,7 +24,7 @@
             return p.Step == Step;
         }
 
-        public bool Equals(PositionNew p)
+        public bool Equals(ProgressPosition p)
         {
             if ((object)p == null)
             {
@@ -39,7 +39,7 @@
             return Step;
         }
 
-        public static bool operator ==(PositionNew p1, PositionNew p2)
+        public static bool operator ==(ProgressPosition p1, ProgressPosition p2)
         {
             if (ReferenceEquals(p1, p2))
             {
@@ -54,14 +54,14 @@
             return p1.Equals(p2);
         }
 
-        public static bool operator !=(PositionNew p1, PositionNew p2)
+        public static bool operator !=(ProgressPosition p1, ProgressPosition p2)
         {
             return !(p1 == p2);
         }
 
-        public static PositionNew First()
+        public static ProgressPosition First()
         {
-            return new PositionNew(1);
+            return new ProgressPosition(1);
         }
     }
 }

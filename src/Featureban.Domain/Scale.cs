@@ -1,6 +1,4 @@
-﻿using Featureban.Domain.Positions;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class Scale
     {
@@ -11,14 +9,9 @@ namespace Featureban.Domain
             _inProgressStepsCount = inProgressStepsCount;
         }
 
-        public bool IsValid(PositionNew position)
+        public bool IsValid(ProgressPosition progressPosition)
         {
-            return position.Step <= _inProgressStepsCount;
-        }
-
-        public Position CreatePositionToDo()
-        {
-            return new PositionToDo(_inProgressStepsCount);
+            return progressPosition.Step <= _inProgressStepsCount;
         }
     }
 }

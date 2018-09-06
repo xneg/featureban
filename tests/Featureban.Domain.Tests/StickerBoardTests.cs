@@ -25,7 +25,7 @@ namespace Featureban.Domain.Tests
 
             board.TakeStickerInWorkFor(player);
 
-            var sticker = board.GetStickersIn(PositionNew.First()).Single();
+            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
 
             Assert.Equal(StickerStatus.InProgress, sticker.Status);
         }
@@ -37,12 +37,12 @@ namespace Featureban.Domain.Tests
             var player = Create.Player().Please();
             board.TakeStickerInWorkFor(player);
 
-            var sticker = board.GetStickersIn(PositionNew.First()).Single();
+            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
             sticker.Block();
 
             board.StepUp(sticker);
 
-            var firstPosition = PositionNew.First();
+            var firstPosition = ProgressPosition.First();
             var secondPosition = firstPosition.Next();
 
             Assert.Contains(sticker, board.GetStickersIn(firstPosition));
@@ -56,7 +56,7 @@ namespace Featureban.Domain.Tests
             var player = Create.Player().Please();
             board.TakeStickerInWorkFor(player);
 
-            var sticker = board.GetStickersIn(PositionNew.First()).Single();
+            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
 
             board.StepUp(sticker);
             board.StepUp(sticker);

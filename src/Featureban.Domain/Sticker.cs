@@ -1,6 +1,4 @@
-﻿using Featureban.Domain.Positions;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class Sticker
     {
@@ -8,14 +6,14 @@ namespace Featureban.Domain
 
         public bool Blocked { get; private set; }
 
-        public PositionNew PositionNew { get; private set; }
+        public ProgressPosition ProgressPosition { get; private set; }
 
         public StickerStatus Status { get; private set; }
 
         public Sticker(Player player)
         {
             Owner = player;
-            PositionNew = PositionNew.First();
+            ProgressPosition = ProgressPosition.First();
             Status = StickerStatus.Todo;
         }
 
@@ -29,9 +27,9 @@ namespace Featureban.Domain
             Blocked = false;
         }
 
-        public void ChangePositionNew(PositionNew position)
+        public void ChangePositionNew(ProgressPosition progressPosition)
         {
-            PositionNew = position;
+            ProgressPosition = progressPosition;
         }
 
         public void ChangeStatus(StickerStatus status)
