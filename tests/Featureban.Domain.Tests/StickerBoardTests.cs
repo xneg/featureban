@@ -23,7 +23,7 @@ namespace Featureban.Domain.Tests
             var board = Create.StickersBoard().Please();
             var player = Create.Player().Please();
 
-            board.TakeStickerInWorkFor(player);
+            board.CreateStickerInProgress(player);
 
             var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
 
@@ -63,7 +63,7 @@ namespace Featureban.Domain.Tests
             var board = Create.StickersBoard().WithScale(1).Please();
             var player = Create.Player().Please();
 
-            board.TakeStickerInWorkFor(player);
+            board.CreateStickerInProgress(player);
 
             Assert.NotNull(board.GetUnblockedStickerFor(player));
         }
@@ -87,7 +87,7 @@ namespace Featureban.Domain.Tests
             var player2 = Create.Player().Please();
             var board = Create.StickersBoard().WithStickerInProgressFor(player).WithWip(1).Please(); 
 
-            board.TakeStickerInWorkFor(player2);
+            board.CreateStickerInProgress(player2);
 
             Assert.Null(board.GetUnblockedStickerFor(player2));
         }

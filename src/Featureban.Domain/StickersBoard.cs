@@ -42,7 +42,7 @@ namespace Featureban.Domain
                 .FirstOrDefault(s => s.Owner == player && s.Blocked);
         }
 
-        public void TakeStickerInWorkFor(Player player)
+        public void CreateStickerInProgress(Player player)
         {
             var sticker = CreateStickerFor(player);
 

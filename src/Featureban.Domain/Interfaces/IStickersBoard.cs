@@ -2,7 +2,7 @@
 {
     public interface IStickersBoard
     {
-        void TakeStickerInWorkFor(Player player);
+        void CreateStickerInProgress(Player player);
 
         Sticker GetBlockedStickerFor(Player player);
 

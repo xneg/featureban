@@ -89,7 +89,7 @@ namespace Featureban.Domain.Tests
 
             player.SpendToken();
 
-            boardMock.Verify(b => b.TakeStickerInWorkFor(player), Times.Once);
+            boardMock.Verify(b => b.CreateStickerInProgress(player), Times.Once);
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace Featureban.Domain.Tests
 
             player.SpendToken();
 
-            stickersBoard.Verify(b => b.TakeStickerInWorkFor(player), Times.Once);
+            stickersBoard.Verify(b => b.CreateStickerInProgress(player), Times.Once);
         }
     }
 }

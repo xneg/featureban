@@ -23,7 +23,7 @@ namespace Featureban.Domain
 
         public void TakeStickerToWork()
         {
-            _stickersBoard.TakeStickerInWorkFor(this);
+            _stickersBoard.CreateStickerInProgress(this);
         }
 
         public void MakeToss()

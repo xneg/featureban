@@ -35,7 +35,7 @@ namespace Featureban.Domain.Tests.DSL
             var stickerBoard =  new StickersBoard(_scale, _wip);
             for (int i = 0; i < _stickersInProgress; i++)
             {
-                stickerBoard.TakeStickerInWorkFor(_player);
+                stickerBoard.CreateStickerInProgress(_player);
             }
 
             return stickerBoard;
