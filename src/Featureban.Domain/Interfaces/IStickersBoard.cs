@@ -8,6 +8,8 @@
 
         Sticker GetUnblockedStickerFor(Player player);
 
+        Sticker GetMoveableStickerFor(Player player);
+
         void StepUp(Sticker sticker);
 
         bool CanCreateStickerInProgress();

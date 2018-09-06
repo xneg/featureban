@@ -55,7 +55,7 @@ namespace Featureban.Domain
 
             if (currentToken.IsTails)
             {
-                if (IsAnyStickerNotBlocked())
+                if (IsAnyStickerMoveable())
                 {
                     MoveSticker();
                 }
@@ -84,7 +84,7 @@ namespace Featureban.Domain
             if (_tokens.Any(t => t.IsEagle))
                 throw new InvalidOperationException();
 
-            SpendToken();
+            RemoveToken();
             _tokensPull.IncrementToken();
         }
 
@@ -97,7 +97,7 @@ namespace Featureban.Domain
 
         private void MoveSticker()
         {
-            var unblockedSticker = _stickersBoard.GetUnblockedStickerFor(this);                
+            var unblockedSticker = _stickersBoard.GetMoveableStickerFor(this);                
 
             if (unblockedSticker != null)
             {
@@ -120,6 +120,16 @@ namespace Featureban.Domain
         private bool IsAnyStickerNotBlocked()
         {
             return _stickersBoard.GetUnblockedStickerFor(this) != null;
+        }
+
+        private bool IsAnyStickerMoveable()
+        {
+            return _stickersBoard.GetMoveableStickerFor(this) != null;
+        }
+
+        private void RemoveToken()
+        {
+            _tokens.Dequeue();
         }
     }
 }

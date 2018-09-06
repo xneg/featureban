@@ -101,5 +101,10 @@ namespace Featureban.Domain
         {
             return _progressSteps[ProgressPosition.First()].Count < _wip;
         }
+
+        public Sticker GetMoveableStickerFor(Player player)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

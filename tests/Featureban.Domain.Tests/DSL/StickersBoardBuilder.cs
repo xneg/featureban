@@ -30,6 +30,7 @@ namespace Featureban.Domain.Tests.DSL
             _wip = wipCount;
             return this;
         }
+
         public StickersBoard Please()
         {
             var stickerBoard =  new StickersBoard(_scale, _wip);
@@ -64,6 +65,13 @@ namespace Featureban.Domain.Tests.DSL
             _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns(sticker);
             return this;
         }
+
+        public StickersBoardBuilder WhichAlwaysReturnMoveable(Sticker sticker)
+        {
+            _stickersBoardMock.Setup(b => b.GetMoveableStickerFor(It.IsAny<Player>())).Returns(sticker);
+            return this;
+        }
+
         public StickersBoardBuilder WhichAlwaysReturnBlocked(Sticker sticker)
         {
             _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns(sticker);
@@ -75,6 +83,7 @@ namespace Featureban.Domain.Tests.DSL
             _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
             return this;
         }
+
         public StickersBoardBuilder WhichNotReturnBlocked()
         {
             _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);

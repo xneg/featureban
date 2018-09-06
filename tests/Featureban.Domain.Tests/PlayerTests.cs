@@ -93,11 +93,10 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void PlayerMovesUnblockedSticker_WhenSpendingTailsToken()
+        public void PlayerMovesMoveableSticker_WhenSpendingTailsToken()
         {            
-            
             var sticker = Create.Sticker().Please();
-            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnUnblocked(sticker).Fast();
+            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnMoveable(sticker).Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
