@@ -11,14 +11,17 @@ namespace Featureban.Domain
         private readonly int? _wip;
 
         private readonly Dictionary<Position, List<Sticker>> _partitions;
+        private readonly Dictionary<PositionNew, List<Sticker>> _steps;
 
         public StickersBoard(Scale scale, int? wip = null)
         {
             _scale = scale;
             _partitions = new Dictionary<Position, List<Sticker>>();
+            _steps = new Dictionary<PositionNew, List<Sticker>>();
             _wip = wip;
 
             CreatePartitions(_scale);
+            CreateNewPartitions(_scale);
         }
 
         public Sticker CreateStickerFor(Player player)
@@ -48,6 +51,11 @@ namespace Featureban.Domain
         {
             var sticker = CreateStickerFor(player);
             StepUp(sticker);
+
+            if (_steps[PositionNew.First()].Count < _wip)
+            {
+                _steps[PositionNew.First()].Add(sticker);
+            }
         }
 
         public Sticker GetUnblockedStickerFor(Player player)
@@ -62,7 +70,9 @@ namespace Featureban.Domain
 
         public void StepUp (Sticker sticker)
         {
-            if(sticker.Blocked)
+            StepUpNew(sticker);
+
+            if (sticker.Blocked)
             {
                 return;
             }
@@ -70,7 +80,7 @@ namespace Featureban.Domain
             var oldPosition = sticker.Position;
             var newPosition = oldPosition.NextPosition();
 
-            if(_partitions[newPosition].Count ==  _wip)
+            if(_partitions[newPosition].Count == _wip)
             {
                 return;
             }
@@ -93,6 +103,46 @@ namespace Featureban.Domain
             } while (position != Position.Done());
 
             _partitions[position] = new List<Sticker>();
+        }
+
+        private void CreateNewPartitions(Scale scale)
+        {
+            var position = PositionNew.First();
+
+            while (scale.IsValid(position))
+            {
+                _steps[position] = new List<Sticker>();
+                position = position.Next();
+            }
+        }
+
+        private void StepUpNew(Sticker sticker)
+        {
+            if (sticker.Blocked)
+            {
+                return;
+            }
+
+            var oldPosition = sticker.PositionNew;
+            var newPosition = oldPosition.Next();
+
+            if (_scale.IsValid(newPosition))
+            {
+                if (_steps[newPosition].Count == _wip)
+                {
+                    return;
+                }
+
+                _steps[oldPosition].Remove(sticker);
+                _steps[newPosition].Add(sticker);
+
+                sticker.ChangePositionNew(newPosition);
+            }
+            else
+            {
+                _steps[oldPosition].Remove(sticker);
+                // todo: sticker переходит в разряд завершенных
+            }
         }
     }
 }

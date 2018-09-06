@@ -11,6 +11,11 @@ namespace Featureban.Domain
             _inProgressStepsCount = inProgressStepsCount;
         }
 
+        public bool IsValid(PositionNew position)
+        {
+            return position.Step <= _inProgressStepsCount;
+        }
+
         public Position CreatePositionToDo()
         {
             return new PositionToDo(_inProgressStepsCount);
