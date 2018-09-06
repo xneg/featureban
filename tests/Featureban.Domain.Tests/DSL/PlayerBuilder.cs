@@ -5,7 +5,7 @@ namespace Featureban.Domain.Tests.DSL
     internal class PlayerBuilder
     {
         private Player _player;
-        private readonly StickersBoard _stickersBoard;
+        private IStickersBoard _stickersBoard;
         private ICoin _coin;
         private readonly TokensPull _tokensPull;
 
@@ -24,6 +24,15 @@ namespace Featureban.Domain.Tests.DSL
             {
                 _player.AddToken(new Token(TokenType.Eagle));
             }
+
+            return this;
+        }
+
+        public PlayerBuilder WithBoard(IStickersBoard stickersBoard)
+        {
+            _stickersBoard = stickersBoard;
+
+            _player = new Player(_stickersBoard, _coin, _tokensPull);
 
             return this;
         }
