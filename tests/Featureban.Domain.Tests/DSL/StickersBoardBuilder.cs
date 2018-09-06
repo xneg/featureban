@@ -70,6 +70,17 @@ namespace Featureban.Domain.Tests.DSL
             return this;
         }
 
+        public StickersBoardBuilder WhichNotReturnUnblocked()
+        {
+            _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
+            return this;
+        }
+        public StickersBoardBuilder WhichNotReturnBlocked()
+        {
+            _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
+            return this;
+        }
+
         public StickersBoardBuilder And()
         {
             return this;

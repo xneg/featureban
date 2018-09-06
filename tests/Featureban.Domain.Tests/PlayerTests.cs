@@ -110,7 +110,7 @@ namespace Featureban.Domain.Tests
         {
             var sticker = Create.Sticker().Blocked().Please();
             var stickersBoard = Create.StickersBoard()
-                .WhichAlwaysReturnUnblocked(null).And()
+                .WhichNotReturnUnblocked().And()
                 .WhichAlwaysReturnBlocked(sticker).Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();            
 
@@ -123,8 +123,8 @@ namespace Featureban.Domain.Tests
         public void PlayerTakesNewSticker_WhenSpendingTailsToken()
         {
             var stickersBoard = Create.StickersBoard()
-                .WhichAlwaysReturnUnblocked(null).And()
-                .WhichAlwaysReturnBlocked(null).Fast();
+                .WhichNotReturnUnblocked().And()
+                .WhichNotReturnBlocked().Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
