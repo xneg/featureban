@@ -58,6 +58,13 @@ namespace Featureban.Domain
 
             _tokensPull.EraseTokens();
         }
-        
+
+        public int GetDoneStickers()
+        {
+            for (var i = 0; i < _roundsCount; i++)
+                PlayRound();
+
+            return StickersBoard.DoneStickers;
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace Featureban.Domain
 
             if (currentToken.IsTails)
             {
-                if (TryMoveSticker() || TryUnblockSticker() || TryTakeStickerToProgress())
+                if (!(TryMoveSticker() || TryUnblockSticker() || TryTakeStickerToProgress()))
                 {
                     _tokensPull.IncrementToken();
                 }
