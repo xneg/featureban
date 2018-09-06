@@ -8,20 +8,15 @@ namespace Featureban.Domain
 
         public bool Blocked { get; private set; }
 
-        public Position Position { get; private set; }
-
         public PositionNew PositionNew { get; private set; }
 
-        public Sticker(Player player, Position position) : this(player)
-        {
-            Owner = player;
-            Position = position;
-        }
+        public StickerStatus Status { get; private set; }
 
         public Sticker(Player player)
         {
             Owner = player;
             PositionNew = PositionNew.First();
+            Status = StickerStatus.Todo;
         }
 
         public void Block()
@@ -34,14 +29,14 @@ namespace Featureban.Domain
             Blocked = false;
         }
 
-        public void ChangePosition(Position position)
-        {
-            Position = position;
-        }
-
         public void ChangePositionNew(PositionNew position)
         {
             PositionNew = position;
+        }
+
+        public void ChangeStatus(StickerStatus status)
+        {
+            Status = status;
         }
     }
 }

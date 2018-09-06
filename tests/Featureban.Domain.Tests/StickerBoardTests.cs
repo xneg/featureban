@@ -1,4 +1,4 @@
-﻿using Featureban.Domain.Positions;
+﻿using System.Linq;
 using Featureban.Domain.Tests.DSL;
 using Xunit;
 
@@ -7,27 +7,27 @@ namespace Featureban.Domain.Tests
     public class StickerBoardTests
     {
         [Fact]
-        public void StickerInPositionToDo_WhenCreated()
+        public void StickerInStatusToDo_WhenCreated()
         {
             var board = Create.StickersBoard().Please();
             var player = Create.Player().Please();
 
             var sticker = board.CreateStickerFor(player);
 
-            Assert.Contains(sticker, board.GetStickersIn(Position.ToDo()));
+            Assert.Equal(StickerStatus.Todo, sticker.Status);
         }
 
         [Fact]
-        public void StickerIsInProgress_WhenStepUpFromToDo()
+        public void StickerIsInProgress_WhenTakeInWork()
         {
             var board = Create.StickersBoard().Please();
             var player = Create.Player().Please();
-            var sticker = board.CreateStickerFor(player);
 
-            board.StepUp(sticker);
+            board.TakeStickerInWorkFor(player);
 
-            Assert.DoesNotContain(sticker, board.GetStickersIn(Position.ToDo()));
-            Assert.Contains(sticker, board.GetStickersIn(new PositionInProgress(1)));
+            var sticker = board.GetStickersIn(PositionNew.First()).Single();
+
+            Assert.Equal(StickerStatus.InProgress, sticker.Status);
         }
 
         [Fact]
@@ -35,13 +35,18 @@ namespace Featureban.Domain.Tests
         {
             var board = Create.StickersBoard().Please();
             var player = Create.Player().Please();
-            var sticker = board.CreateStickerFor(player);
+            board.TakeStickerInWorkFor(player);
+
+            var sticker = board.GetStickersIn(PositionNew.First()).Single();
             sticker.Block();
 
             board.StepUp(sticker);
 
-            Assert.Contains(sticker, board.GetStickersIn(Position.ToDo()));
-            Assert.DoesNotContain(sticker, board.GetStickersIn(new PositionInProgress(1)));
+            var firstPosition = PositionNew.First();
+            var secondPosition = firstPosition.Next();
+
+            Assert.Contains(sticker, board.GetStickersIn(firstPosition));
+            Assert.DoesNotContain(sticker, board.GetStickersIn(secondPosition));
         }
 
         [Fact]
@@ -49,12 +54,14 @@ namespace Featureban.Domain.Tests
         {
             var board = Create.StickersBoard().WithScale(1).Please();
             var player = Create.Player().Please();
-            var sticker = board.CreateStickerFor(player);            
+            board.TakeStickerInWorkFor(player);
+
+            var sticker = board.GetStickersIn(PositionNew.First()).Single();
 
             board.StepUp(sticker);
             board.StepUp(sticker);
 
-            Assert.Contains(sticker, board.GetStickersIn(Position.Done()));            
+            Assert.Equal(StickerStatus.Done, sticker.Status);            
         }
 
         [Fact]
