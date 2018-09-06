@@ -19,12 +19,7 @@ namespace Featureban.Domain
             _stickersBoard = stickersBoard;
             _coin = coin;
             _tokensPull = tokensPull;
-        }
-
-        public void TakeStickerToWork()
-        {
-            _stickersBoard.CreateStickerInProgress(this);
-        }
+        }      
 
         public void MakeToss()
         {
@@ -50,22 +45,14 @@ namespace Featureban.Domain
             {
                 BlockSticker();
 
-                TakeStickerToWork();
+                TakeStickerToProgress();
             }
 
             if (currentToken.IsTails)
             {
-                if (IsAnyStickerMoveable())
+                if (TryMoveSticker() || TryUnblockSticker() || TryTakeStickerToProgress())
                 {
-                    MoveSticker();
-                }
-                else if (IsAnyStickerBlocked())
-                {
-                    UnblockSticker();
-                }
-                else
-                {
-                    TakeStickerToWork();
+                    _tokensPull.IncrementToken();
                 }
             }
         }
@@ -95,16 +82,6 @@ namespace Featureban.Domain
             sticker?.Block();
         }
 
-        private void MoveSticker()
-        {
-            var unblockedSticker = _stickersBoard.GetMoveableStickerFor(this);                
-
-            if (unblockedSticker != null)
-            {
-                _stickersBoard.StepUp(unblockedSticker);
-            }
-        }
-
         private void UnblockSticker()
         {
             var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
@@ -117,14 +94,44 @@ namespace Featureban.Domain
             return _stickersBoard.GetBlockedStickerFor(this) != null;
         }
 
-        private bool IsAnyStickerNotBlocked()
+        private bool TryUnblockSticker()
         {
-            return _stickersBoard.GetUnblockedStickerFor(this) != null;
+            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
+
+            if(blockedSticker != null)
+            {
+                blockedSticker.Unblock();
+                return true;
+            }
+
+            return false;
+        }        
+        private bool TryMoveSticker()
+        {
+            var sticker = _stickersBoard.GetMoveableStickerFor(this);
+
+            if (sticker != null)
+            {
+                _stickersBoard.StepUp(sticker);
+                return true;
+            }
+
+            return false;
         }
 
-        private bool IsAnyStickerMoveable()
+        private bool TryTakeStickerToProgress()
         {
-            return _stickersBoard.GetMoveableStickerFor(this) != null;
+            if (_stickersBoard.CanCreateStickerInProgress())
+            {
+                _stickersBoard.CreateStickerInProgress(this);
+                return true;
+            }
+            return false;
+        }
+
+        private void TakeStickerToProgress()
+        {            
+           _stickersBoard.CreateStickerInProgress(this);              
         }
 
         private void RemoveToken()

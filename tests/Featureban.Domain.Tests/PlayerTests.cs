@@ -122,6 +122,7 @@ namespace Featureban.Domain.Tests
         public void PlayerTakesNewSticker_WhenSpendingTailsToken()
         {
             var stickersBoard = Create.StickersBoard()
+                .WithUnlimitedWip()
                 .WhichNotReturnUnblocked().And()
                 .WhichNotReturnBlocked().Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();

@@ -44,6 +44,7 @@ namespace Featureban.Domain.Tests.DSL
 
         public Mock<IStickersBoard> Fast()
         { 
+
             return _stickersBoardMock;
         }
 
@@ -87,6 +88,11 @@ namespace Featureban.Domain.Tests.DSL
         public StickersBoardBuilder WhichNotReturnBlocked()
         {
             _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
+            return this;
+        } 
+        public StickersBoardBuilder WithUnlimitedWip()
+        {
+            _stickersBoardMock.Setup(b => b.CanCreateStickerInProgress()).Returns(true);
             return this;
         }
 
