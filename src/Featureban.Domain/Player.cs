@@ -7,13 +7,10 @@ namespace Featureban.Domain
 {
     public class Player
     {
-        private readonly List<Sticker> _stickers = new List<Sticker>();
         private readonly Queue<Token> _tokens = new Queue<Token>();
         private readonly StickersBoard _stickersBoard;
         private readonly ICoin _coin;
         private readonly TokensPull _tokensPull;
-
-        public IEnumerable<Sticker> Stickers => _stickers;
 
         public IReadOnlyList<Token> Tokens => _tokens.ToList().AsReadOnly();
 
@@ -42,7 +39,7 @@ namespace Featureban.Domain
 
         public void SpendToken()
         {
-            if (_tokens.Count() == 0)
+            if (!_tokens.Any())
             {
                 return;
             }
@@ -51,7 +48,7 @@ namespace Featureban.Domain
 
             if (currentToken.IsEagle)
             {
-                BlockStiker();
+                BlockSticker();
 
                 TakeStickerToWork();
             }
@@ -90,11 +87,10 @@ namespace Featureban.Domain
             _tokensPull.IncrementToken();
         }
 
-        private void BlockStiker()
+        private void BlockSticker()
         {
             var sticker = _stickersBoard.GetUnblockedStickerFor(this);
                 
-
             sticker?.Block();
         }
 
@@ -105,29 +101,24 @@ namespace Featureban.Domain
             if (unblockedSticker != null)
             {
                 _stickersBoard.StepUp(unblockedSticker);
-                return;
             }
         }
 
         private void UnblockSticker()
         {
-            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);                    
+            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
 
-            if (blockedSticker != null)
-            {
-                blockedSticker.Unblock();
-                return;
-            }
+            blockedSticker?.Unblock();
         }
 
         private bool IsAnyStickerBlocked()
         {
-            return _stickers.Any(s => s.Blocked);
+            return _stickersBoard.GetBlockedStickerFor(this) != null;
         }
 
         private bool IsAnyStickerNotBlocked()
         {
-            return _stickers.Any(s => !s.Blocked);
+            return _stickersBoard.GetUnblockedStickerFor(this) != null;
         }
     }
 }
