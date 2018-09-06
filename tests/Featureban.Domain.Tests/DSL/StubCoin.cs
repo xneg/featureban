@@ -2,9 +2,9 @@
 
 namespace Featureban.Domain.Tests.DSL
 {
-    public class StubCoin : ICoin
+    internal class StubCoin : ICoin
     {
-        private TokenType _tokenType;
+        private readonly TokenType _tokenType;
 
         public StubCoin(TokenType tokenType)
         {

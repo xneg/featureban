@@ -1,6 +1,6 @@
 ﻿namespace Featureban.Domain.Tests.DSL
 {
-    public class StickersBoardBuilder
+    internal class StickersBoardBuilder
     {
         private Scale _scale;
         private int? _wip;

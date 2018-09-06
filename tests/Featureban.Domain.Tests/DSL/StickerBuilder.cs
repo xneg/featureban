@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace Featureban.Domain.Tests.DSL
+﻿namespace Featureban.Domain.Tests.DSL
 {
-    public class StickerBuilder
+    internal class StickerBuilder
     {        
-        private Scale _scale;
-        private Player _player;
-        private StickersBoard _stickersBoard;
-        private TokensPull _tokensPull;
+        private readonly Scale _scale;
+        private readonly Player _player;
+        private readonly StickersBoard _stickersBoard;
+        private readonly TokensPull _tokensPull;
 
         private bool _blocked;
 

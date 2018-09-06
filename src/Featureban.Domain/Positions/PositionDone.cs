@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Featureban.Domain.Positions
+﻿namespace Featureban.Domain.Positions
 {
     public sealed class PositionDone : Position
     {

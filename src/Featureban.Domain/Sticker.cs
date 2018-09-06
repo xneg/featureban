@@ -5,15 +5,14 @@ namespace Featureban.Domain
     public class Sticker
     {
         public bool Blocked { get; private set; }
+
         public Position Position { get; private set; }
 
-        private Player _owner;
-
-        public Player Owner => _owner;
+        public Player Owner { get; }
 
         public Sticker(Player player, Position position)
         {
-            _owner = player;
+            Owner = player;
             Position = position;
         }
 

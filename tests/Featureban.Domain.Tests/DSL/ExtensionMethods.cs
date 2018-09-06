@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Featureban.Domain.Tests.DSL
 {
-    public static class ExtentionMethods
+    internal static class ExtensionMethods
     {
         public static int Token(this int token)
         {

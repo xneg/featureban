@@ -6,10 +6,10 @@ namespace Featureban.Domain
 {
     public class StickersBoard
     {
-        private Scale _scale;
-        private int? _wip;
+        private readonly Scale _scale;
+        private readonly int? _wip;
 
-        private Dictionary<Position, List<Sticker>> _partitions;
+        private readonly Dictionary<Position, List<Sticker>> _partitions;
 
         public StickersBoard(Scale scale, int? wip = null)
         {
@@ -39,9 +39,8 @@ namespace Featureban.Domain
            return _partitions
                 .Where(p => p.Key is PositionInProgress)
                 .SelectMany(p => p.Value)
-                .Where(s => s.Owner == player && s.Blocked)
                 // todo: сделать сортировку по позиции
-                .FirstOrDefault();
+                .FirstOrDefault(s => s.Owner == player && s.Blocked);
         }
 
         public void TakeStickerInWorkFor(Player player)
@@ -56,9 +55,8 @@ namespace Featureban.Domain
                 _partitions
                 .Where(p => p.Key is PositionInProgress)
                 .SelectMany(p => p.Value)
-                .Where(s => s.Owner == player && !s.Blocked)
                 // todo: сделать сортировку по позиции
-                .FirstOrDefault();
+                .FirstOrDefault(s => s.Owner == player && !s.Blocked);
         }
 
         public void StepUp (Sticker sticker)

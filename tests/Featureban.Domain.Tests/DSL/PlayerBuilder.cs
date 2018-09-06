@@ -1,14 +1,13 @@
 ﻿using Featureban.Domain.Interfaces;
-using System;
 
 namespace Featureban.Domain.Tests.DSL
 {
     internal class PlayerBuilder
     {
         private Player _player;
-        private StickersBoard _stickersBoard;
+        private readonly StickersBoard _stickersBoard;
         private ICoin _coin;
-        private TokensPull _tokensPull;
+        private readonly TokensPull _tokensPull;
 
         public PlayerBuilder()
         {

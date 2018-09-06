@@ -1,11 +1,11 @@
-﻿using System;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class Token
     {
-        private TokenType _tokenType;
+        private readonly TokenType _tokenType;
+
         public bool IsTails => _tokenType == TokenType.Tails;
+
         public bool IsEagle => _tokenType == TokenType.Eagle;
 
         public Token(TokenType tokenType)

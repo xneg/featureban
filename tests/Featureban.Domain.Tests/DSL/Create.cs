@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Featureban.Domain.Tests.DSL
+﻿namespace Featureban.Domain.Tests.DSL
 {
-   static class Create
+    internal static class Create
     {
         public static StickerBuilder Sticker()
         {

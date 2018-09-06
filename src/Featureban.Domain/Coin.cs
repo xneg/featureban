@@ -5,7 +5,7 @@ namespace Featureban.Domain
 {
     public class Coin : ICoin
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         public Token MakeToss()
         {

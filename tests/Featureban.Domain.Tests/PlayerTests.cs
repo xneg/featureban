@@ -9,7 +9,6 @@ namespace Featureban.Domain.Tests
 {
     public class PlayerTests
     {
-       
         [Fact]
         public void PlayerCanGetToken_WhenMakeToss()
         {
