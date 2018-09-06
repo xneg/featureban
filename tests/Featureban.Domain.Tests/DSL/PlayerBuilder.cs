@@ -45,14 +45,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             _stickersBoard = stickersBoard;
             return this;
-        }
-
-        public PlayerBuilder WithCoin(ICoin coin)
-        {
-            _coin = coin;            
-
-            return this;
-        }
+        }       
 
         public Player Please()
         {

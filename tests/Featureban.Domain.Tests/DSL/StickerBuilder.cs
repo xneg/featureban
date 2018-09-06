@@ -1,20 +1,15 @@
 ﻿namespace Featureban.Domain.Tests.DSL
 {
     internal class StickerBuilder
-    {        
-        private readonly Scale _scale;
+    {   
         private readonly Player _player;
         private readonly StickersBoard _stickersBoard;
-        private readonly TokensPull _tokensPull;
-
         private bool _blocked;
 
         public StickerBuilder()
         {
-            _scale = new Scale(2);
-            _stickersBoard = new StickersBoard(_scale);
-            _tokensPull = new TokensPull();
-            _player = new Player(_stickersBoard, new StubCoin(Token.CreateTailsToken()), _tokensPull);
+            _stickersBoard = Create.StickersBoard().Please();
+            _player = Create.Player().Please();
         }
 
         public Sticker Please()
