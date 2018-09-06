@@ -14,7 +14,7 @@
             _scale = new Scale(2);
             _stickersBoard = new StickersBoard(_scale);
             _tokensPull = new TokensPull();
-            _player = new Player(_stickersBoard, new StubCoin(TokenType.Tails), _tokensPull);
+            _player = new Player(_stickersBoard, new StubCoin(Token.CreateTailsToken()), _tokensPull);
         }
 
         public Sticker Please()

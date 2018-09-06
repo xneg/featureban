@@ -25,7 +25,7 @@ namespace Featureban.Domain.Tests
             var coinStub = new Mock<ICoin>();
             var player = Create.Player().WithCoin(coinStub.Object).Please();
 
-            coinStub.Setup(c => c.MakeToss()).Returns(new Token(TokenType.Eagle));
+            coinStub.Setup(c => c.MakeToss()).Returns(Token.CreateEagleToken());
 
             player.MakeToss();
 

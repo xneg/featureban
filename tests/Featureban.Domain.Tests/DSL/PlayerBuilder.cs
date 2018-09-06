@@ -12,7 +12,7 @@ namespace Featureban.Domain.Tests.DSL
         public PlayerBuilder()
         {
             _stickersBoard = new StickersBoard(new Scale(2));
-            _coin = new StubCoin(TokenType.Tails);
+            _coin = new StubCoin(Token.CreateTailsToken());
             _tokensPull = new TokensPull();
 
             _player = new Player(_stickersBoard, _coin, _tokensPull);
@@ -22,7 +22,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             for (var i = 0; i < tokenCount; i++)
             {
-                _player.AddToken(new Token(TokenType.Eagle));
+                _player.AddToken(Token.CreateEagleToken());
             }
 
             return this;
@@ -52,13 +52,13 @@ namespace Featureban.Domain.Tests.DSL
 
         public PlayerBuilder WithTailsToken()
         {
-            _player.AddToken(new Token(TokenType.Tails));
+            _player.AddToken(Token.CreateTailsToken());
             return this;
         }
 
         public PlayerBuilder WithEagleToken()
         {
-            _player.AddToken(new Token(TokenType.Eagle));
+            _player.AddToken(Token.CreateEagleToken());
             return this;
         }
     }

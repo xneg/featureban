@@ -4,16 +4,16 @@ namespace Featureban.Domain.Tests.DSL
 {
     internal class StubCoin : ICoin
     {
-        private readonly TokenType _tokenType;
+        private readonly Token _token;
 
-        public StubCoin(TokenType tokenType)
+        public StubCoin(Token token)
         {
-            _tokenType = tokenType;
+            _token = token;
         }
 
         public Token MakeToss()
         {
-            return new Token(_tokenType);
+            return _token;
         }
     }
 }

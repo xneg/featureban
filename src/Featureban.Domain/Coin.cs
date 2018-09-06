@@ -9,8 +9,8 @@ namespace Featureban.Domain
 
         public Token MakeToss()
         {
-            var tokenType = (_random.Next(2) > 0) ? TokenType.Eagle : TokenType.Tails;
-            return new Token(tokenType);
+            var token = (_random.Next(2) > 0) ? Token.CreateEagleToken() : Token.CreateTailsToken();
+            return token;
         }
     }
 }
