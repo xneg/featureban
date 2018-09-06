@@ -7,12 +7,12 @@ namespace Featureban
     {
         static void Main(string[] args)
         {
-            var game = new Game(5, 2, 3, 15);
+            var inputData = new ExperimentInputData(3, 2, 15);
+            var experiment = new Experiment(inputData);
 
-            game.Setup();
-            var doneStickes = game.GetDoneStickers();
+            var experimentResult = experiment.DoExperiment(1000);
 
-            Console.WriteLine($"Done stickers: {doneStickes}");
+            Console.WriteLine($"Done stickers: {experimentResult}");
 
             Console.ReadLine();
         }

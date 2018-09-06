@@ -118,7 +118,7 @@ namespace Featureban.Domain
             var blockedSticker =
                 _progressSteps
                 .SelectMany(p => p.Value)
-                .FirstOrDefault(s => !s.Blocked);
+                .FirstOrDefault(s => s.Blocked);
 
             if (blockedSticker != null)
                 return blockedSticker.Owner;
