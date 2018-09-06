@@ -8,13 +8,13 @@ namespace Featureban.Domain
     public class Player
     {
         private readonly Queue<Token> _tokens = new Queue<Token>();
-        private readonly StickersBoard _stickersBoard;
+        private readonly IStickersBoard _stickersBoard;
         private readonly ICoin _coin;
         private readonly TokensPull _tokensPull;
 
         public IReadOnlyList<Token> Tokens => _tokens.ToList().AsReadOnly();
 
-        public Player(StickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
+        public Player(IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
         {
             _stickersBoard = stickersBoard;
             _coin = coin;

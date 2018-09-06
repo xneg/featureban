@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Featureban.Domain.Interfaces;
 using Featureban.Domain.Positions;
 
 namespace Featureban.Domain
 {
-    public class StickersBoard
+    public class StickersBoard : IStickersBoard
     {
         private readonly Scale _scale;
         private readonly int? _wip;
