@@ -91,5 +91,16 @@ namespace Featureban.Domain.Tests
 
             Assert.NotNull(board.GetMoveableStickerFor(player));
         }
+
+        [Fact]
+        public void InDoneStickersIncrement_WhenStickerIsDone()
+        {
+            var board = Create.StickersBoard().WithScale(1).WithStickerInProgress().Please();
+            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
+
+            board.StepUp(sticker);
+
+            Assert.Equal(1, board.DoneStickers);
+        }
     }
 }

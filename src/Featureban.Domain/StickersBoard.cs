@@ -11,6 +11,8 @@ namespace Featureban.Domain
 
         private readonly Dictionary<ProgressPosition, List<Sticker>> _progressSteps;
 
+        public int DoneStickers { get; private set; }
+
         public StickersBoard(Scale scale, int? wip = null)
         {
             _scale = scale;
@@ -82,7 +84,7 @@ namespace Featureban.Domain
             {
                 _progressSteps[oldPosition].Remove(sticker);
                 sticker.ChangeStatus(StickerStatus.Done);
-                // todo: sticker переходит в разряд завершенных
+                DoneStickers++;
             }
         }
 
