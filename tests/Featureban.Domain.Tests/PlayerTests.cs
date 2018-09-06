@@ -22,10 +22,8 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerGainsEagleToken_WhenCoinIsEagle()
         {
-            var coinStub = new Mock<ICoin>();
-            var player = Create.Player().WithCoin(coinStub.Object).Please();
-
-            coinStub.Setup(c => c.MakeToss()).Returns(Token.CreateEagleToken());
+            
+            var player = Create.Player().WithAlwaysEagleCoin().Please();
 
             player.MakeToss();
 
