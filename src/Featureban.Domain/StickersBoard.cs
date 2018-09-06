@@ -106,7 +106,24 @@ namespace Featureban.Domain
 
         public Player GetPlayerWichCanSpendToken()
         {
-            throw new System.NotImplementedException();
+            var movableSticker = 
+                _progressSteps
+                .SelectMany(p => p.Value)
+                .FirstOrDefault(s => !s.Blocked &&
+                    (!_scale.IsValid(s.ProgressPosition.Next()) || CanMoveTo(s.ProgressPosition.Next())));
+
+            if (movableSticker != null)
+                return movableSticker.Owner;
+
+            var blockedSticker =
+                _progressSteps
+                .SelectMany(p => p.Value)
+                .FirstOrDefault(s => !s.Blocked);
+
+            if (blockedSticker != null)
+                return blockedSticker.Owner;
+
+            return null;
         }
 
         public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)

@@ -1,5 +1,6 @@
 ﻿using Featureban.Domain.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Featureban.Domain
 {
@@ -46,7 +47,10 @@ namespace Featureban.Domain
                 var player = StickersBoard.GetPlayerWichCanSpendToken();
                 if(player == null)
                 {
-                    break;
+                    if (StickersBoard.CanCreateStickerInProgress())
+                        player = _players.First();
+                    else
+                        break;
                 }
                 player.TakeTokenFromPull();
                 player.SpendToken();
