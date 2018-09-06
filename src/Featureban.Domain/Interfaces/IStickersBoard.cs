@@ -1,4 +1,6 @@
-﻿namespace Featureban.Domain.Interfaces
+﻿using System.Collections.Generic;
+
+namespace Featureban.Domain.Interfaces
 {
     public interface IStickersBoard
     {
@@ -9,6 +11,8 @@
         Sticker GetUnblockedStickerFor(Player player);
 
         Sticker GetMoveableStickerFor(Player player);
+
+        void Setup(IEnumerable<Player> players);
 
         void StepUp(Sticker sticker);
 

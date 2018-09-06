@@ -6,23 +6,31 @@ namespace Featureban.Domain
     public class Game
     {
         private List<Player> _players;
-        private IStickersBoard _stickersBoard;
         private TokensPull _tokensPull;
-        private int _roundCount;
+        private int _roundsCount;
 
+        public IStickersBoard StickersBoard { get; }
 
-        public Game(int playersCount, int inProgressSteps,
-            int? wipLimit, int roundsCount)
+        public Game(
+            int playersCount,
+            int inProgressSteps,
+            int? wipLimit,
+            int roundsCount)
         {
-            _roundCount = roundsCount;
+            _roundsCount = roundsCount;
             _tokensPull = new TokensPull();
-            _stickersBoard = new StickersBoard(new Scale(inProgressSteps), wipLimit);           
+            StickersBoard = new StickersBoard(new Scale(inProgressSteps), wipLimit);           
 
             _players = new List<Player>();
             for (var i = 0; i < playersCount; i++)
             {
-                _players.Add(new Player(_stickersBoard, new Coin(), _tokensPull ));
+                _players.Add(new Player(StickersBoard, new Coin(), _tokensPull));
             }
+        }
+
+        public void Setup()
+        {
+            StickersBoard.Setup(_players);
         }
         
     }

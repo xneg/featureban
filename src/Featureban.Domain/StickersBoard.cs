@@ -40,7 +40,7 @@ namespace Featureban.Domain
         {
             var sticker = new Sticker(player);
 
-            if (_progressSteps[ProgressPosition.First()].Count != _wip)
+            if (CanCreateStickerInProgress())
             {
                 _progressSteps[ProgressPosition.First()].Add(sticker);
                 sticker.ChangeStatus(StickerStatus.InProgress);
@@ -111,6 +111,16 @@ namespace Featureban.Domain
                 .FirstOrDefault(s => s.Owner == player && !s.Blocked &&
                     (!_scale.IsValid(s.ProgressPosition.Next()) || 
                     _progressSteps[s.ProgressPosition.Next()].Count < _wip));
+        }
+
+        public void Setup(IEnumerable<Player> players)
+        {
+            foreach(var player in players)
+            {
+                var sticker = new Sticker(player);
+                _progressSteps[ProgressPosition.First()].Add(sticker);
+                sticker.ChangeStatus(StickerStatus.InProgress);
+            }
         }
     }
 }
