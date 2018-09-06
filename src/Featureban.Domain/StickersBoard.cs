@@ -22,11 +22,6 @@ namespace Featureban.Domain
             CreateNewPartitions(_scale);
         }        
 
-        public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)
-        {
-            return _progressSteps[progressPosition].AsReadOnly();
-        }
-
         public Sticker GetBlockedStickerFor(Player player)
         {
            return 
@@ -70,10 +65,8 @@ namespace Featureban.Domain
 
             if (_scale.IsValid(newPosition))
             {
-                if (_progressSteps[newPosition].Count == _wip)
-                {
+                if (!CanMoveTo(newPosition))
                     return;
-                }
 
                 _progressSteps[oldPosition].Remove(sticker);
                 _progressSteps[newPosition].Add(sticker);
@@ -88,20 +81,9 @@ namespace Featureban.Domain
             }
         }
 
-        private void CreateNewPartitions(Scale scale)
-        {
-            var position = ProgressPosition.First();
-
-            while (scale.IsValid(position))
-            {
-                _progressSteps[position] = new List<Sticker>();
-                position = position.Next();
-            }
-        }
-
         public bool CanCreateStickerInProgress()
         {
-            return _wip == null || _progressSteps[ProgressPosition.First()].Count < _wip;
+            return CanMoveTo(ProgressPosition.First());
         }
 
         public Sticker GetMoveableStickerFor(Player player)
@@ -109,8 +91,7 @@ namespace Featureban.Domain
             return _progressSteps
                 .SelectMany(p => p.Value)
                 .FirstOrDefault(s => s.Owner == player && !s.Blocked &&
-                    (!_scale.IsValid(s.ProgressPosition.Next()) || 
-                    _progressSteps[s.ProgressPosition.Next()].Count < _wip));
+                    (!_scale.IsValid(s.ProgressPosition.Next()) || CanMoveTo(s.ProgressPosition.Next())));
         }
 
         public void Setup(IEnumerable<Player> players)
@@ -126,6 +107,27 @@ namespace Featureban.Domain
         public Player GetPlayerWichCanSpendToken()
         {
             throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)
+        {
+            return _progressSteps[progressPosition].AsReadOnly();
+        }
+
+        private void CreateNewPartitions(Scale scale)
+        {
+            var position = ProgressPosition.First();
+
+            while (scale.IsValid(position))
+            {
+                _progressSteps[position] = new List<Sticker>();
+                position = position.Next();
+            }
+        }
+
+        private bool CanMoveTo(ProgressPosition position)
+        {
+            return _wip == null || _progressSteps[position].Count < _wip;
         }
     }
 }
