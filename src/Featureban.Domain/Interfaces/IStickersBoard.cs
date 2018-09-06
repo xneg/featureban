@@ -9,5 +9,7 @@
         Sticker GetUnblockedStickerFor(Player player);
 
         void StepUp(Sticker sticker);
+
+        bool CanCreateStickerInProgress();
     }
 }

@@ -16,7 +16,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             _tokens = new List<Token>();
             _stickersBoard = new StickersBoard(new Scale(2));
-            _coin = new StubCoin(Token.CreateTailsToken());
+            _coin = new StubCoin(Token.Tails());
             _tokensPull = new TokensPull();
         }
         
@@ -24,7 +24,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             for (var i = 0; i < tokenCount; i++)
             {
-                _tokens.Add(Token.CreateEagleToken());
+                _tokens.Add(Token.Eagle());
             }
 
             return this;
@@ -34,7 +34,7 @@ namespace Featureban.Domain.Tests.DSL
         {
             var coinStub = new Mock<ICoin>();
 
-            coinStub.Setup(c => c.MakeToss()).Returns(Token.CreateEagleToken());
+            coinStub.Setup(c => c.MakeToss()).Returns(Token.Eagle());
 
             _coin = coinStub.Object;
 
@@ -61,7 +61,7 @@ namespace Featureban.Domain.Tests.DSL
 
         public PlayerBuilder WithTailsToken()
         {
-            _tokens.Add(Token.CreateTailsToken());
+            _tokens.Add(Token.Tails());
             return this;
         }
 
@@ -73,7 +73,7 @@ namespace Featureban.Domain.Tests.DSL
 
         public PlayerBuilder WithEagleToken()
         {
-            _tokens.Add(Token.CreateEagleToken());
+            _tokens.Add(Token.Eagle());
             return this;
         }
     }

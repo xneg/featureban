@@ -73,13 +73,12 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void BoardCanNotAddStickerToWork_WhenWipIsReached()
         {
+            var board = Create.StickersBoard().WithWip(1).Please();
             var player = Create.Player().Please();
-            var player2 = Create.Player().Please();
-            var board = Create.StickersBoard().WithStickerInProgressFor(player).WithWip(1).Please(); 
 
-            board.CreateStickerInProgress(player2);
+            board.CreateStickerInProgress(player);
 
-            Assert.Null(board.GetUnblockedStickerFor(player2));
+            Assert.False(board.CanCreateStickerInProgress());
         }
     }
 }

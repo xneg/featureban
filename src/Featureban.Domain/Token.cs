@@ -8,6 +8,7 @@
 
             Tails = 1
         }
+
         private readonly TokenType _tokenType;
 
         public bool IsTails => _tokenType == TokenType.Tails;
@@ -18,11 +19,13 @@
         {
             _tokenType = tokenType;
         }        
-        public static Token CreateTailsToken()
+
+        public static Token Tails()
         {
             return new Token(TokenType.Tails);
         }
-        public static Token CreateEagleToken()
+
+        public static Token Eagle()
         {
             return new Token(TokenType.Eagle);
         }

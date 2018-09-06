@@ -96,5 +96,10 @@ namespace Featureban.Domain
                 position = position.Next();
             }
         }
+
+        public bool CanCreateStickerInProgress()
+        {
+            return _progressSteps[ProgressPosition.First()].Count < _wip;
+        }
     }
 }

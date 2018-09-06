@@ -75,7 +75,7 @@ namespace Featureban.Domain
             if (_tokensPull.ContainsTokens)
             {
                 _tokensPull.DecrementToken();
-                AddToken(Token.CreateTailsToken());
+                AddToken(Token.Tails());
             }
         }
 
