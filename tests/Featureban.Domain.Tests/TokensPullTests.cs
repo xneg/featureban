@@ -26,5 +26,15 @@ namespace Featureban.Domain.Tests
 
             Assert.False(tokensPull.ContainsTokens);
         }
+
+        [Fact]
+        public void NoTokens_WhenEraseTokens()
+        {
+            var tokensPull = Create.TokenPull().With(1.Token()).Please();
+
+            tokensPull.EraseTokens();
+
+            Assert.False(tokensPull.ContainsTokens);
+        }
     }
 }

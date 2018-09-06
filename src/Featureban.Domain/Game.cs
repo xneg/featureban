@@ -32,6 +32,28 @@ namespace Featureban.Domain
         {
             StickersBoard.Setup(_players);
         }
+
+        public void PlayRound()
+        {
+            foreach(var player in _players)
+            {
+                player.MakeToss();
+                player.SpendToken();
+            }
+
+            while (_tokensPull.ContainsTokens)
+            {
+                var player = StickersBoard.GetPlayerWichCanSpendToken();
+                if(player == null)
+                {
+                    break;
+                }
+                player.TakeTokenFromPull();
+                player.SpendToken();
+            }
+
+            _tokensPull.EraseTokens();
+        }
         
     }
 }

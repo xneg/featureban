@@ -101,7 +101,7 @@ namespace Featureban.Domain
 
         public bool CanCreateStickerInProgress()
         {
-            return _progressSteps[ProgressPosition.First()].Count < _wip;
+            return _wip == null || _progressSteps[ProgressPosition.First()].Count < _wip;
         }
 
         public Sticker GetMoveableStickerFor(Player player)
@@ -121,6 +121,11 @@ namespace Featureban.Domain
                 _progressSteps[ProgressPosition.First()].Add(sticker);
                 sticker.ChangeStatus(StickerStatus.InProgress);
             }
+        }
+
+        public Player GetPlayerWichCanSpendToken()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

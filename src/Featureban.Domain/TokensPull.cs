@@ -1,4 +1,6 @@
-﻿namespace Featureban.Domain
+﻿using System;
+
+namespace Featureban.Domain
 {
     public class TokensPull
     {
@@ -15,6 +17,11 @@
         {
             _tokensCount--;
             _tokensCount = _tokensCount > 0 ? _tokensCount : 0;
+        }
+
+        public void EraseTokens()
+        {
+            _tokensCount = 0;
         }
     }
 }

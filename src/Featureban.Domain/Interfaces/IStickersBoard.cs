@@ -17,5 +17,6 @@ namespace Featureban.Domain.Interfaces
         void StepUp(Sticker sticker);
 
         bool CanCreateStickerInProgress();
+        Player GetPlayerWichCanSpendToken();
     }
 }
