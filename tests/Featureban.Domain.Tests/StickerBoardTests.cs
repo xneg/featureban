@@ -33,10 +33,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerNotStepUp_WhenStickerBlocked()
         {
-            var board = Create.StickersBoard().Please();
-            var player = Create.Player().Please();
-            board.TakeStickerInWorkFor(player);
-
+            var board = Create.StickersBoard().WithStickerInProgress().Please();
             var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
             sticker.Block();
 
@@ -44,7 +41,6 @@ namespace Featureban.Domain.Tests
 
             var firstPosition = ProgressPosition.First();
             var secondPosition = firstPosition.Next();
-
             Assert.Contains(sticker, board.GetStickersIn(firstPosition));
             Assert.DoesNotContain(sticker, board.GetStickersIn(secondPosition));
         }
@@ -52,10 +48,7 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerInDone_WhenStepUps()
         {
-            var board = Create.StickersBoard().WithScale(1).Please();
-            var player = Create.Player().Please();
-            board.TakeStickerInWorkFor(player);
-
+            var board = Create.StickersBoard().WithStickerInProgress().Please();
             var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
 
             board.StepUp(sticker);
@@ -77,11 +70,11 @@ namespace Featureban.Domain.Tests
 
         [Fact]
         public void BoardReturnsBlockedStickerForPlayer_WhenBlocked()
-        {
-            var board = Create.StickersBoard().WithScale(1).Please();
+        {            
             var player = Create.Player().Please();
-            board.TakeStickerInWorkFor(player);
+            var board = Create.StickersBoard().WithStickerInProgressFor(player).Please();
             var sticker = board.GetUnblockedStickerFor(player);
+
             sticker.Block();             
 
             Assert.NotNull(board.GetBlockedStickerFor(player));
@@ -90,10 +83,9 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void BoardCanNotAddStickerToWork_WhenWipIsReached()
         {
-            var board = Create.StickersBoard().WithScale(1).WithWip(1).Please();
             var player = Create.Player().Please();
             var player2 = Create.Player().Please();
-            board.TakeStickerInWorkFor(player);
+            var board = Create.StickersBoard().WithStickerInProgressFor(player).WithWip(1).Please(); 
 
             board.TakeStickerInWorkFor(player2);
 

@@ -57,9 +57,7 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(0, player.Tokens.Count);
         }
-
-        // todo: Этот тест нужен. Переписать с DSL.
-
+        
         [Fact]
         public void PlayerGainsToken_WhenTakeItFromPull()
         {
