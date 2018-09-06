@@ -18,15 +18,7 @@ namespace Featureban.Domain
             _wip = wip;
 
             CreateNewPartitions(_scale);
-        }
-
-        //todo: удалить этот метод. Переписать DSL.
-        public Sticker CreateStickerFor(Player player)
-        {
-            var sticker = new Sticker(player);
-
-            return sticker;
-        }
+        }        
 
         public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)
         {
@@ -42,15 +34,17 @@ namespace Featureban.Domain
                 .FirstOrDefault(s => s.Owner == player && s.Blocked);
         }
 
-        public void CreateStickerInProgress(Player player)
+        public Sticker CreateStickerInProgress(Player player)
         {
-            var sticker = CreateStickerFor(player);
+            var sticker = new Sticker(player);
 
             if (_progressSteps[ProgressPosition.First()].Count != _wip)
             {
                 _progressSteps[ProgressPosition.First()].Add(sticker);
                 sticker.ChangeStatus(StickerStatus.InProgress);
             }
+
+            return sticker;
         }
 
         public Sticker GetUnblockedStickerFor(Player player)

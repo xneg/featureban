@@ -14,7 +14,7 @@
 
         public Sticker Please()
         {
-            var sticker = _stickersBoard.CreateStickerFor(_player);
+            var sticker = _stickersBoard.CreateStickerInProgress(_player);
 
             if(_blocked)
             {

@@ -5,17 +5,7 @@ using Xunit;
 namespace Featureban.Domain.Tests
 {
     public class StickerBoardTests
-    {
-        [Fact]
-        public void StickerInStatusToDo_WhenCreated()
-        {
-            var board = Create.StickersBoard().Please();
-            var player = Create.Player().Please();
-
-            var sticker = board.CreateStickerFor(player);
-
-            Assert.Equal(StickerStatus.Todo, sticker.Status);
-        }
+    {       
 
         [Fact]
         public void StickerIsInProgress_WhenTakeInWork()

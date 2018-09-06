@@ -39,7 +39,7 @@ namespace Featureban.Domain.Tests
             var board = Create.StickersBoard().Please();
             var player = Create.Player().Please();
 
-            var sticker = board.CreateStickerFor(player);
+            var sticker = board.CreateStickerInProgress(player);
 
             Assert.Equal(player, sticker.Owner);
         }
