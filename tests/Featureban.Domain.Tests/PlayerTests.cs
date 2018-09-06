@@ -72,10 +72,9 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerBlocksUnblockedSticker_WhenSpendingEagleToken()
         {
-            var boardMock = new Mock<IStickersBoard>();
-            var player = Create.Player().WithBoard(boardMock.Object).WithEagleToken().Please();
             var sticker = Create.Sticker().Please();
-            boardMock.Setup(b => b.GetUnblockedStickerFor(player)).Returns(sticker);
+            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnUnblocked(sticker).Fast();
+            var player = Create.Player().WithBoard(stickersBoard.Object).WithEagleToken().Please();
 
             player.SpendToken();
 
@@ -95,25 +94,25 @@ namespace Featureban.Domain.Tests
 
         [Fact]
         public void PlayerMovesUnblockedSticker_WhenSpendingTailsToken()
-        {
-            var boardMock = new Mock<IStickersBoard>();
-            var player = Create.Player().WithBoard(boardMock.Object).WithTailsToken().Please();
+        {            
+            
             var sticker = Create.Sticker().Please();
-            boardMock.Setup(b => b.GetUnblockedStickerFor(player)).Returns(sticker);
+            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnUnblocked(sticker).Fast();
+            var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
 
-            boardMock.Verify(b => b.StepUp(sticker), Times.Once);
+            stickersBoard.Verify(b => b.StepUp(sticker), Times.Once);
         }
 
         [Fact]
         public void PlayerUnblockBlockedSticker_WhenSpendingTailsToken()
         {
-            var boardMock = new Mock<IStickersBoard>();
-            var player = Create.Player().WithBoard(boardMock.Object).WithTailsToken().Please();
             var sticker = Create.Sticker().Blocked().Please();
-            boardMock.Setup(b => b.GetUnblockedStickerFor(player)).Returns<Sticker>(null);
-            boardMock.Setup(b => b.GetBlockedStickerFor(player)).Returns(sticker);
+            var stickersBoard = Create.StickersBoard()
+                .WhichAlwaysReturnUnblocked(null).And()
+                .WhichAlwaysReturnBlocked(sticker).Fast();
+            var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();            
 
             player.SpendToken();
 
@@ -123,14 +122,14 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void PlayerTakesNewSticker_WhenSpendingTailsToken()
         {
-            var boardMock = new Mock<IStickersBoard>();
-            var player = Create.Player().WithBoard(boardMock.Object).WithTailsToken().Please();
-            boardMock.Setup(b => b.GetUnblockedStickerFor(player)).Returns<Sticker>(null);
-            boardMock.Setup(b => b.GetBlockedStickerFor(player)).Returns<Sticker>(null);
+            var stickersBoard = Create.StickersBoard()
+                .WhichAlwaysReturnUnblocked(null).And()
+                .WhichAlwaysReturnBlocked(null).Fast();
+            var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
 
-            boardMock.Verify(b => b.TakeStickerInWorkFor(player), Times.Once);
+            stickersBoard.Verify(b => b.TakeStickerInWorkFor(player), Times.Once);
         }
     }
 }

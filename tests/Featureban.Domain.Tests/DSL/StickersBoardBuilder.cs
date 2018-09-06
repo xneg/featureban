@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Featureban.Domain.Interfaces;
+using Moq;
+using System;
 
 namespace Featureban.Domain.Tests.DSL
 {
@@ -8,11 +10,13 @@ namespace Featureban.Domain.Tests.DSL
         private int? _wip;
         private int _stickersInProgress;
         private Player _player;
+        private Mock<IStickersBoard> _stickersBoardMock;
 
         public StickersBoardBuilder()
         {
             _scale = new Scale(2);
             _player = Create.Player().Please();
+            _stickersBoardMock =  new Mock<IStickersBoard>();
         }
 
         public StickersBoardBuilder WithScale(int positionsInProgress)
@@ -37,6 +41,11 @@ namespace Featureban.Domain.Tests.DSL
             return stickerBoard;
         }
 
+        public Mock<IStickersBoard> Fast()
+        { 
+            return _stickersBoardMock;
+        }
+
         public  StickersBoardBuilder WithStickerInProgress()
         {
             _stickersInProgress++;
@@ -47,6 +56,22 @@ namespace Featureban.Domain.Tests.DSL
         {
             _stickersInProgress++;
             _player = player;
+            return this;
+        }
+
+        public StickersBoardBuilder WhichAlwaysReturnUnblocked(Sticker sticker)
+        {
+            _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns(sticker);
+            return this;
+        }
+        public StickersBoardBuilder WhichAlwaysReturnBlocked(Sticker sticker)
+        {
+            _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns(sticker);
+            return this;
+        }
+
+        public StickersBoardBuilder And()
+        {
             return this;
         }
     }
