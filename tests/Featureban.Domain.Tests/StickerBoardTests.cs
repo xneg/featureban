@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Featureban.Domain.Tests.DSL;
 using Xunit;
@@ -13,8 +12,7 @@ namespace Featureban.Domain.Tests
         public void StickerIsInProgress_WhenTakeInWork()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                      |                | (0)  |").Please();
-
+                                                       |                | (0)  |").Please();
 
             var player = Create.Player().WithName("P").Please();
 
@@ -29,7 +27,7 @@ namespace Featureban.Domain.Tests
         public void StickerNotStepUp_WhenStickerBlocked()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                      | [P B]          | (0)  |").Please();
+                                                       | [P B]          | (0)  |").Please();
 
             var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
@@ -44,8 +42,7 @@ namespace Featureban.Domain.Tests
         public void BoardReturnsUnblockedStickerForPlayer_WhenTakeStickerInWork()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                      |                | (0)  |").Please();
-
+                                                       |                | (0)  |").Please();
 
             var player = Create.Player().WithName("P").Please();
 
@@ -60,7 +57,7 @@ namespace Featureban.Domain.Tests
         public void BoardReturnsBlockedStickerForPlayer_WhenBlocked()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                      | [P  ]          | (0)  |").Please();
+                                                       | [P  ]          | (0)  |").Please();
 
             var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
@@ -77,7 +74,6 @@ namespace Featureban.Domain.Tests
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                       | [P  ]          | (0)  |").Please();
 
-
             var player = Create.Player().WithName("P").Please();
 
             stickersBoard.CreateStickerInProgress(player);
@@ -91,7 +87,7 @@ namespace Featureban.Domain.Tests
         public void InDoneStickersIncrement_WhenStickerIsDone()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                      | [P  ]          | (0)  |").Please();
+                                                       | [P  ]          | (0)  |").Please();
             var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
             stickersBoard.StepUp(sticker);
@@ -105,7 +101,7 @@ namespace Featureban.Domain.Tests
         public void BoardReturnsMoveableStickerForPlayer()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                      |                | (0)  |").Please();
+                                                       |                | (0)  |").Please();
             var player = Create.Player().WithName("P").Please();
 
             stickersBoard.CreateStickerInProgress(player);
@@ -127,11 +123,9 @@ namespace Featureban.Domain.Tests
             Assert.Null(sticker);
         }
 
-
         [Fact]
         public void NotStepUpSticker_WhenNextPositionIsFull()
         {
-
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
                                                        | [R  ]          | [P B]          | (0)  |").Please();
             var player = Create.Player().WithName("R").Please();
@@ -151,8 +145,7 @@ namespace Featureban.Domain.Tests
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                        |                | (0)  |").Please();
             var player = Create.Player().WithName("P").Please();
-            var players = new List<Player>();
-            players.Add(player);
+            var players = new List<Player> {player};
 
             stickersBoard.Setup(players);
 
@@ -161,9 +154,8 @@ namespace Featureban.Domain.Tests
                                 stickersBoard);
         }
 
-
         [Fact]
-        public void ReturnPlayerWichCanSpendToken_WhenHimHaveMovableSticker()
+        public void ReturnPlayerThatCanSpendToken_WhenHeHasMovableSticker()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                       | [P  ]          | (0)  |").Please();
@@ -175,7 +167,7 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void ReturnPlayerWichCanSpendToken_WhenHimHaveBlockedSticker()
+        public void ReturnPlayerThatCanSpendToken_WhenHeHasBlockedSticker()
         {
            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                       | [P B]          | (0)  |").Please();
@@ -196,7 +188,7 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void StickerCanMove_WhenNewxtPositionIsNotFull()
+        public void StickerCanMove_WhenNextPositionIsNotFull()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                        |                | (0)  |").Please();
@@ -205,14 +197,12 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void StickerCanNotMove_WhenNewxtPositionIsFull()
+        public void StickerCanNotMove_WhenNextPositionIsFull()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                       | [P  ]          | (0)  |").Please();
 
             Assert.False(stickersBoard.CanMoveTo(ProgressPosition.First()));
         }
-
-
     }
 }

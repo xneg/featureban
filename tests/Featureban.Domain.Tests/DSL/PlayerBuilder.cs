@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Featureban.Domain.Interfaces;
 using Moq;
 
@@ -10,7 +9,7 @@ namespace Featureban.Domain.Tests.DSL
         private IStickersBoard _stickersBoard;
         private ICoin _coin;
         private TokensPull _tokensPull;
-        private List<Token> _tokens;
+        private readonly List<Token> _tokens;
         private string _name;
 
         public PlayerBuilder()

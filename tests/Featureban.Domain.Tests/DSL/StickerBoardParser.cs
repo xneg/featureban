@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Featureban.Domain.Tests.DSL
 {
-    class StickerBoardParser
+    internal class StickerBoardParser
     {
-        private StickersBoardBuilder _stickersBoardBuilder;
+        private readonly StickersBoardBuilder _stickersBoardBuilder;
+
         public StickerBoardParser()
         {
             _stickersBoardBuilder = new StickersBoardBuilder();
         }
+
         public StickersBoardBuilder Parse(string state)
         {
             var lines = state.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             ParseCaption(lines.First());
 
-            for (int i = 1; i < lines.Length; i++)
+            for (var i = 1; i < lines.Length; i++)
             {
                ParseColumnState(lines[i]);
             }
@@ -34,15 +34,15 @@ namespace Featureban.Domain.Tests.DSL
                 return;
             }
 
-            int inProgressCount = GetScale(line);
+            var inProgressCount = GetScale(line);
             var position = ProgressPosition.First();
-            int lastPosition = line.IndexOf("|", 0);
+            var lastPosition = line.IndexOf("|", 0);
 
-            for (int p = 0; p < inProgressCount; p++)
+            for (var p = 0; p < inProgressCount; p++)
             {
                 var nextPosition = line.IndexOf("|", lastPosition + 1);
-                string column = line.Substring(lastPosition, nextPosition - lastPosition - 1);
-                string pattern = "([A-Z])";
+                var column = line.Substring(lastPosition, nextPosition - lastPosition - 1);
+                var pattern = "([A-Z])";
                 var stickerParam = Regex.Matches(column, pattern)
                     .Select(w => w.Value);
 
@@ -58,34 +58,35 @@ namespace Featureban.Domain.Tests.DSL
                     _stickersBoardBuilder.WithStickerInProgressFor(player, position);
                 }
 
-                 position = position.Next();
+                position = position.Next();
                 lastPosition = nextPosition;
             }
-
-
         }
 
-        private void ParseCaption(string capton)
+        private void ParseCaption(string caption)
         {
-            _stickersBoardBuilder.WithScale(GetScale(capton));
+            _stickersBoardBuilder.WithScale(GetScale(caption));
 
-            var wip = GetWip(capton);
+            var wip = GetWip(caption);
             if (wip != null)
             {
                 _stickersBoardBuilder.WithWip((int)wip);
             }
         }
 
-        private int? GetWip(string capton)
+        private int? GetWip(string caption)
         {
-            string pattern = "([0-9])";
-            var wips = Regex.Matches(capton, pattern)
+            var pattern = "([0-9])";
+
+            var wips = Regex.Matches(caption, pattern)
                 .Select(w => w.Value)
                 .Distinct();
-            if (wips.Count() == 0)
+
+            if (!wips.Any())
             {
                 return null;
             }
+
             if (wips.Count() != 1)
             {
                 throw new InvalidCastException("WIP не совпадают у всех колонок");

@@ -1,8 +1,6 @@
 ﻿using Featureban.Domain.Interfaces;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Featureban.Domain.Tests.DSL
 {
@@ -11,29 +9,27 @@ namespace Featureban.Domain.Tests.DSL
         private Scale _scale;
         private int? _wip;
         private Dictionary<ProgressPosition, List<Sticker>> _stickersInProgress;
-        private Player _player;
         private readonly Mock<IStickersBoard> _stickersBoardMock;
 
         public StickersBoardBuilder()
         {
-            int positionsInProgress = 2;
+            var positionsInProgress = 2;
             _scale = new Scale(positionsInProgress);
             _stickersInProgress = new Dictionary<ProgressPosition, List<Sticker>>();
-            _player = Create.Player().Please();
             _stickersBoardMock = new Mock<IStickersBoard>();
 
-            InitializeSickersInProgress(positionsInProgress);
+            InitializeStickersInProgress(positionsInProgress);
         }
 
         public StickersBoardBuilder WithScale(int positionsInProgress)
         {
             _scale = new Scale(positionsInProgress);
-            InitializeSickersInProgress(positionsInProgress);
+            InitializeStickersInProgress(positionsInProgress);
 
             return this;
         }
 
-        private void InitializeSickersInProgress(int positionsInProgress)
+        private void InitializeStickersInProgress(int positionsInProgress)
         {
             _stickersInProgress = new Dictionary<ProgressPosition, List<Sticker>>();
             var position = ProgressPosition.First();
@@ -67,19 +63,6 @@ namespace Featureban.Domain.Tests.DSL
         public Mock<IStickersBoard> Fast()
         {
             return _stickersBoardMock;
-        }
-
-        public StickersBoardBuilder WithStickerInProgress()
-        {
-            _stickersInProgress[ProgressPosition.First()].Add(Create.Sticker().Please());
-            return this;
-        }
-
-        public StickersBoardBuilder WithStickerInProgressFor(Player player)
-        {
-            _stickersInProgress[ProgressPosition.First()].Add(Create.Sticker().For(player).Please());
-            _player = player;
-            return this;
         }
 
         public StickersBoardBuilder ThatAlwaysReturnUnblocked(Sticker sticker)
@@ -132,13 +115,6 @@ namespace Featureban.Domain.Tests.DSL
         {
             var sticker = Create.Sticker().Blocked().For(player).Please();
             _stickersInProgress[position].Add(sticker);
-            return this;
-        }
-
-        public StickersBoardBuilder WithBlockedStickerInProgressFor(Player player)
-        {
-            var sticker = Create.Sticker().Blocked().For(player).Please();
-            _stickersInProgress[ProgressPosition.First()].Add(sticker);
             return this;
         }
     }

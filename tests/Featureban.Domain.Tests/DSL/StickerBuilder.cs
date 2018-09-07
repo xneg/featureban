@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Featureban.Domain.Tests.DSL
+﻿namespace Featureban.Domain.Tests.DSL
 {
     internal class StickerBuilder
     {   

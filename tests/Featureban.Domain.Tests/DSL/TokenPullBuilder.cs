@@ -2,7 +2,7 @@
 {
     public class TokensPullBuilder
     {
-        private int _tokensCount = 0;
+        private int _tokensCount;
         
         public TokensPullBuilder With(int tokenCount)
         {
