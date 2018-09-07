@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Featureban.Domain.Tests.DSL;
+using System.Linq;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -8,14 +9,13 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void GameCreatesStickersEqualToPlayersCount_WhenSetup()
         {
-            var game = new Game(5, 2, 3, 10);
+            var game = Create.Game().Please();           
 
             game.Setup();
 
-            var createdStickers =
-                (game.StickersBoard as StickersBoard).GetStickersIn(ProgressPosition.First())
+            var createdStickers = (game.StickersBoard as StickersBoard)
+                .GetStickersIn(ProgressPosition.First())
                 .ToList();
-
             Assert.Equal(5, createdStickers.Count);
         }
     }
