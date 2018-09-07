@@ -126,9 +126,12 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void NotStepUpSticker_WhenNextPositionIsFull()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
-                                                       | [R  ]          | [P B]          | (0)  |").Please();
             var player = Create.Player().WithName("R").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [R  ]          | [P B]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
+            
 
             var sticker = stickersBoard.GetUnblockedStickerFor(player);
 
@@ -157,9 +160,12 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void ReturnPlayerThatCanSpendToken_WhenHeHasMovableSticker()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                      | [P  ]          | (0)  |").Please();
             var expectedPlayer = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P  ]          | (0)  |")
+                                                      .WithPlayer(expectedPlayer)
+                                                      .Please();
+            
 
             var player = stickersBoard.GetPlayerThatCanSpendToken();
 
@@ -169,9 +175,11 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void ReturnPlayerThatCanSpendToken_WhenHeHasBlockedSticker()
         {
-           var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                      | [P B]          | (0)  |").Please();
             var expectedPlayer = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P B]          | (0)  |")
+                                                      .WithPlayer(expectedPlayer)
+                                                      .Please();            
 
             var player = stickersBoard.GetPlayerThatCanSpendToken();
 

@@ -22,10 +22,9 @@
             return  new StickersBoardBuilder();
         }
 
-        public static StickersBoardBuilder StickersBoard(string state)
+        public static StickerBoardParser StickersBoard(string state)
         {
-            var stickerBoardBuilderParser = new StickerBoardParser();
-            return stickerBoardBuilderParser.Parse(state);
+            return new StickerBoardParser(state);
         }
 
         public static TokensPullBuilder TokenPull()

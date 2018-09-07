@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -7,15 +8,25 @@ namespace Featureban.Domain.Tests.DSL
     internal class StickerBoardParser
     {
         private readonly StickersBoardBuilder _stickersBoardBuilder;
+        private List<Player> _players;
+        private string _state;
 
-        public StickerBoardParser()
+        public StickerBoardParser( string state)
         {
+            _state = state;
             _stickersBoardBuilder = new StickersBoardBuilder();
+            _players = new List<Player>();
         }
 
-        public StickersBoardBuilder Parse(string state)
+        public StickerBoardParser WithPlayer(Player player)
         {
-            var lines = state.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            _players.Add(player);
+            return this;
+        }
+
+        public StickerBoardParser Parse()
+        {
+            var lines = _state.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             ParseCaption(lines.First());
 
@@ -24,7 +35,13 @@ namespace Featureban.Domain.Tests.DSL
                ParseColumnState(lines[i]);
             }
 
-            return _stickersBoardBuilder;
+            return this;
+        }
+
+        public StickersBoard Please()
+        {
+            Parse();
+            return _stickersBoardBuilder.Please();
         }
 
         private void ParseColumnState(string line)
@@ -46,7 +63,12 @@ namespace Featureban.Domain.Tests.DSL
                 var stickerParam = Regex.Matches(column, pattern)
                     .Select(w => w.Value);
 
-                var player = Create.Player().WithName(stickerParam.First()).Please();
+                var player = _players.FirstOrDefault(pl => pl.Name == stickerParam.First());
+
+                if(player == null)
+                {
+                    player = Create.Player().WithName(stickerParam.First()).Please();
+                }
 
 
                 if (stickerParam.Contains("B"))
