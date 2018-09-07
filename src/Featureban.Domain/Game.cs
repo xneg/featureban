@@ -47,21 +47,29 @@ namespace Featureban.Domain
 
             while (_tokensPull.ContainsTokens)
             {
-                var player = StickersBoard.GetPlayerThatCanSpendToken();
-                if(player == null)
+                var player = GetPlayerThatCanSpendToken();
+
+                if (player != null)
                 {
-                    if (StickersBoard.CanCreateStickerInProgress())
-                        player = _players.First();
-                    else
-                        break;
+                    player.TakeTokenFromPull();
+                    player.SpendToken();
                 }
-                player.TakeTokenFromPull();
-                player.SpendToken();
+                else
+                {
+                    _tokensPull.EraseTokens();
+                }
             }
+        }
 
-            _tokensPull.EraseTokens();
-
-            Console.WriteLine(StickersBoard.ToString());
+        private Player GetPlayerThatCanSpendToken()
+        {
+            var player = StickersBoard.GetPlayerThatCanSpendToken();
+            if (player == null)
+            {
+                if (StickersBoard.CanCreateStickerInProgress())
+                    player = _players.First();                
+            }
+            return player;
         }
 
         public int GetDoneStickers()
