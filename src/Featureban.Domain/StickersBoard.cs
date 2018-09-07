@@ -142,7 +142,7 @@ namespace Featureban.Domain
             }
         }
 
-        private bool CanMoveTo(ProgressPosition position)
+        public bool CanMoveTo(ProgressPosition position)
         {
             return _wip == null || _progressSteps[position].Count < _wip;
         }

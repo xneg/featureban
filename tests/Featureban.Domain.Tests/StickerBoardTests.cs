@@ -111,7 +111,7 @@ namespace Featureban.Domain.Tests
             var stickersBoard = Create.StickersBoard()
                 .WithScale(2).And()
                 .WithWip(1).And()
-                .WithStickerInProgressPosition(2.Position())                
+                .WithStickerInProgressForPosition(2.Position())                
                 .Please();
             var sticker = stickersBoard.CreateStickerInProgress(player);
 
@@ -154,6 +154,30 @@ namespace Featureban.Domain.Tests
             var player = stickerBoard.GetPlayerWichCanSpendToken();
 
             Assert.Equal(expectedPlayer, player);
+        }
+
+        [Fact]
+        public void StickerCanMove_WhenWipIsNull()
+        {
+            var stickerBoard = Create.StickersBoard().Please();
+
+            Assert.True(stickerBoard.CanMoveTo(ProgressPosition.First()));
+        }
+
+        [Fact]
+        public void StickerCanMove_WhenNewxtPositionIsNotFull()
+        {
+            var stickerBoard = Create.StickersBoard().WithWip(1).Please();
+
+            Assert.True(stickerBoard.CanMoveTo(ProgressPosition.First()));
+        }
+
+        [Fact]
+        public void StickerCanNotMove_WhenNewxtPositionIsNotFull()
+        {
+            var stickerBoard = Create.StickersBoard().WithWip(1).WithStickerInProgress().Please();
+
+            Assert.False(stickerBoard.CanMoveTo(ProgressPosition.First()));
         }
 
 

@@ -122,7 +122,7 @@ namespace Featureban.Domain.Tests.DSL
             return this;
         }
 
-        public StickersBoardBuilder WithStickerInProgressPosition(int position)
+        public StickersBoardBuilder WithStickerInProgressForPosition(int position)
         {
             position--;
             _stickersInProgress[position].Add(Create.Sticker().Please());
