@@ -1,18 +1,15 @@
 ﻿using Featureban.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Featureban.Domain
 {
     public class Player
     {
-        private readonly Queue<Token> _tokens = new Queue<Token>();
         private readonly IStickersBoard _stickersBoard;
         private readonly ICoin _coin;
         private readonly TokensPull _tokensPull;
 
-        public Token Token => _tokens.FirstOrDefault();
+        public Token Token { get; private set; }
 
         public Player(IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
         {
@@ -29,30 +26,33 @@ namespace Featureban.Domain
 
         public void AddToken(Token token)
         {
-            _tokens.Enqueue(token);
+            Token = token;
         }
 
         public void SpendToken()
         {
-            if (!_tokens.Any())
+            if (Token == null)
             {
                 return;
             }
 
-            var currentToken = _tokens.Dequeue();
-
-            if (currentToken.IsEagle)
+            if (Token.IsEagle)
             {
                 BlockSticker();
 
                 TakeStickerToProgress();
-            }
 
-            if (currentToken.IsTails)
+                RemoveToken();
+            }
+            else if (Token.IsTails)
             {
                 if (!(TryMoveSticker() || TryUnblockSticker() || TryTakeStickerToProgress()))
                 {
-                    _tokensPull.IncrementToken();
+                    GiveTokenToPull();
+                }
+                else
+                {
+                    RemoveToken();
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Featureban.Domain
 
         public void GiveTokenToPull()
         {
-            if (_tokens.Any(t => t.IsEagle))
+            if (Token.IsEagle)
                 throw new InvalidOperationException();
 
             RemoveToken();
@@ -93,7 +93,8 @@ namespace Featureban.Domain
             }
 
             return false;
-        }        
+        }  
+        
         private bool TryMoveSticker()
         {
             var sticker = _stickersBoard.GetMoveableStickerFor(this);
@@ -114,6 +115,7 @@ namespace Featureban.Domain
                 _stickersBoard.CreateStickerInProgress(this);
                 return true;
             }
+
             return false;
         }
 
@@ -124,7 +126,7 @@ namespace Featureban.Domain
 
         private void RemoveToken()
         {
-            _tokens.Dequeue();
+            Token = null;
         }
     }
 }
