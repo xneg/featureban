@@ -146,5 +146,6 @@ namespace Featureban.Domain
         {
             return _wip == null || _progressSteps[position].Count < _wip;
         }
+
     }
 }

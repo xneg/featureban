@@ -90,5 +90,36 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(1, board.DoneStickers);
         }
+
+        [Fact]
+        public void ReturnNull_WhenGetUnblockedSticker()
+        {
+            var player = Create.Player().Please();
+            var stickersBoard = Create.StickersBoard().Please();
+
+            var sticker = stickersBoard.GetUnblockedStickerFor(player);
+
+            Assert.Null(sticker);
+        }
+
+
+        [Fact]
+        public void NotStepUpSticker_WhenNextPositionIsFull()
+        {
+            var player = Create.Player().Please();
+            StickersBoard stickersBoard = Create.StickersBoard()
+                .WithScale(2).And()
+                .WithWip(1).And()
+                .WithStickerInProgressPosition(2.Position())                
+                .Please();
+            var sticker = stickersBoard.CreateStickerInProgress(player);
+
+            stickersBoard.StepUp(sticker);
+
+            Assert.Equal(sticker, stickersBoard.GetStickersIn(ProgressPosition.First()).Single());
+        }
+
+
+
     }
 }

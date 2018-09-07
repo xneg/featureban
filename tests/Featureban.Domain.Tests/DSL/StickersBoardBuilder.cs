@@ -1,6 +1,7 @@
 ﻿using Featureban.Domain.Interfaces;
 using Moq;
 using System;
+using System.Collections.Generic;
 
 namespace Featureban.Domain.Tests.DSL
 {
@@ -8,13 +9,15 @@ namespace Featureban.Domain.Tests.DSL
     {
         private Scale _scale;
         private int? _wip;
-        private int _stickersInProgress;
+        private int[]  _stickersInProgress;
         private Player _player;
         private Mock<IStickersBoard> _stickersBoardMock;
 
         public StickersBoardBuilder()
         {
-            _scale = new Scale(2);
+            int positionsInProgress = 2;
+            _scale = new Scale(positionsInProgress);
+            _stickersInProgress = new int[positionsInProgress];
             _player = Create.Player().Please();
             _stickersBoardMock =  new Mock<IStickersBoard>();
         }
@@ -22,6 +25,7 @@ namespace Featureban.Domain.Tests.DSL
         public StickersBoardBuilder WithScale(int positionsInProgress)
         {
             _scale = new Scale(positionsInProgress);
+            _stickersInProgress = new int[positionsInProgress];
             return this;
         }
 
@@ -33,10 +37,17 @@ namespace Featureban.Domain.Tests.DSL
 
         public StickersBoard Please()
         {
-            var stickerBoard =  new StickersBoard(_scale, _wip);
-            for (int i = 0; i < _stickersInProgress; i++)
+            var stickerBoard = new StickersBoard(_scale, _wip);
+            for (var p = 0; p < _stickersInProgress.Length; p++)
             {
-                stickerBoard.CreateStickerInProgress(_player);
+                for (int s = 0; s < _stickersInProgress[p]; s++)
+                {
+                    var sticker = stickerBoard.CreateStickerInProgress(_player);
+                    for (var m = 0; m < p; m++)
+                    {                       
+                        stickerBoard.StepUp(sticker);
+                    }
+                }
             }
 
             return stickerBoard;
@@ -49,13 +60,13 @@ namespace Featureban.Domain.Tests.DSL
 
         public  StickersBoardBuilder WithStickerInProgress()
         {
-            _stickersInProgress++;
+            _stickersInProgress[0]++;
             return this;
         }
 
         public StickersBoardBuilder WithStickerInProgressFor(Player player)
         {
-            _stickersInProgress++;
+            _stickersInProgress[0]++;
             _player = player;
             return this;
         }
@@ -97,6 +108,13 @@ namespace Featureban.Domain.Tests.DSL
 
         public StickersBoardBuilder And()
         {
+            return this;
+        }
+
+        public StickersBoardBuilder WithStickerInProgressPosition(int position)
+        {
+            position--;
+            _stickersInProgress[position]++;
             return this;
         }
     }
