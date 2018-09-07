@@ -38,7 +38,6 @@ namespace Featureban.Domain
             if (CanCreateStickerInProgress())
             {
                 _progressSteps[ProgressPosition.First()].Add(sticker);
-                sticker.ChangeStatus(StickerStatus.InProgress);
             }
 
             return sticker;
@@ -76,7 +75,6 @@ namespace Featureban.Domain
             else
             {
                 _progressSteps[oldPosition].Remove(sticker);
-                sticker.ChangeStatus(StickerStatus.Done);
                 DoneStickers++;
             }
         }
@@ -100,7 +98,6 @@ namespace Featureban.Domain
             {
                 var sticker = new Sticker(player);
                 _progressSteps[ProgressPosition.First()].Add(sticker);
-                sticker.ChangeStatus(StickerStatus.InProgress);
             }
         }
 

@@ -16,9 +16,7 @@ namespace Featureban.Domain.Tests
 
             board.CreateStickerInProgress(player);
 
-            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
-
-            Assert.Equal(StickerStatus.InProgress, sticker.Status);
+            Assert.NotEmpty(board.GetStickersIn(ProgressPosition.First()));
         }
 
         [Fact]
