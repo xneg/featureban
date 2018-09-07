@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Featureban.Domain.Tests.DSL;
 using Xunit;
 
@@ -118,6 +119,21 @@ namespace Featureban.Domain.Tests
 
             Assert.Equal(sticker, stickersBoard.GetStickersIn(ProgressPosition.First()).Single());
         }
+
+        [Fact]
+        public void OneStickerInProgress_WhenSetupForOnePlayer()
+        {
+            var player = Create.Player().Please();
+            var players = new List<Player>();
+            players.Add(player);
+            var stickersBoard = Create.StickersBoard().Please();
+
+            stickersBoard.Setup(players);
+
+            Assert.Single(stickersBoard.GetStickersIn(ProgressPosition.First()));
+        }
+
+
 
 
 
