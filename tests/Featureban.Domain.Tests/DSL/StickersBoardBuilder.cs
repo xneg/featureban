@@ -53,7 +53,7 @@ namespace Featureban.Domain.Tests.DSL
             { 
                 foreach (var sticker in _stickersInProgress[position])
                 {
-                    stickerBoard.CreateStickerInProgressin(position, sticker);
+                    stickerBoard.CreateStickerInPosition(position, sticker);
                 }
             }
 

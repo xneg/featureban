@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Featureban.Domain
 {
@@ -21,13 +22,35 @@ namespace Featureban.Domain
 
         public void Add(Sticker sticker)
         {
-            if (_wip == null || _stickers.Count < _wip)
                 _stickers.Add(sticker);
         }
 
         public void Remove(Sticker sticker)
         {
             _stickers.Remove(sticker);
+        }
+
+        public Sticker GetBlockedStickerFor(Player player)
+        {
+            return
+                 _stickers.FirstOrDefault(s => s.Owner == player && s.Blocked);
+        }
+
+        public Sticker GetUnblockedStickerFor(Player player)
+        {
+            return
+                _stickers.FirstOrDefault(s => s.Owner == player && !s.Blocked);
+        }
+
+        public Sticker GetBlockedSticker()
+        {
+            return
+                 _stickers.FirstOrDefault(s => s.Blocked);
+        }
+        public Sticker GetUnblockedSticker()
+        {
+            return
+                 _stickers.FirstOrDefault(s => !s.Blocked);
         }
     }
 }
