@@ -1,6 +1,5 @@
 ﻿using Featureban.Domain.Interfaces;
 using Moq;
-using System;
 using System.Collections.Generic;
 
 namespace Featureban.Domain.Tests.DSL
@@ -11,7 +10,7 @@ namespace Featureban.Domain.Tests.DSL
         private int? _wip;
         private Dictionary<int, List<Sticker>> _stickersInProgress;
         private Player _player;
-        private Mock<IStickersBoard> _stickersBoardMock;
+        private readonly Mock<IStickersBoard> _stickersBoardMock;
 
         public StickersBoardBuilder()
         {
@@ -82,31 +81,31 @@ namespace Featureban.Domain.Tests.DSL
             return this;
         }
 
-        public StickersBoardBuilder WhichAlwaysReturnUnblocked(Sticker sticker)
+        public StickersBoardBuilder ThatAlwaysReturnUnblocked(Sticker sticker)
         {
             _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns(sticker);
             return this;
         }
 
-        public StickersBoardBuilder WhichAlwaysReturnMoveable(Sticker sticker)
+        public StickersBoardBuilder ThatAlwaysReturnMoveable(Sticker sticker)
         {
             _stickersBoardMock.Setup(b => b.GetMoveableStickerFor(It.IsAny<Player>())).Returns(sticker);
             return this;
         }
 
-        public StickersBoardBuilder WhichAlwaysReturnBlocked(Sticker sticker)
+        public StickersBoardBuilder ThatAlwaysReturnBlocked(Sticker sticker)
         {
             _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns(sticker);
             return this;
         }
 
-        public StickersBoardBuilder WhichNotReturnUnblocked()
+        public StickersBoardBuilder ThatNotReturnUnblocked()
         {
             _stickersBoardMock.Setup(b => b.GetUnblockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
             return this;
         }
 
-        public StickersBoardBuilder WhichNotReturnBlocked()
+        public StickersBoardBuilder ThatNotReturnBlocked()
         {
             _stickersBoardMock.Setup(b => b.GetBlockedStickerFor(It.IsAny<Player>())).Returns((Sticker)null);
             return this;

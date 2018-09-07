@@ -71,7 +71,7 @@ namespace Featureban.Domain.Tests
         public void PlayerBlocksUnblockedSticker_WhenSpendingEagleToken()
         {
             var sticker = Create.Sticker().Please();
-            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnUnblocked(sticker).Fast();
+            var stickersBoard = Create.StickersBoard().ThatAlwaysReturnUnblocked(sticker).Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithEagleToken().Please();
 
             player.SpendToken();
@@ -94,7 +94,7 @@ namespace Featureban.Domain.Tests
         public void PlayerMovesMoveableSticker_WhenSpendingTailsToken()
         {            
             var sticker = Create.Sticker().Please();
-            var stickersBoard = Create.StickersBoard().WhichAlwaysReturnMoveable(sticker).Fast();
+            var stickersBoard = Create.StickersBoard().ThatAlwaysReturnMoveable(sticker).Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
@@ -107,8 +107,8 @@ namespace Featureban.Domain.Tests
         {
             var sticker = Create.Sticker().Blocked().Please();
             var stickersBoard = Create.StickersBoard()
-                .WhichNotReturnUnblocked().And()
-                .WhichAlwaysReturnBlocked(sticker).Fast();
+                .ThatNotReturnUnblocked().And()
+                .ThatAlwaysReturnBlocked(sticker).Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();            
 
             player.SpendToken();
@@ -121,8 +121,8 @@ namespace Featureban.Domain.Tests
         {
             var stickersBoard = Create.StickersBoard()
                 .WithUnlimitedWip()
-                .WhichNotReturnUnblocked().And()
-                .WhichNotReturnBlocked().Fast();
+                .ThatNotReturnUnblocked().And()
+                .ThatNotReturnBlocked().Fast();
             var player = Create.Player().WithBoard(stickersBoard.Object).WithTailsToken().Please();
 
             player.SpendToken();
