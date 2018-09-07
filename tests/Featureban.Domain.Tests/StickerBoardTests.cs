@@ -131,7 +131,6 @@ namespace Featureban.Domain.Tests
                                                        | [R  ]          | [P B]          | (0)  |")
                                                        .WithPlayer(player)
                                                        .Please();
-            
 
             var sticker = stickersBoard.GetUnblockedStickerFor(player);
 

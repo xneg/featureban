@@ -7,17 +7,17 @@ namespace Featureban.Domain
     {
         private readonly List<Sticker> _stickers;
 
-        private readonly int? _wip;
-
         public ProgressPosition Position { get; }
 
-        public bool IsFull => _stickers.Count >= _wip;
+        public bool IsFull => _stickers.Count >= Wip;
+
+        public int? Wip { get; }
 
         public IReadOnlyList<Sticker> Stickers => _stickers.AsReadOnly();
 
         public ProgressCell(ProgressPosition progressPosition, int? wip)
         {
-            _wip = wip;
+            Wip = wip;
             _stickers = new List<Sticker>();
             Position = progressPosition;
         }

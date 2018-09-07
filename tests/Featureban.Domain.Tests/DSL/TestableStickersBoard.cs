@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Featureban.Domain.Tests.DSL
 {
@@ -29,21 +30,7 @@ namespace Featureban.Domain.Tests.DSL
 
         private int GetMaxStickersInProgress()
         {
-            var max = 0;
-            foreach (var position in _progressSteps.Keys)
-            {
-                if (_progressSteps[position].Count > max)
-                {
-                    max = _progressSteps[position].Count;
-                }
-            }
-
-            if (max == 0)
-            {
-                max++;
-            }
-
-            return max;
+            return Math.Max(1, _progressCells.Max(c => c.Stickers.Count));
         }
 
         private void InDoneStickersToTable(int max, ref string[] table)
@@ -57,17 +44,17 @@ namespace Featureban.Domain.Tests.DSL
 
         private void InProgressStickersToTable(int max, ref string[] table)
         {
-            foreach (var position in _progressSteps.Keys)
+            foreach(var cell in _progressCells.OrderBy(c => c.Position.Step))
             {
                 for (var s = 0; s < max; s++)
                 {
-                    if (_progressSteps[position].Count <= s)
+                    if (cell.Stickers.Count <= s)
                     {
                         table[s] += $"               |";
                     }
                     else
                     {
-                        table[s] += StickerToString(_progressSteps[position][s], position);
+                        table[s] += StickerToString(cell.Stickers[s], cell.Position);
                     }
                 }
             }
@@ -84,15 +71,15 @@ namespace Featureban.Domain.Tests.DSL
         {
             var caption = "|";
 
-            foreach (var position in _progressSteps.Keys)
+            foreach(var cell in _progressCells.OrderBy(c => c.Position.Step))
             {
-                if (_wip == null)
+                if (cell.Wip == null)
                 {
                     caption += " InProgress    |";
                 }
                 else
                 {
-                    caption += $" InProgress ({_wip})  |";
+                    caption += $" InProgress ({cell.Wip})  |";
                 }
             }
 
