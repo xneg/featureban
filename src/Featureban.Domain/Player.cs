@@ -128,5 +128,49 @@ namespace Featureban.Domain
         {
             _tokens.Dequeue();
         }
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as Player;
+
+            if ((object)p == null)
+                return false;
+
+            return p.Name == Name;
+        }
+        public bool Equals(Player p)
+        {
+            if ((object)p == null)
+            {
+                return false;
+            }
+
+            return p.Name == Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
+        public static bool operator ==(Player p1, Player p2)
+        {
+            if (ReferenceEquals(p1, p2))
+            {
+                return true;
+            }
+
+            if (((object)p1 == null) || ((object)p2 == null))
+            {
+                return false;
+            }
+
+            return p1.Equals(p2);
+        }
+
+        public static bool operator !=(Player p1, Player p2)
+        {
+            return !(p1 == p2);
+        }
     }
 }

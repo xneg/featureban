@@ -19,15 +19,50 @@ namespace Featureban.Domain.Tests.DSL
 
             ParseCaption(lines.First());
 
-            //todo: parse Stickers
+            for (int i = 1; i < lines.Length; i++)
+            {
+               ParseColumnState(lines[i]);
+            }
 
             return _stickersBoardBuilder;
-
         }
 
-        private void ParseColumnState(string c)
+        private void ParseColumnState(string line)
         {
-            throw new NotImplementedException();
+            if(!line.Contains('['))
+            {
+                return;
+            }
+
+            int inProgressCount = GetScale(line);
+            var position = ProgressPosition.First();
+            int lastPosition = line.IndexOf("|", 0);
+
+            for (int p = 0; p < inProgressCount; p++)
+            {
+                var nextPosition = line.IndexOf("|", lastPosition + 1);
+                string column = line.Substring(lastPosition, nextPosition - lastPosition - 1);
+                string pattern = "([A-Z])";
+                var stickerParam = Regex.Matches(column, pattern)
+                    .Select(w => w.Value);
+
+                var player = Create.Player().WithName(stickerParam.First()).Please();
+
+
+                if (stickerParam.Contains("B"))
+                {
+                    _stickersBoardBuilder.WithBlockedStickerInProgressFor(player, position);
+                }
+                else
+                {
+                    _stickersBoardBuilder.WithStickerInProgressFor(player, position);
+                }
+
+                 position = position.Next();
+                lastPosition = nextPosition;
+            }
+
+
         }
 
         private void ParseCaption(string capton)
@@ -61,9 +96,9 @@ namespace Featureban.Domain.Tests.DSL
             return wip;
         }
 
-        private static int GetScale(string capton)
+        private static int GetScale(string line)
         {
-            return capton.Length - capton.Replace("|", "").Length - 2;
-        }
+            return line.Length - line.Replace("|", "").Length - 2;
+        } 
     }
 }

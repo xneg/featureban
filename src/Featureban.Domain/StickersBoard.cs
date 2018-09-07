@@ -44,6 +44,24 @@ namespace Featureban.Domain
             return sticker;
         }
 
+        public Sticker CreateStickerInProgressin(ProgressPosition progressPosition, Sticker sticker)
+        {
+            if (CanMoveTo(progressPosition))
+            {
+                _progressSteps[progressPosition].Add(sticker);
+            }
+
+            return sticker;
+        }
+
+        public void CreateStickerInProgress(Sticker sticker)
+        {     
+            if (CanCreateStickerInProgress())
+            {
+                _progressSteps[ProgressPosition.First()].Add(sticker);
+            }
+        }
+
         public Sticker GetUnblockedStickerFor(Player player)
         {
             return
