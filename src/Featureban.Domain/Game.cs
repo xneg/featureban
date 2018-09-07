@@ -6,9 +6,11 @@ namespace Featureban.Domain
 {
     public class Game
     {
-        private List<Player> _players;
-        private TokensPull _tokensPull;
-        private int _roundsCount;
+        private readonly List<Player> _players;
+
+        private readonly TokensPull _tokensPull;
+
+        private readonly int _roundsCount;
 
         public IStickersBoard StickersBoard { get; }
 
@@ -44,7 +46,7 @@ namespace Featureban.Domain
 
             while (_tokensPull.ContainsTokens)
             {
-                var player = StickersBoard.GetPlayerWichCanSpendToken();
+                var player = StickersBoard.GetPlayerThatCanSpendToken();
                 if(player == null)
                 {
                     if (StickersBoard.CanCreateStickerInProgress())

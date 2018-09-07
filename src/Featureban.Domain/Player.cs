@@ -82,18 +82,6 @@ namespace Featureban.Domain
             sticker?.Block();
         }
 
-        private void UnblockSticker()
-        {
-            var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);
-
-            blockedSticker?.Unblock();
-        }
-
-        private bool IsAnyStickerBlocked()
-        {
-            return _stickersBoard.GetBlockedStickerFor(this) != null;
-        }
-
         private bool TryUnblockSticker()
         {
             var blockedSticker = _stickersBoard.GetBlockedStickerFor(this);

@@ -18,7 +18,7 @@ namespace Featureban.Domain.Interfaces
 
         bool CanCreateStickerInProgress();
 
-        Player GetPlayerWichCanSpendToken();
+        Player GetPlayerThatCanSpendToken();
 
         int DoneStickers { get; }
     }

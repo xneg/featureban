@@ -30,6 +30,4 @@
             return new Token(TokenType.Eagle);
         }
     }
-
-   
 }

@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Featureban.Domain
+﻿namespace Featureban.Domain
 {
     public class TokensPull
     {
-        private int _tokensCount = 0;
+        private int _tokensCount;
 
         public bool ContainsTokens => _tokensCount > 0;
 

@@ -70,7 +70,7 @@ namespace Featureban.Domain
                 _progressSteps[oldPosition].Remove(sticker);
                 _progressSteps[newPosition].Add(sticker);
 
-                sticker.ChangePositionNew(newPosition);
+                sticker.ChangePosition(newPosition);
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Featureban.Domain
             }
         }
 
-        public Player GetPlayerWichCanSpendToken()
+        public Player GetPlayerThatCanSpendToken()
         {
             var movableSticker = 
                 _progressSteps

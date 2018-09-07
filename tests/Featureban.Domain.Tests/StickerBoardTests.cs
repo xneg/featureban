@@ -138,7 +138,7 @@ namespace Featureban.Domain.Tests
             var expectedPlayer = Create.Player().Please();
             var stickerBoard = Create.StickersBoard().WithStickerInProgressFor(expectedPlayer).Please();
 
-            var player = stickerBoard.GetPlayerWichCanSpendToken();
+            var player = stickerBoard.GetPlayerThatCanSpendToken();
 
             Assert.Equal(expectedPlayer, player);
         }
@@ -149,7 +149,7 @@ namespace Featureban.Domain.Tests
             var expectedPlayer = Create.Player().Please();
             var stickerBoard = Create.StickersBoard().WithBlockedStickerInProgressFor(expectedPlayer).Please();
 
-            var player = stickerBoard.GetPlayerWichCanSpendToken();
+            var player = stickerBoard.GetPlayerThatCanSpendToken();
 
             Assert.Equal(expectedPlayer, player);
         }

@@ -24,7 +24,7 @@
             Blocked = false;
         }
 
-        public void ChangePositionNew(ProgressPosition progressPosition)
+        public void ChangePosition(ProgressPosition progressPosition)
         {
             ProgressPosition = progressPosition;
         }
