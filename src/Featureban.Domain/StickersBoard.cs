@@ -9,6 +9,7 @@ namespace Featureban.Domain
         protected readonly Scale _scale;
         protected readonly int? _wip;
 
+        protected readonly List<ProgressCell> _progressCells;
         protected readonly Dictionary<ProgressPosition, List<Sticker>> _progressSteps;
 
         public int DoneStickers { get; private set; }
@@ -17,9 +18,10 @@ namespace Featureban.Domain
         {
             _scale = scale;
             _progressSteps = new Dictionary<ProgressPosition, List<Sticker>>();
+            _progressCells = new List<ProgressCell>();
             _wip = wip;
 
-            CreateNewPartitions(_scale);
+            CreateNewPartitions(_scale, _wip);
         }        
 
         public Sticker GetBlockedStickerFor(Player player)
@@ -82,17 +84,23 @@ namespace Featureban.Domain
 
             if (_scale.IsValid(newPosition))
             {
-                if (!CanMoveTo(newPosition))
-                    return;
+                if (CanMoveTo(newPosition))
+                {
+                    _progressSteps[oldPosition].Remove(sticker);
+                    _progressSteps[newPosition].Add(sticker);
 
-                _progressSteps[oldPosition].Remove(sticker);
-                _progressSteps[newPosition].Add(sticker);
-
-                sticker.ChangePosition(newPosition);
+                    sticker.ChangePosition(newPosition);
+                }
+                if (CanMoveToNew(newPosition))
+                {
+                    GetProgressCell(oldPosition).Remove(sticker);
+                    GetProgressCell(newPosition).Add(sticker);
+                }
             }
             else
             {
                 _progressSteps[oldPosition].Remove(sticker);
+                GetProgressCell(oldPosition).Remove(sticker);
                 DoneStickers++;
             }
         }
@@ -146,13 +154,14 @@ namespace Featureban.Domain
             return _progressSteps[progressPosition].AsReadOnly();
         }
 
-        private void CreateNewPartitions(Scale scale)
+        private void CreateNewPartitions(Scale scale, int? wip)
         {
             var position = ProgressPosition.First();
 
             while (scale.IsValid(position))
             {
                 _progressSteps[position] = new List<Sticker>();
+                _progressCells.Add(new ProgressCell(position, wip));
                 position = position.Next();
             }
         }
@@ -160,6 +169,16 @@ namespace Featureban.Domain
         public bool CanMoveTo(ProgressPosition position)
         {
             return _wip == null || _progressSteps[position].Count < _wip;
+        }
+
+        public bool CanMoveToNew(ProgressPosition position)
+        {
+            return !GetProgressCell(position).IsFull;
+        }
+
+        private ProgressCell GetProgressCell(ProgressPosition position)
+        {
+            return _progressCells.FirstOrDefault(p => p.Position == position);
         }
     }
 }
