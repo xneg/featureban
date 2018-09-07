@@ -108,7 +108,7 @@ namespace Featureban.Domain.Tests
         public void NotStepUpSticker_WhenNextPositionIsFull()
         {
             var player = Create.Player().Please();
-            StickersBoard stickersBoard = Create.StickersBoard()
+            var stickersBoard = Create.StickersBoard()
                 .WithScale(2).And()
                 .WithWip(1).And()
                 .WithStickerInProgressPosition(2.Position())                
@@ -134,7 +134,16 @@ namespace Featureban.Domain.Tests
         }
 
 
+        [Fact]
+        public void ReturnPlayerWichCanSpendToken_WhenHimHaveMovableSticker()
+        {
+            var expectedPlayer = Create.Player().Please();
+            var stickerBoard = Create.StickersBoard().WithStickerInProgressFor(expectedPlayer).Please();
 
+            var player = stickerBoard.GetPlayerWichCanSpendToken();
+
+            Assert.Equal(expectedPlayer, player);
+        }
 
 
     }
