@@ -48,7 +48,7 @@ namespace Featureban.Domain.Tests.DSL
 
         public StickersBoard Please()
         {
-            var stickerBoard = new StickersBoard(_scale, _wip);
+            var stickerBoard = new TestableStickersBoard(_scale, _wip);
             foreach(var position in _stickersInProgress.Keys)
             { 
                 foreach (var sticker in _stickersInProgress[position])
