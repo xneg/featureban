@@ -12,7 +12,7 @@ namespace Featureban.Domain
         private readonly ICoin _coin;
         private readonly TokensPull _tokensPull;
 
-        public IReadOnlyList<Token> Tokens => _tokens.ToList().AsReadOnly();
+        public Token Token => _tokens.FirstOrDefault();
 
         public Player(IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
         {

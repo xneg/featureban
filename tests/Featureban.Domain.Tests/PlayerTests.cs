@@ -2,7 +2,6 @@
 using Featureban.Domain.Tests.DSL;
 using Moq;
 using System;
-using System.Linq;
 using Xunit;
 
 namespace Featureban.Domain.Tests
@@ -16,7 +15,7 @@ namespace Featureban.Domain.Tests
 
             player.MakeToss();
 
-            Assert.Equal(1, player.Tokens.Count);
+            Assert.NotNull(player.Token);
         }
 
         [Fact]
@@ -26,8 +25,7 @@ namespace Featureban.Domain.Tests
 
             player.MakeToss();
 
-            var token = player.Tokens.Single();
-            Assert.True(token.IsEagle);
+            Assert.True(player.Token.IsEagle);
         }
 
         [Fact]
@@ -37,7 +35,7 @@ namespace Featureban.Domain.Tests
 
             player.SpendToken();
 
-            Assert.Equal(0, player.Tokens.Count);
+            Assert.Null(player.Token);
         }
 
         [Fact]
@@ -55,7 +53,7 @@ namespace Featureban.Domain.Tests
 
             player.GiveTokenToPull();
 
-            Assert.Equal(0, player.Tokens.Count);
+            Assert.Null(player.Token);
         }
         
         [Fact]
@@ -66,7 +64,7 @@ namespace Featureban.Domain.Tests
 
             player.TakeTokenFromPull();
 
-            Assert.Equal(1, player.Tokens.Count);
+            Assert.NotNull(player.Token);
         }
 
         [Fact]
