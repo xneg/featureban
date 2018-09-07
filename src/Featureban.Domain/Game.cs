@@ -1,4 +1,5 @@
 ﻿using Featureban.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,7 +28,7 @@ namespace Featureban.Domain
             _players = new List<Player>();
             for (var i = 0; i < playersCount; i++)
             {
-                _players.Add(new Player(StickersBoard, new Coin(), _tokensPull));
+                _players.Add(new Player("P",StickersBoard, new Coin(), _tokensPull));
             }
         }
 
@@ -59,6 +60,8 @@ namespace Featureban.Domain
             }
 
             _tokensPull.EraseTokens();
+
+            Console.WriteLine(StickersBoard.ToString());
         }
 
         public int GetDoneStickers()

@@ -1,6 +1,8 @@
 ﻿using Featureban.Domain.Interfaces;
 using Moq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Featureban.Domain.Tests.DSL
 {

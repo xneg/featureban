@@ -11,11 +11,13 @@ namespace Featureban.Domain
         private readonly IStickersBoard _stickersBoard;
         private readonly ICoin _coin;
         private readonly TokensPull _tokensPull;
+        public string Name { get; }
 
         public Token Token => _tokens.FirstOrDefault();
 
-        public Player(IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
+        public Player(string name, IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
         {
+            Name = name;
             _stickersBoard = stickersBoard;
             _coin = coin;
             _tokensPull = tokensPull;

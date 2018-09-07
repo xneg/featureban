@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Featureban.Domain.Tests.DSL;
 using Xunit;
@@ -11,14 +12,19 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerIsInProgress_WhenTakeInWork()
         {
-            var board = Create.StickersBoard().Please();
-            var player = Create.Player().Please();
+            var stikersBoard = Create.StickersBoard(@"| InProgress (2) | InProgress (2) | Done |
+                                                      |                |                | (0)  |").Please();
 
-            board.CreateStickerInProgress(player);
 
-            Assert.NotEmpty(board.GetStickersIn(ProgressPosition.First()));
+            var player = Create.Player().WithName("P").Please();
+
+            stikersBoard.CreateStickerInProgress(player);
+
+            AssertStickerBoard.Equal( @"| InProgress (2) | InProgress (2) | Done |
+| [P  ]          |                | (0)  |",
+                                stikersBoard);
         }
-
+        
         [Fact]
         public void StickerNotStepUp_WhenStickerBlocked()
         {

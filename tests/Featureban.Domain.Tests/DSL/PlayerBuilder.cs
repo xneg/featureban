@@ -11,6 +11,7 @@ namespace Featureban.Domain.Tests.DSL
         private ICoin _coin;
         private TokensPull _tokensPull;
         private List<Token> _tokens;
+        private string _name;
 
         public PlayerBuilder()
         {
@@ -27,6 +28,12 @@ namespace Featureban.Domain.Tests.DSL
                 _tokens.Add(Token.Eagle());
             }
 
+            return this;
+        }
+
+        public PlayerBuilder WithName(string name)
+        {
+            _name = name;
             return this;
         }
 
@@ -49,7 +56,7 @@ namespace Featureban.Domain.Tests.DSL
 
         public Player Please()
         {
-            var player = new Player(_stickersBoard, _coin, _tokensPull);
+            var player = new Player(_name, _stickersBoard, _coin, _tokensPull);
 
             foreach (var token in _tokens)
             {

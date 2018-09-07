@@ -24,6 +24,12 @@ namespace Featureban.Domain.Tests.DSL
             return  new StickersBoardBuilder();
         }
 
+        public static StickersBoardBuilder StickersBoard(string state)
+        {
+            var stickerBoardBuilderParser = new StickerBoardParser();
+            return stickerBoardBuilderParser.Parse(state);
+        }
+
         public static TokensPullBuilder TokenPull()
         {
             return new TokensPullBuilder();
