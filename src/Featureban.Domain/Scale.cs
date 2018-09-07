@@ -2,7 +2,7 @@
 {
     public class Scale
     {
-        private readonly int _inProgressStepsCount;
+        public int _inProgressStepsCount { get; }
 
         public Scale(int inProgressStepsCount)
         {

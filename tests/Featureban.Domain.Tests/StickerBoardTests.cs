@@ -11,145 +11,177 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerIsInProgress_WhenTakeInWork()
         {
-            var board = Create.StickersBoard().Please();
-            var player = Create.Player().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
+                                                       |                | (0)  |").Please();
 
-            board.CreateStickerInProgress(player);
+            var player = Create.Player().WithName("P").Please();
 
-            Assert.NotEmpty(board.GetStickersIn(ProgressPosition.First()));
+            stickersBoard.CreateStickerInProgress(player);
+
+            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
+                                       | [P  ]          | (0)  |",
+                                stickersBoard);
         }
-
+        
         [Fact]
         public void StickerNotStepUp_WhenStickerBlocked()
         {
-            var board = Create.StickersBoard().WithStickerInProgress().Please();
-            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
-            sticker.Block();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
+                                                       | [P B]          | (0)  |").Please();
 
-            board.StepUp(sticker);
+            var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
-            var firstPosition = ProgressPosition.First();
-            var secondPosition = firstPosition.Next();
-            Assert.Contains(sticker, board.GetStickersIn(firstPosition));
-            Assert.DoesNotContain(sticker, board.GetStickersIn(secondPosition));
+            stickersBoard.StepUp(sticker);
+
+            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
+                                       | [P B]          | (0)  |",
+                               stickersBoard);
         }        
 
         [Fact]
         public void BoardReturnsUnblockedStickerForPlayer_WhenTakeStickerInWork()
         {
-            var board = Create.StickersBoard().WithScale(1).Please();
-            var player = Create.Player().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
+                                                       |                | (0)  |").Please();
 
-            board.CreateStickerInProgress(player);
+            var player = Create.Player().WithName("P").Please();
 
-            Assert.NotNull(board.GetUnblockedStickerFor(player));
+            stickersBoard.CreateStickerInProgress(player);
+
+            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
+                                       | [P  ]          | (0)  |",
+                                stickersBoard);
         }
 
         [Fact]
         public void BoardReturnsBlockedStickerForPlayer_WhenBlocked()
-        {            
-            var player = Create.Player().Please();
-            var board = Create.StickersBoard().WithStickerInProgressFor(player).Please();
-            var sticker = board.GetUnblockedStickerFor(player);
+        {
+            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
+                                                       | [P  ]          | (0)  |").Please();
 
-            sticker.Block();             
+            var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
-            Assert.NotNull(board.GetBlockedStickerFor(player));
+            sticker.Block();
+
+            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
+                                       | [P B]          | (0)  |",
+                               stickersBoard);            
         }
 
         [Fact]
         public void BoardCanNotAddStickerToWork_WhenWipIsReached()
         {
-            var board = Create.StickersBoard().WithWip(1).Please();
-            var player = Create.Player().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P  ]          | (0)  |").Please();
 
-            board.CreateStickerInProgress(player);
+            var player = Create.Player().WithName("P").Please();
 
-            Assert.False(board.CanCreateStickerInProgress());
+            stickersBoard.CreateStickerInProgress(player);
+
+            AssertStickerBoard.Equal(@"| InProgress (1) | Done |
+                                       | [P  ]          | (0)  |",
+                                stickersBoard);
+        }        
+
+        [Fact]
+        public void InDoneStickersIncrement_WhenStickerIsDone()
+        {
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       | [P  ]          | (0)  |").Please();
+            var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
+
+            stickersBoard.StepUp(sticker);
+
+            AssertStickerBoard.Equal(@"| InProgress (1) | Done |
+                                       |                | (1)  |",
+                                stickersBoard);
         }
 
         [Fact]
         public void BoardReturnsMoveableStickerForPlayer()
         {
-            var board = Create.StickersBoard().WithScale(1).Please();
-            var player = Create.Player().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       |                | (0)  |").Please();
+            var player = Create.Player().WithName("P").Please();
 
-            board.CreateStickerInProgress(player);
+            stickersBoard.CreateStickerInProgress(player);
 
-            Assert.NotNull(board.GetMoveableStickerFor(player));
-        }
-
-        [Fact]
-        public void InDoneStickersIncrement_WhenStickerIsDone()
-        {
-            var board = Create.StickersBoard().WithScale(1).WithStickerInProgress().Please();
-            var sticker = board.GetStickersIn(ProgressPosition.First()).Single();
-
-            board.StepUp(sticker);
-
-            Assert.Equal(1, board.DoneStickers);
+            AssertStickerBoard.Equal(@"| InProgress (1) | Done |
+                                       | [P  ]          | (0)  |",
+                                stickersBoard);
         }
 
         [Fact]
         public void ReturnNull_WhenGetUnblockedSticker()
         {
-            var player = Create.Player().Please();
-            var stickersBoard = Create.StickersBoard().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       | [P B]          | (0)  |").Please();
+            var player = Create.Player().WithName("P").Please();
 
             var sticker = stickersBoard.GetUnblockedStickerFor(player);
 
             Assert.Null(sticker);
         }
 
-
         [Fact]
         public void NotStepUpSticker_WhenNextPositionIsFull()
         {
-            var player = Create.Player().Please();
-            var stickersBoard = Create.StickersBoard()
-                .WithScale(2).And()
-                .WithWip(1).And()
-                .WithStickerInProgressForPosition(2.Position())                
-                .Please();
-            var sticker = stickersBoard.CreateStickerInProgress(player);
+            var player = Create.Player().WithName("R").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [R  ]          | [P B]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
+            
+
+            var sticker = stickersBoard.GetUnblockedStickerFor(player);
 
             stickersBoard.StepUp(sticker);
 
-            Assert.Equal(sticker, stickersBoard.GetStickersIn(ProgressPosition.First()).Single());
+            AssertStickerBoard.Equal(@"| InProgress (1) | InProgress (1) | Done |
+                                       | [R  ]          | [P B]          | (0)  |",
+                                stickersBoard);
         }
 
         [Fact]
         public void OneStickerInProgress_WhenSetupForOnePlayer()
         {
-            var player = Create.Player().Please();
-            var players = new List<Player>();
-            players.Add(player);
-            var stickersBoard = Create.StickersBoard().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       |                | (0)  |").Please();
+            var player = Create.Player().WithName("P").Please();
+            var players = new List<Player> {player};
 
             stickersBoard.Setup(players);
 
-            Assert.Single(stickersBoard.GetStickersIn(ProgressPosition.First()));
+            AssertStickerBoard.Equal(@"| InProgress (1) | Done |
+                                       | [P  ]          | (0)  |",
+                                stickersBoard);
         }
 
-
         [Fact]
-        public void ReturnPlayerWichCanSpendToken_WhenHimHaveMovableSticker()
+        public void ReturnPlayerThatCanSpendToken_WhenHeHasMovableSticker()
         {
-            var expectedPlayer = Create.Player().Please();
-            var stickerBoard = Create.StickersBoard().WithStickerInProgressFor(expectedPlayer).Please();
+            var expectedPlayer = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P  ]          | (0)  |")
+                                                      .WithPlayer(expectedPlayer)
+                                                      .Please();
+            
 
-            var player = stickerBoard.GetPlayerThatCanSpendToken();
+            var player = stickersBoard.GetPlayerThatCanSpendToken();
 
             Assert.Equal(expectedPlayer, player);
         }
 
         [Fact]
-        public void ReturnPlayerWichCanSpendToken_WhenHimHaveBlockedSticker()
+        public void ReturnPlayerThatCanSpendToken_WhenHeHasBlockedSticker()
         {
-            var expectedPlayer = Create.Player().Please();
-            var stickerBoard = Create.StickersBoard().WithBlockedStickerInProgressFor(expectedPlayer).Please();
+            var expectedPlayer = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P B]          | (0)  |")
+                                                      .WithPlayer(expectedPlayer)
+                                                      .Please();            
 
-            var player = stickerBoard.GetPlayerThatCanSpendToken();
+            var player = stickersBoard.GetPlayerThatCanSpendToken();
 
             Assert.Equal(expectedPlayer, player);
         }
@@ -157,27 +189,28 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerCanMove_WhenWipIsNull()
         {
-            var stickerBoard = Create.StickersBoard().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress     | Done |
+                                                       |                | (0)  |").Please();
 
-            Assert.True(stickerBoard.CanMoveTo(ProgressPosition.First()));
+            Assert.True(stickersBoard.CanMoveTo(ProgressPosition.First()));
         }
 
         [Fact]
-        public void StickerCanMove_WhenNewxtPositionIsNotFull()
+        public void StickerCanMove_WhenNextPositionIsNotFull()
         {
-            var stickerBoard = Create.StickersBoard().WithWip(1).Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       |                | (0)  |").Please();
 
-            Assert.True(stickerBoard.CanMoveTo(ProgressPosition.First()));
+            Assert.True(stickersBoard.CanMoveTo(ProgressPosition.First()));
         }
 
         [Fact]
-        public void StickerCanNotMove_WhenNewxtPositionIsNotFull()
+        public void StickerCanNotMove_WhenNextPositionIsFull()
         {
-            var stickerBoard = Create.StickersBoard().WithWip(1).WithStickerInProgress().Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                      | [P  ]          | (0)  |").Please();
 
-            Assert.False(stickerBoard.CanMoveTo(ProgressPosition.First()));
+            Assert.False(stickersBoard.CanMoveTo(ProgressPosition.First()));
         }
-
-
     }
 }

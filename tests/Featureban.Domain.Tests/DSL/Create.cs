@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Featureban.Domain.Tests.DSL
+﻿namespace Featureban.Domain.Tests.DSL
 {
     internal static class Create
     {
@@ -22,6 +20,11 @@ namespace Featureban.Domain.Tests.DSL
         public static StickersBoardBuilder StickersBoard()
         {
             return  new StickersBoardBuilder();
+        }
+
+        public static StickerBoardParser StickersBoard(string state)
+        {
+            return new StickerBoardParser(state);
         }
 
         public static TokensPullBuilder TokenPull()
