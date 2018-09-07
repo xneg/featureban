@@ -1,8 +1,10 @@
-﻿namespace Featureban.Domain.Tests.DSL
+﻿using System;
+
+namespace Featureban.Domain.Tests.DSL
 {
     internal class StickerBuilder
     {   
-        private readonly Player _player;
+        private Player _player;
         private readonly StickersBoard _stickersBoard;
         private bool _blocked;
 
@@ -26,6 +28,12 @@
         public StickerBuilder Blocked()
         {
             _blocked = true;
+            return this;
+        }
+
+        public StickerBuilder For(Player player)
+        {
+            _player = player;
             return this;
         }
     }

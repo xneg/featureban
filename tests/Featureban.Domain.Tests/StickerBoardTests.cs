@@ -145,6 +145,17 @@ namespace Featureban.Domain.Tests
             Assert.Equal(expectedPlayer, player);
         }
 
+        [Fact]
+        public void ReturnPlayerWichCanSpendToken_WhenHimHaveBlockedSticker()
+        {
+            var expectedPlayer = Create.Player().Please();
+            var stickerBoard = Create.StickersBoard().WithBlockedStickerInProgressFor(expectedPlayer).Please();
+
+            var player = stickerBoard.GetPlayerWichCanSpendToken();
+
+            Assert.Equal(expectedPlayer, player);
+        }
+
 
     }
 }
