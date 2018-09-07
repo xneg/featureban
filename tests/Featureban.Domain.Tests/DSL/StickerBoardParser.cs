@@ -54,12 +54,12 @@ namespace Featureban.Domain.Tests.DSL
 
             var inProgressCount = GetScale(line);
             var position = ProgressPosition.First();
-            var lastPosition = line.IndexOf("|", 0);
+            var lastPositionOfSymbol = line.IndexOf("|", 0);
 
             for (var p = 0; p < inProgressCount; p++)
             {
-                var nextPosition = line.IndexOf("|", lastPosition + 1);
-                var column = line.Substring(lastPosition, nextPosition - lastPosition - 1);
+                var nextPositionOfSymbol = line.IndexOf("|", lastPositionOfSymbol + 1);
+                var column = line.Substring(lastPositionOfSymbol, nextPositionOfSymbol - lastPositionOfSymbol - 1);
                 var pattern = "([A-Z])";
                 var stickerParam = Regex.Matches(column, pattern)
                     .Select(w => w.Value);
@@ -82,7 +82,7 @@ namespace Featureban.Domain.Tests.DSL
                 }
 
                 position = position.Next();
-                lastPosition = nextPosition;
+                lastPositionOfSymbol = nextPositionOfSymbol;
             }
         }
 

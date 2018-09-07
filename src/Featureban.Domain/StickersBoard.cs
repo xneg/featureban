@@ -54,30 +54,29 @@ namespace Featureban.Domain
 
         public Sticker GetBlockedStickerFor(Player player)
         {
-            return  _progressCells
+            return ReversedProgressCells
                 .Select(c => c.GetBlockedStickerFor(player))
-                .FirstOrDefault();
+                 .FirstOrDefault(s => s != null);
         }
 
         public Sticker GetUnblockedStickerFor(Player player)
         {
-            return _progressCells
+            return ReversedProgressCells
                 .Select(c => c.GetUnblockedStickerFor(player))
-                .FirstOrDefault();
+                .FirstOrDefault(s => s != null);
         }
-
-
+        
         public Player GetPlayerThatCanSpendToken()
         {
             var movableSticker =
-                _progressCells
+                ReversedProgressCells
                 .Select(c => c.GetUnblockedSticker())
                 .FirstOrDefault(s => s != null && CanMove(s));
 
             if (movableSticker != null)
                 return movableSticker.Owner;
 
-            var blockedSticker = _progressCells
+            var blockedSticker = ReversedProgressCells
                 .Select(c => c.GetBlockedSticker())
                 .FirstOrDefault();
 
@@ -89,7 +88,7 @@ namespace Featureban.Domain
           
         public Sticker GetMoveableStickerFor(Player player)
         {
-            return _progressCells
+            return ReversedProgressCells
                 .Select(c => c.GetUnblockedStickerFor(player))
                 .FirstOrDefault(s => s != null && CanMove(s));
         }
