@@ -32,7 +32,6 @@ namespace Featureban.Domain
                 var sticker = new Sticker(player);
                 _progressSteps[ProgressPosition.First()].Add(sticker);
                 firstCell.Add(sticker);
-
             }
         }
 
@@ -46,7 +45,19 @@ namespace Featureban.Domain
             }
 
             return sticker;
-        }  
+        }
+
+        public Sticker CreateStickerInProgressNew(Player player)
+        {
+            var sticker = new Sticker(player);
+
+            if (CanCreateStickerInProgressNew())
+            {
+                GetProgressCell(ProgressPosition.First()).Add(sticker);
+            }
+
+            return sticker;
+        }
 
         public Sticker CreateStickerInPosition(ProgressPosition progressPosition, Sticker sticker)
         {
@@ -58,12 +69,14 @@ namespace Featureban.Domain
             return sticker;
         }
 
-        public void CreateStickerInProgress(Sticker sticker)
-        {     
-            if (CanCreateStickerInProgress())
+        public Sticker CreateStickerInPositionNew(ProgressPosition progressPosition, Sticker sticker)
+        {
+            if (CanMoveToNew(progressPosition))
             {
-                _progressSteps[ProgressPosition.First()].Add(sticker);
+                GetProgressCell(progressPosition).Add(sticker);
             }
+
+            return sticker;
         }
 
         public Sticker GetBlockedStickerFor(Player player)
@@ -77,12 +90,12 @@ namespace Featureban.Domain
 
         public Sticker GetBlockedStickerForNew(Player player)
         {
-          return  _progressCells.OrderByDescending(c => c.Position.Step)
+            return  _progressCells
                 .Select(c => c.GetBlockedStickerFor(player))
                 .FirstOrDefault();
         }
 
-            public Sticker GetUnblockedStickerFor(Player player)
+        public Sticker GetUnblockedStickerFor(Player player)
         {
             return
                 _progressSteps
@@ -90,14 +103,15 @@ namespace Featureban.Domain
                 // todo: сделать сортировку по позиции
                 .FirstOrDefault(s => s.Owner == player && !s.Blocked);
         }
+
         public Sticker GetUnblockedStickerForNew(Player player)
         {
-            return _progressCells.OrderByDescending(c => c.Position.Step)
+            return _progressCells
                 .Select(c => c.GetUnblockedStickerFor(player))
                 .FirstOrDefault();
         }
 
-            public Player GetPlayerThatCanSpendToken()
+        public Player GetPlayerThatCanSpendToken()
         {
             var movableSticker =
                 _progressSteps
@@ -123,7 +137,6 @@ namespace Featureban.Domain
         {
             var movableSticker =
                 _progressCells
-                .OrderByDescending(c => c.Position.Step)
                 .Select(c => c.GetUnblockedSticker())
                 .FirstOrDefault(s => s != null && CanMove(s));
 
@@ -131,7 +144,6 @@ namespace Featureban.Domain
                 return movableSticker.Owner;
 
             var blockedSticker = _progressCells
-                .OrderByDescending(c => c.Position.Step)
                 .Select(c => c.GetBlockedSticker())
                 .FirstOrDefault();
 
@@ -149,16 +161,33 @@ namespace Featureban.Domain
                     (!_scale.IsValid(s.ProgressPosition.Next()) || CanMoveTo(s.ProgressPosition.Next())));
         }
 
+        public Sticker GetMoveableStickerForNew(Player player)
+        {
+            return _progressCells
+                .Select(c => c.GetUnblockedStickerFor(player))
+                .FirstOrDefault(s => s != null && CanMove(s));
+        }
+
         public IEnumerable<Sticker> GetStickersIn(ProgressPosition progressPosition)
         {
             return _progressSteps[progressPosition].AsReadOnly();
         }
-        
+
+        public IEnumerable<Sticker> GetStickersInNew(ProgressPosition progressPosition)
+        {
+            return GetProgressCell(progressPosition).Stickers;
+        }
+
         public bool CanCreateStickerInProgress()
         {
             return CanMoveTo(ProgressPosition.First());
         }
-        
+
+        public bool CanCreateStickerInProgressNew()
+        {
+            return CanMoveToNew(ProgressPosition.First());
+        }
+
         public bool CanMoveTo(ProgressPosition position)
         {
             return _wip == null || _progressSteps[position].Count < _wip;
@@ -212,7 +241,9 @@ namespace Featureban.Domain
                 _progressCells.Add(new ProgressCell(position, wip));
                 position = position.Next();
             }
+            _progressCells.Reverse();
         }
+
         private ProgressCell GetProgressCell(ProgressPosition position)
         {
             return _progressCells.FirstOrDefault(p => p.Position == position);

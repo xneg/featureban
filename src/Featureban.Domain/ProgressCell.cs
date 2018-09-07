@@ -13,6 +13,8 @@ namespace Featureban.Domain
 
         public bool IsFull => _stickers.Count >= _wip;
 
+        public IReadOnlyList<Sticker> Stickers => _stickers.AsReadOnly();
+
         public ProgressCell(ProgressPosition progressPosition, int? wip)
         {
             _wip = wip;
