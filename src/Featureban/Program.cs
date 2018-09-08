@@ -11,58 +11,26 @@ namespace Featureban
 
         static void Main(string[] args)
         {
-            Console.WriteLine(ExperimentOutput.Caption());
-
-            for (var i = 0; i <= 5; i++)
-            {
-                var inputData = i == 0 ?
-                    new ExperimentInputData(3, null, 15) :
-                    new ExperimentInputData(3, i, 15);
-
-                var experimentResult = Experiment.DoExperiment(inputData, 1000);
-                Console.WriteLine(experimentResult);
-            }
-
-            Console.WriteLine();
+            int[] playersCounts = new[] { 3, 5, 10 };
+            int[] rounds = new[] { 15, 20 };
+            int?[] wips = new[] {(int?)null, 1, 2, 3, 4, 5 };
 
             Console.WriteLine(ExperimentOutput.Caption());
 
-            for (var i = 0; i <= 5; i++)
+            foreach (var playersCount in playersCounts)
             {
-                var inputData = i == 0 ?
-                    new ExperimentInputData(5, null, 15) :
-                    new ExperimentInputData(5, i, 15);
+                foreach(var round in rounds)
+                {
+                    foreach(var wip in wips)
+                    {
+                        var inputData = new ExperimentInputData(playersCount, wip, round);
+                        var experimentResult = Experiment.DoExperiment(inputData, 1000);
 
-                var experimentResult = Experiment.DoExperiment(inputData, 1000);
-                Console.WriteLine(experimentResult);
-            }
+                        Console.WriteLine(experimentResult);
+                    }
 
-            Console.WriteLine();
-
-            Console.WriteLine(ExperimentOutput.Caption());
-
-            for (var i = 0; i <= 5; i++)
-            {
-                var inputData = i == 0 ?
-                    new ExperimentInputData(10, null, 15) :
-                    new ExperimentInputData(10, i, 15);
-
-                var experimentResult = Experiment.DoExperiment(inputData, 1000);
-                Console.WriteLine(experimentResult);
-            }
-
-            Console.WriteLine();
-
-            Console.WriteLine(ExperimentOutput.Caption());
-
-            for (var i = 0; i <= 5; i++)
-            {
-                var inputData = i == 0 ?
-                    new ExperimentInputData(10, null, 20) :
-                    new ExperimentInputData(10, i, 20);
-
-                var experimentResult = Experiment.DoExperiment(inputData, 1000);
-                Console.WriteLine(experimentResult);
+                    Console.WriteLine();
+                }
             }
 
             Console.ReadLine();

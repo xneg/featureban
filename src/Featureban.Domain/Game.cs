@@ -43,16 +43,11 @@ namespace Featureban.Domain
                 player.MakeToss();
             }
 
-            foreach(var player in _players)
-            {
+            foreach (var player in _players.Where(p => p.Token?.IsEagle == true))
                 player.SpendToken();
-            }
 
-            //foreach (var player in _players.Where(p => p.Token?.IsEagle == true))
-            //    player.SpendToken();
-
-            //foreach (var player in _players.Where(p => p.Token?.IsTails == true))
-            //    player.SpendToken();
+            foreach (var player in _players.Where(p => p.Token?.IsTails == true))
+                player.SpendToken();
 
             while (_tokensPull.ContainsTokens)
             {
