@@ -94,21 +94,7 @@ namespace Featureban.Domain.Tests
             AssertStickerBoard.Equal(@"| InProgress (1) | Done |
                                        |                | (1)  |",
                                 stickersBoard);
-        }
-
-        [Fact]
-        public void BoardReturnsMoveableStickerForPlayer()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       |                | (0)  |").Please();
-            var player = Create.Player().WithName("P").Please();
-
-            stickersBoard.CreateStickerInProgress(player);
-
-            AssertStickerBoard.Equal(@"| InProgress (1) | Done |
-                                       | [P  ]          | (0)  |",
-                                stickersBoard);
-        }
+        }        
 
         [Fact]
         public void ReturnNull_WhenGetUnblockedSticker()
@@ -123,6 +109,30 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
+        public void ReturnNullMoveableSticker_WhenStickerIsBlocked()
+        {
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       | [P B]          | (0)  |").Please();
+            var player = Create.Player().WithName("P").Please();
+
+            var sticker = stickersBoard.GetMoveableStickerFor(player);
+
+            Assert.Null(sticker);
+        }
+
+        [Fact]
+        public void ReturnNullMoveableSticker_WhenNextPositionIsFull()
+        {
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [P B]          | [R  ]          | (0)  |").Please();
+            var player = Create.Player().WithName("P").Please();
+
+            var sticker = stickersBoard.GetMoveableStickerFor(player);
+
+            Assert.Null(sticker);
+        }
+
+        [Fact]
         public void NotStepUpSticker_WhenNextPositionIsFull()
         {
             var player = Create.Player().WithName("R").Please();
@@ -130,7 +140,6 @@ namespace Featureban.Domain.Tests
                                                        | [R  ]          | [P B]          | (0)  |")
                                                        .WithPlayer(player)
                                                        .Please();
-
             var sticker = stickersBoard.GetUnblockedStickerFor(player);
 
             stickersBoard.StepUp(sticker);
@@ -141,17 +150,19 @@ namespace Featureban.Domain.Tests
         }
 
         [Fact]
-        public void OneStickerInProgress_WhenSetupForOnePlayer()
+        public void StickerInProgressForEveryPlayer_WhenSetup()
         {
             var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
                                                        |                | (0)  |").Please();
-            var player = Create.Player().WithName("P").Please();
-            var players = new List<Player> {player};
+            var player1 = Create.Player().WithName("P").Please();
+            var player2 = Create.Player().WithName("R").Please();
+            var players = new List<Player> {player1, player2};
 
             stickersBoard.Setup(players);
 
             AssertStickerBoard.Equal(@"| InProgress (1) | Done |
-                                       | [P  ]          | (0)  |",
+                                       | [P  ]          | (0)  |
+                                       | [R  ]          |      |",
                                 stickersBoard);
         }
 
