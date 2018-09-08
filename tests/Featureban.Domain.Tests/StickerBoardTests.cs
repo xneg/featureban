@@ -26,33 +26,18 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void StickerNotStepUp_WhenStickerBlocked()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                       | [P B]          | (0)  |").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | InProgress (2) | Done |
+                                                       | [P B]          |                | (0)  |").Please();
 
             var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
 
             stickersBoard.StepUp(sticker);
 
-            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
-                                       | [P B]          | (0)  |",
+            AssertStickerBoard.Equal(@"| InProgress (2) | InProgress (2) | Done |
+                                       | [P B]          |                | (0)  |",
                                stickersBoard);
         }        
-
-        [Fact]
-        public void BoardReturnsUnblockedStickerForPlayer_WhenTakeStickerInWork()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (2) | Done |
-                                                       |                | (0)  |").Please();
-
-            var player = Create.Player().WithName("P").Please();
-
-            stickersBoard.CreateStickerInProgress(player);
-
-            AssertStickerBoard.Equal(@"| InProgress (2) | Done |
-                                       | [P  ]          | (0)  |",
-                                stickersBoard);
-        }
-
+        
         [Fact]
         public void BoardReturnsBlockedStickerForPlayer_WhenBlocked()
         {
@@ -81,7 +66,21 @@ namespace Featureban.Domain.Tests
             AssertStickerBoard.Equal(@"| InProgress (1) | Done |
                                        | [P  ]          | (0)  |",
                                 stickersBoard);
-        }        
+        }
+
+        [Fact]
+        public void StickerInNextPosition_WhenStepUp()
+        {
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [P  ]          |                | (0)  |").Please();
+            var sticker = stickersBoard.GetStickersIn(ProgressPosition.First()).Single();
+
+            stickersBoard.StepUp(sticker);
+
+            AssertStickerBoard.Equal(@"| InProgress (1) | InProgress (1) | Done |
+                                       |                |  [P ]          | (0)  |",
+                                stickersBoard);
+        }
 
         [Fact]
         public void InDoneStickersIncrement_WhenStickerIsDone()
