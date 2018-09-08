@@ -124,8 +124,6 @@ namespace Featureban.Domain
                 {
                     GetProgressCell(oldPosition).Remove(sticker);
                     GetProgressCell(newPosition).Add(sticker);
-
-                    sticker.ChangePosition(newPosition);
                 }
             }
             else

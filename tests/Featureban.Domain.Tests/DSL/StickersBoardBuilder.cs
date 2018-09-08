@@ -107,7 +107,8 @@ namespace Featureban.Domain.Tests.DSL
         
         public StickersBoardBuilder WithStickerInProgressFor(Player player, ProgressPosition position)
         {
-            _stickersInProgress[position].Add(Create.Sticker().For(player).Please());
+            var sticker = Create.Sticker().For(player).Please();
+            _stickersInProgress[position].Add(sticker);
             return this;
         }        
 

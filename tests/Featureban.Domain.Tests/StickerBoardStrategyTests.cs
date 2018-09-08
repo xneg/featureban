@@ -8,9 +8,11 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void ReturnNull_WhenGetUnblockedSticker()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       | [P B]          | (0)  |").Please();
             var player = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       | [P B]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
 
             var sticker = stickersBoard.GetUnblockedStickerFor(player);
 
@@ -20,9 +22,11 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void ReturnNullMoveableSticker_WhenStickerIsBlocked()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       | [P B]          | (0)  |").Please();
             var player = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
+                                                       | [P B]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
 
             var sticker = stickersBoard.GetMoveableStickerFor(player);
 
@@ -32,15 +36,44 @@ namespace Featureban.Domain.Tests
         [Fact]
         public void ReturnNullMoveableSticker_WhenNextPositionIsFull()
         {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
-                                                       | [P B]          | [R  ]          | (0)  |").Please();
             var player = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [P B]          | [R  ]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
 
             var sticker = stickersBoard.GetMoveableStickerFor(player);
 
             Assert.Null(sticker);
         }
 
+        [Fact]
+        public void ReturnNearestToDoneSticker_WhenGetBlockedSticker()
+        {
+            var player = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [P B]          | [P B]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
+
+            var sticker = stickersBoard.GetBlockedStickerFor(player);
+
+            Assert.Equal(2, sticker.ProgressPosition.Step);
+        }
+
+        [Fact]
+        public void ReturnNearestToDoneSticker_WhenGetMovableSticker()
+        {
+            var player = Create.Player().WithName("P").Please();
+            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
+                                                       | [P  ]          | [P  ]          | (0)  |")
+                                                       .WithPlayer(player)
+                                                       .Please();
+
+            var sticker = stickersBoard.GetMoveableStickerFor(player);
+
+            Assert.Equal(2, sticker.ProgressPosition.Step);
+        }
 
         [Fact]
         public void ReturnPlayerThatCanSpendToken_WhenHeHasMovableSticker()

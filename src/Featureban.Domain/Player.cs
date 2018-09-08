@@ -11,6 +11,7 @@ namespace Featureban.Domain
         public string Name { get; }
 
         public Token Token { get; private set; }
+        public Guid Id { get; }
 
         public Player(string name, IStickersBoard stickersBoard, ICoin coin, TokensPull tokensPull)
         {
@@ -18,6 +19,8 @@ namespace Featureban.Domain
             _stickersBoard = stickersBoard;
             _coin = coin;
             _tokensPull = tokensPull;
+
+            Id = Guid.NewGuid();
         }      
 
         public void MakeToss()

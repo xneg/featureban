@@ -24,7 +24,8 @@ namespace Featureban.Domain
 
         public void Add(Sticker sticker)
         {
-                _stickers.Add(sticker);
+            _stickers.Add(sticker);
+            sticker.ChangePosition(Position);
         }
 
         public void Remove(Sticker sticker)
@@ -34,25 +35,21 @@ namespace Featureban.Domain
 
         public Sticker GetBlockedStickerFor(Player player)
         {
-            return
-                 _stickers.FirstOrDefault(s => s.Owner == player && s.Blocked);
+            return _stickers.FirstOrDefault(s => s.Owner == player && s.Blocked);
         }
 
         public Sticker GetUnblockedStickerFor(Player player)
         {
-            return
-                _stickers.FirstOrDefault(s => s.Owner == player && !s.Blocked);
+            return _stickers.FirstOrDefault(s => s.Owner == player && !s.Blocked);
         }
 
         public Sticker GetBlockedSticker()
         {
-            return
-                 _stickers.FirstOrDefault(s => s.Blocked);
+            return _stickers.FirstOrDefault(s => s.Blocked);
         }
         public Sticker GetUnblockedSticker()
         {
-            return
-                 _stickers.FirstOrDefault(s => !s.Blocked);
+            return _stickers.FirstOrDefault(s => !s.Blocked);
         }
     }
 }
