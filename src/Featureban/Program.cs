@@ -11,37 +11,51 @@ namespace Featureban
 
         static void Main(string[] args)
         {
-            //Console.WriteLine(ExperimentOutput.Caption());
+            Console.WriteLine(ExperimentOutput.Caption());
 
-            //for (var i = 0; i <= 5; i++)
-            //{
-            //    var inputData = i == 0 ?
-            //        new ExperimentInputData(3, null, 15) :
-            //        new ExperimentInputData(3, i, 15);
+            for (var i = 0; i <= 5; i++)
+            {
+                var inputData = i == 0 ?
+                    new ExperimentInputData(3, null, 15) :
+                    new ExperimentInputData(3, i, 15);
 
-            //    var experimentResult = Experiment.DoExperiment(inputData, 1000);
-            //    Console.WriteLine(experimentResult);
-            //}
+                var experimentResult = Experiment.DoExperiment(inputData, 1000);
+                Console.WriteLine(experimentResult);
+            }
 
-            //Console.WriteLine();
-
-            //Console.WriteLine(ExperimentOutput.Caption());
-
-            //for (var i = 0; i <= 5; i++)
-            //{
-            //    var inputData = i == 0 ?
-            //        new ExperimentInputData(5, null, 15) :
-            //        new ExperimentInputData(5, i, 15);
-
-            //    var experimentResult = Experiment.DoExperiment(inputData, 1000);
-            //    Console.WriteLine(experimentResult);
-            //}
-
-            //Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine(ExperimentOutput.Caption());
 
-            for (var i = 0; i <= 60; i++)
+            for (var i = 0; i <= 5; i++)
+            {
+                var inputData = i == 0 ?
+                    new ExperimentInputData(5, null, 15) :
+                    new ExperimentInputData(5, i, 15);
+
+                var experimentResult = Experiment.DoExperiment(inputData, 1000);
+                Console.WriteLine(experimentResult);
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine(ExperimentOutput.Caption());
+
+            for (var i = 0; i <= 5; i++)
+            {
+                var inputData = i == 0 ?
+                    new ExperimentInputData(10, null, 15) :
+                    new ExperimentInputData(10, i, 15);
+
+                var experimentResult = Experiment.DoExperiment(inputData, 1000);
+                Console.WriteLine(experimentResult);
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine(ExperimentOutput.Caption());
+
+            for (var i = 0; i <= 5; i++)
             {
                 var inputData = i == 0 ?
                     new ExperimentInputData(10, null, 20) :

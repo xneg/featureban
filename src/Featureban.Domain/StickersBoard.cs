@@ -78,7 +78,7 @@ namespace Featureban.Domain
 
             var blockedSticker = ReversedProgressCells
                 .Select(c => c.GetBlockedSticker())
-                .FirstOrDefault();
+                .FirstOrDefault(s => s != null);
 
             if (blockedSticker != null)
                 return blockedSticker.Owner;

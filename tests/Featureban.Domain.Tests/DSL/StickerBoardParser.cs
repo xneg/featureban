@@ -64,13 +64,15 @@ namespace Featureban.Domain.Tests.DSL
                 var stickerParam = Regex.Matches(column, pattern)
                     .Select(w => w.Value);
 
+                if (!stickerParam.Any())
+                    continue;
+
                 var player = _players.FirstOrDefault(pl => pl.Name == stickerParam.First());
 
                 if(player == null)
                 {
                     player = Create.Player().WithName(stickerParam.First()).Please();
                 }
-
 
                 if (stickerParam.Contains("B"))
                 {
