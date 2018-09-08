@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Featureban.Domain.Tests
 {
-    public class StickerBoardTests
+    public class StickerBoardBehaviorTests
     {       
 
         [Fact]
@@ -94,42 +94,6 @@ namespace Featureban.Domain.Tests
             AssertStickerBoard.Equal(@"| InProgress (1) | Done |
                                        |                | (1)  |",
                                 stickersBoard);
-        }        
-
-        [Fact]
-        public void ReturnNull_WhenGetUnblockedSticker()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       | [P B]          | (0)  |").Please();
-            var player = Create.Player().WithName("P").Please();
-
-            var sticker = stickersBoard.GetUnblockedStickerFor(player);
-
-            Assert.Null(sticker);
-        }
-
-        [Fact]
-        public void ReturnNullMoveableSticker_WhenStickerIsBlocked()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       | [P B]          | (0)  |").Please();
-            var player = Create.Player().WithName("P").Please();
-
-            var sticker = stickersBoard.GetMoveableStickerFor(player);
-
-            Assert.Null(sticker);
-        }
-
-        [Fact]
-        public void ReturnNullMoveableSticker_WhenNextPositionIsFull()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
-                                                       | [P B]          | [R  ]          | (0)  |").Please();
-            var player = Create.Player().WithName("P").Please();
-
-            var sticker = stickersBoard.GetMoveableStickerFor(player);
-
-            Assert.Null(sticker);
         }
 
         [Fact]
@@ -156,7 +120,7 @@ namespace Featureban.Domain.Tests
                                                        |                | (0)  |").Please();
             var player1 = Create.Player().WithName("P").Please();
             var player2 = Create.Player().WithName("R").Please();
-            var players = new List<Player> {player1, player2};
+            var players = new List<Player> { player1, player2 };
 
             stickersBoard.Setup(players);
 
@@ -164,61 +128,6 @@ namespace Featureban.Domain.Tests
                                        | [P  ]          | (0)  |
                                        | [R  ]          |      |",
                                 stickersBoard);
-        }
-
-        [Fact]
-        public void ReturnPlayerThatCanSpendToken_WhenHeHasMovableSticker()
-        {
-            var expectedPlayer = Create.Player().WithName("P").Please();
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
-                                                       | [P  ]          |                | (0)  |")
-                                                      .WithPlayer(expectedPlayer)
-                                                      .Please();
-            
-            var player = stickersBoard.GetPlayerThatCanSpendToken();
-
-            Assert.Equal(expectedPlayer, player);
-        }
-
-        [Fact]
-        public void ReturnPlayerThatCanSpendToken_WhenHeHasBlockedSticker()
-        {
-            var expectedPlayer = Create.Player().WithName("P").Please();
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | InProgress (1) | Done |
-                                                       | [P B]          |                | (0)  |")
-                                                      .WithPlayer(expectedPlayer)
-                                                      .Please();            
-
-            var player = stickersBoard.GetPlayerThatCanSpendToken();
-
-            Assert.Equal(expectedPlayer, player);
-        }
-
-        [Fact]
-        public void StickerCanMove_WhenWipIsNull()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress     | Done |
-                                                       |                | (0)  |").Please();
-
-            Assert.True(stickersBoard.CanMoveTo(ProgressPosition.First()));
-        }
-
-        [Fact]
-        public void StickerCanMove_WhenNextPositionIsNotFull()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       |                | (0)  |").Please();
-
-            Assert.True(stickersBoard.CanMoveTo(ProgressPosition.First()));
-        }
-
-        [Fact]
-        public void StickerCanNotMove_WhenNextPositionIsFull()
-        {
-            var stickersBoard = Create.StickersBoard(@"| InProgress (1) | Done |
-                                                       | [P  ]          | (0)  |").Please();
-
-            Assert.False(stickersBoard.CanMoveTo(ProgressPosition.First()));
         }
     }
 }
